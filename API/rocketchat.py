@@ -1,5 +1,3 @@
-from pprint import pprint
-
 import requests
 
 from API.APIExceptions.RocketExceptions import RocketConnectionException, RocketAuthenticationException
@@ -38,12 +36,10 @@ class RocketChat:
 
     def __call_api_get(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
-        r = requests.get(self.server_url + self.API_path + method + '?' +
-                         '&'.join([i + '=' + str(args[i]) for i in args.keys()]),
-                         headers=self.headers,
-                         verify=self.ssl_verify)
-        pprint(r.url)
-        return r
+        return requests.get(self.server_url + self.API_path + method + '?' +
+                            '&'.join([i + '=' + str(args[i]) for i in args.keys()]),
+                            headers=self.headers,
+                            verify=self.ssl_verify)
 
     def __call_api_post(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
@@ -55,57 +51,72 @@ class RocketChat:
     # Authentication
 
     def me(self):
+        """	Displays information about the authenticated user."""
         return self.__call_api_get('me')
 
     # Miscellaneous information
 
     def info(self):
+        """Information about the Rocket.Chat server."""
         return self.__call_api_get('info')
 
     # Users
 
     def users_info(self, user_id, **kwargs):
+        """Gets a user’s information, limited to the caller’s permissions."""
         return self.__call_api_get('users.info', userId=user_id, kwargs=kwargs)
 
     def users_list(self, **kwargs):
+        """All of the users and their information, limited to permissions."""
         return self.__call_api_get('users.list', kwargs=kwargs)
 
-    def users_get_presence(self, user_id):
-        return self.__call_api_get('users.getPresence', userId=user_id)
+    def users_get_presence(self, user_id, **kwargs):
+        """Gets the online presence of the a user."""
+        return self.__call_api_get('users.getPresence', userId=user_id, kwargs=kwargs)
 
     # Chat
 
     def chat_post_message(self, room_id, text, **kwargs):
+        """Posts a new chat message."""
         return self.__call_api_post('chat.postMessage', roomId=room_id, text=text, kwargs=kwargs)
 
     def chat_delete(self, room_id, msg_id, **kwargs):
+        """Deletes a chat message."""
         return self.__call_api_post('chat.delete', roomId=room_id, msgId=msg_id, kwargs=kwargs)
 
     def chat_update(self, room_id, msg_id, text, **kwargs):
+        """Updates the text of the chat message."""
         return self.__call_api_post('chat.update', roomId=room_id, msgId=msg_id, text=text, kwargs=kwargs)
 
     # Channels
 
     def channels_list(self, **kwargs):
+        """Retrieves all of the channels from the server."""
         return self.__call_api_get('channels.list', kwargs=kwargs)
 
     def channels_info(self, room_id, **kwargs):
+        """Gets a channel’s information."""
         return self.__call_api_get('channels.info', roomId=room_id, kwargs=kwargs)
 
     def channels_history(self, room_id, **kwargs):
+        """Retrieves the messages from a channel."""
         return self.__call_api_get('channels.history', roomId=room_id, kwargs=kwargs)
 
     # Groups
 
     def groups_list(self, **kwargs):
+        """List the private groups the caller is part of."""
         return self.__call_api_get('groups.list', kwargs=kwargs)
 
     def groups_history(self, room_id, **kwargs):
+        """Retrieves the messages from a private group."""
         return self.__call_api_get('groups.history', roomId=room_id, kwargs=kwargs)
 
     # IM
     def im_list(self, **kwargs):
+        """List the private im chats for logged user"""
         return self.__call_api_get('im.list', kwargs=kwargs)
 
     def im_history(self, room_id, **kwargs):
+        """Retrieves the history for a private im chat"""
         return self.__call_api_get('im.history', roomId=room_id, kwargs=kwargs)
