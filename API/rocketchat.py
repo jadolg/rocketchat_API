@@ -9,6 +9,7 @@ class RocketChat:
     API_path = '/api/v1/'
 
     def __init__(self, user, password, server_url='http://127.0.0.1:3000', ssl_verify=True):
+        """Creates a RocketChat object and does login on the specified server"""
         self.server_url = server_url
         login = requests.post(server_url + self.API_path + 'login',
                               data={'username': user, 'password': password},
