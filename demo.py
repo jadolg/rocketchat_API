@@ -20,3 +20,4 @@ rocket = RocketChat('mybot', 'qweqwe123!')
 
 # pprint(rocket.users_list().json())
 # pprint(rocket.users_get_presence('RsiuHzzh24MKTTQkw').json())
+pprint(rocket.channels_list_joined().json())

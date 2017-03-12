@@ -94,6 +94,10 @@ class RocketChat:
         """Retrieves all of the channels from the server."""
         return self.__call_api_get('channels.list', kwargs=kwargs)
 
+    def channels_list_joined(self, **kwargs):
+        """Lists all of the channels the calling user has joined"""
+        return self.__call_api_get('channels.list.joined', kwargs=kwargs)
+
     def channels_info(self, room_id, **kwargs):
         """Gets a channel’s information."""
         return self.__call_api_get('channels.info', roomId=room_id, kwargs=kwargs)
