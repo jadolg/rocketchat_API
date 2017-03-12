@@ -1,6 +1,6 @@
 import requests
 
-from API.APIExceptions.RocketExceptions import RocketConnectionException, RocketAuthenticationException
+from rocketchat_API.APIExceptions.RocketExceptions import RocketConnectionException, RocketAuthenticationException
 
 
 class RocketChat:
@@ -56,7 +56,7 @@ class RocketChat:
         return self.__call_api_get('me', kwargs=kwargs)
 
     def logout(self, **kwargs):
-        """Invalidate your REST API authentication token."""
+        """Invalidate your REST rocketchat_API authentication token."""
         return self.__call_api_get('logout', kwargs=kwargs)
 
     # Miscellaneous information

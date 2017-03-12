@@ -1,6 +1,6 @@
 from pprint import pprint
 
-from API.rocketchat import RocketChat
+from rocketchat_API.rocketchat import RocketChat
 
 rocket = RocketChat('mybot', 'qweqwe123!')
 pprint(rocket.me().json())
