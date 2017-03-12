@@ -50,15 +50,19 @@ class RocketChat:
 
     # Authentication
 
-    def me(self):
+    def me(self, **kwargs):
         """	Displays information about the authenticated user."""
-        return self.__call_api_get('me')
+        return self.__call_api_get('me', kwargs=kwargs)
+
+    def logout(self, **kwargs):
+        """Invalidate your REST API authentication token."""
+        return self.__call_api_get('logout', kwargs=kwargs)
 
     # Miscellaneous information
 
-    def info(self):
+    def info(self, **kwargs):
         """Information about the Rocket.Chat server."""
-        return self.__call_api_get('info')
+        return self.__call_api_get('info', kwargs=kwargs)
 
     # Users
 

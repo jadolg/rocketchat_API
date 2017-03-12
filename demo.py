@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from API.rocketchat import RocketChat
 
 rocket = RocketChat('mybot', 'qweqwe123!')
@@ -20,4 +18,5 @@ rocket = RocketChat('mybot', 'qweqwe123!')
 
 # pprint(rocket.users_list().json())
 # pprint(rocket.users_get_presence('RsiuHzzh24MKTTQkw').json())
-pprint(rocket.channels_list_joined().json())
+# pprint(rocket.channels_list_joined().json())
+# pprint(rocket.logout().json())
