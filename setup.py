@@ -9,6 +9,7 @@ setup(
     author='Jorge Alberto Díaz Orozco',
     author_email='diazorozcoj@gmail.com',
     description='Python rocketchat_API wrapper for Rocket.Chat',
+    long_description=open("README.md", "r").read(),
     install_requires=[
         'requests>=2.0.0,<3.0'
     ]
