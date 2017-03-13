@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     name='rocketchat_API',
@@ -10,7 +10,7 @@ setup(
     author_email='diazorozcoj@gmail.com',
     description='Python rocketchat_API wrapper for Rocket.Chat',
     long_description=open("README.md", "r").read(),
-    install_requires=[
-        'requests>=2.0.0,<3.0'
-    ]
+    requires=(
+        'requests',
+    )
 )
