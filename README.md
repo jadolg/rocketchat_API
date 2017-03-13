@@ -2,6 +2,7 @@
 Python API wrapper for [Rocket.Chat](https://rocket.chat/docs/developer-guides/rest-api)
 
 ### Usage
+```
 from pprint import pprint
 from API.rocketchat import RocketChat
 
@@ -10,6 +11,7 @@ pprint(rocket.me().json())
 pprint(rocket.channels_list().json())
 pprint(rocket.chat_post_message('GENERAL', 'good news everyone!', alias='Farnsworth').json())
 pprint(rocket.channels_history('GENERAL', count=5).json())
+```
 
 *note*: every method returns a [requests](https://github.com/kennethreitz/requests) Response object.
 
