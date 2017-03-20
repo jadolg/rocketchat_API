@@ -126,9 +126,29 @@ class RocketChat:
         """List the private im chats for logged user"""
         return self.__call_api_get('im.list', kwargs=kwargs)
 
+    def im_list_everyone(self, **kwargs):
+        """List all direct message the caller in the server."""
+        return self.__call_api_get('im.list.everyone', kwargs=kwargs)
+
     def im_history(self, room_id, **kwargs):
         """Retrieves the history for a private im chat"""
         return self.__call_api_get('im.history', roomId=room_id, kwargs=kwargs)
+
+    def im_open(self, room_id, **kwargs):
+        """Adds the direct message back to the user’s list of direct messages."""
+        return self.__call_api_post('im.open', roomId=room_id, kwargs=kwargs)
+
+    def im_close(self, room_id, **kwargs):
+        """Removes the direct message from the user’s list of direct messages."""
+        return self.__call_api_post('im.close', roomId=room_id, kwargs=kwargs)
+
+    def im_messages_others(self, room_id, **kwargs):
+        """Retrieves the messages from any direct message in the server"""
+        return self.__call_api_post('im.messages.others', roomId=room_id, kwargs=kwargs)
+
+    def im_set_topic(self, room_id, topic, **kwargs):
+        """Sets the topic for the direct message"""
+        return self.__call_api_post('im.setTopic', roomId=room_id, topic=topic, kwargs=kwargs)
 
     # Statistics
 
