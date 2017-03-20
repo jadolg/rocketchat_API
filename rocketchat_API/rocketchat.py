@@ -129,3 +129,9 @@ class RocketChat:
     def im_history(self, room_id, **kwargs):
         """Retrieves the history for a private im chat"""
         return self.__call_api_get('im.history', roomId=room_id, kwargs=kwargs)
+
+    # Statistics
+
+    def statistics(self, **kwargs):
+        """Retrieves the current statistics"""
+        return self.__call_api_get('statistics', kwargs=kwargs)
