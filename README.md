@@ -4,7 +4,7 @@ Python API wrapper for [Rocket.Chat](https://rocket.chat/docs/developer-guides/r
 ### Usage
 ```
 from pprint import pprint
-from API.rocketchat import RocketChat
+from rocketchat_API.rocketchat import RocketChat
 
 rocket = RocketChat('myuser', 'mypassword')
 pprint(rocket.me().json())
