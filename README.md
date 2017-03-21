@@ -20,7 +20,7 @@ Only required parameters are explicit on the RocketChat class but you can still 
 
 ### API coverage
 I've implemented only a few methods until now but I want to make them all. If you are interested in a specific call just open an issue or open a pull request.
-*note*: This have being tested only on Rocket.Chat 0.52.0
+*note*: This have being tested only on Rocket.Chat >= 0.52.0
 
 ### Tests
 No tests have being implemented. If you are interested in writing them please open a pull request.
