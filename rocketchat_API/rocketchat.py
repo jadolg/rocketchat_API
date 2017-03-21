@@ -111,6 +111,93 @@ class RocketChat:
         """Retrieves the messages from a channel."""
         return self.__call_api_get('channels.history', roomId=room_id, kwargs=kwargs)
 
+    def channels_add_all(self, room_id, **kwargs):
+        """Adds all of the users of the Rocket.Chat server to the channel."""
+        return self.__call_api_post('channels.addAll', roomId=room_id, kwargs=kwargs)
+
+    def channels_add_moderator(self, room_id, user_id, **kwargs):
+        """Gives the role of moderator for a user in the currrent channel."""
+        return self.__call_api_post('channels.addModerator', roomId=room_id, userId=user_id, kwargs=kwargs)
+
+    def channels_remove_moderator(self, room_id, user_id, **kwargs):
+        """Removes the role of moderator from a user in the currrent channel."""
+        return self.__call_api_post('channels.removeModerator', roomId=room_id, userId=user_id, kwargs=kwargs)
+
+    def channels_add_owner(self, room_id, user_id, **kwargs):
+        """Gives the role of owner for a user in the currrent channel."""
+        return self.__call_api_post('channels.addOwner', roomId=room_id, userId=user_id, kwargs=kwargs)
+
+    def channels_remove_owner(self, room_id, user_id, **kwargs):
+        """Removes the role of owner from a user in the currrent channel."""
+        return self.__call_api_post('channels.removeOwner', roomId=room_id, userId=user_id, kwargs=kwargs)
+
+    def channels_archive(self, room_id, **kwargs):
+        """Archives a channel."""
+        return self.__call_api_post('channels.archive', roomId=room_id, kwargs=kwargs)
+
+    def channels_unarchive(self, room_id, **kwargs):
+        """Unarchives a channel."""
+        return self.__call_api_post('channels.unarchive', roomId=room_id, kwargs=kwargs)
+
+    # this endpoint isn't working properly
+    def channels_clean_history(self, room_id, latest, oldest, **kwargs):
+        """Cleans up a channel, removing messages from the provided time range."""
+        return self.__call_api_post('channels.cleanHistory', roomId=room_id, latest=latest, oldest=oldest,
+                                    kwargs=kwargs)
+
+    def channels_close(self, room_id, **kwargs):
+        """Removes the channel from the user’s list of channels."""
+        return self.__call_api_post('channels.close', roomId=room_id, kwargs=kwargs)
+
+    def channels_open(self, room_id, **kwargs):
+        """Adds the channel back to the user’s list of channels."""
+        return self.__call_api_post('channels.open', roomId=room_id, kwargs=kwargs)
+
+    # ToDo: members param is not properly casting to list
+    def channels_create(self, name, **kwargs):
+        """Creates a new public channel, optionally including users."""
+        return self.__call_api_post('channels.create', name=name, kwargs=kwargs)
+
+    def channels_get_integrations(self, room_id, **kwargs):
+        """Retrieves the integrations which the channel has"""
+        return self.__call_api_get('channels.getIntegrations', roomId=room_id, kwargs=kwargs)
+
+    def channels_invite(self, room_id, user_id, **kwargs):
+        """Adds a user to the channel."""
+        return self.__call_api_post('channels.invite', roomId=room_id, userId=user_id, kwargs=kwargs)
+
+    def channels_kick(self, room_id, user_id, **kwargs):
+        """Removes a user from the channel."""
+        return self.__call_api_post('channels.kick', roomId=room_id, userId=user_id, kwargs=kwargs)
+
+    def channels_leave(self, room_id, **kwargs):
+        """Causes the callee to be removed from the channel."""
+        return self.__call_api_post('channels.leave', roomId=room_id, kwargs=kwargs)
+
+    def channels_rename(self, room_id, name, **kwargs):
+        """Changes the name of the channel."""
+        return self.__call_api_post('channels.rename', roomId=room_id, name=name, kwargs=kwargs)
+
+    def channels_set_description(self, room_id, description, **kwargs):
+        """Sets the description for the channel."""
+        return self.__call_api_post('channels.setDescription', roomId=room_id, description=description, kwargs=kwargs)
+
+    def channels_set_join_code(self, room_id, join_code, **kwargs):
+        """Sets the code required to join the channel."""
+        return self.__call_api_post('channels.setJoinCode', roomId=room_id, joinCode=join_code, kwargs=kwargs)
+
+    def channels_set_read_only(self, room_id, read_only, **kwargs):
+        """Sets whether the channel is read only or not."""
+        return self.__call_api_post('channels.setReadOnly', roomId=room_id, readOnly=bool(read_only), kwargs=kwargs)
+
+    def channels_set_topic(self, room_id, topic, **kwargs):
+        """Sets the topic for the channel."""
+        return self.__call_api_post('channels.setTopic', roomId=room_id, topic=topic, kwargs=kwargs)
+
+    def channels_set_type(self, room_id, a_type, **kwargs):
+        """Sets the type of room this channel should be. The type of room this channel should be, either c or p."""
+        return self.__call_api_post('channels.setType', roomId=room_id, type=a_type, kwargs=kwargs)
+
     # Groups
 
     def groups_list(self, **kwargs):
