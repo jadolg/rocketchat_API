@@ -1,6 +1,15 @@
 ## rocketchat_API
 Python API wrapper for [Rocket.Chat](https://rocket.chat/docs/developer-guides/rest-api)
 
+### Instalation
+- From pypi
+`pip3 install rocketchat_API`
+- GitHub
+Clone our repository and `python3 setup.py install`
+
+### Requirements
+- [requests](https://github.com/kennethreitz/requests)==2.13.0
+
 ### Usage
 ```
 from pprint import pprint
@@ -20,6 +29,7 @@ Only required parameters are explicit on the RocketChat class but you can still 
 
 ### API coverage
 I've implemented only a few methods until now but I want to make them all. If you are interested in a specific call just open an issue or open a pull request.
+
 *note*: This have being tested only on Rocket.Chat >= 0.52.0
 
 ### Tests
