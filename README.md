@@ -24,3 +24,6 @@ I've implemented only a few methods until now but I want to make them all. If yo
 
 ### Tests
 No tests have being implemented. If you are interested in writing them please open a pull request.
+
+### Contributing
+You can contributing by doing Pull Requests. (It may take a while to merge your code but if it's good it will be merged). We hang out [here](https://demo.rocket.chat/channel/python_rocketchat_api) if you want to talk.
