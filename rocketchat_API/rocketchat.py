@@ -242,3 +242,13 @@ class RocketChat:
     def statistics(self, **kwargs):
         """Retrieves the current statistics"""
         return self.__call_api_get('statistics', kwargs=kwargs)
+
+    # Settings
+
+    def settings_get(self, _id):
+        """Gets the setting for the provided _id."""
+        return self.__call_api_get('settings/' + _id)
+
+    def settings_update(self, _id, value):
+        """Updates the setting for the provided _id."""
+        return self.__call_api_post('settings/' + _id, value=value)
