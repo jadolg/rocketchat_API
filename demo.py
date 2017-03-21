@@ -1,6 +1,6 @@
 from rocketchat_API.rocketchat import RocketChat
 
-rocket = RocketChat('akiel', 'qweqwe123!')
+rocket = RocketChat('mybot', 'qweqwe123!')
 # pprint(rocket.me().json())
 # pprint(rocket.info().json())
 # pprint(rocket.users_info('AFmxxCpmAj5pgSoBy').json())
