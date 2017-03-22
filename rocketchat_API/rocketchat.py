@@ -93,8 +93,6 @@ class RocketChat:
         """Deletes a user"""
         return self.__call_api_post('users.delete', userId=user_id, **kwargs)
 
-
-
     # Chat
 
     def chat_post_message(self, room_id, text, **kwargs):
