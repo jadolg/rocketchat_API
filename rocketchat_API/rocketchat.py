@@ -5,15 +5,17 @@ from rocketchat_API.APIExceptions.RocketExceptions import RocketConnectionExcept
 
 class RocketChat:
     headers = {}
-    ssl_verify = True
     API_path = '/api/v1/'
 
-    def __init__(self, user, password, server_url='http://127.0.0.1:3000', ssl_verify=True):
+    def __init__(self, user, password, server_url='http://127.0.0.1:3000', ssl_verify=True, proxies=None):
         """Creates a RocketChat object and does login on the specified server"""
         self.server_url = server_url
+        self.proxies = proxies
+        self.ssl_verify = ssl_verify
         login = requests.post(server_url + self.API_path + 'login',
                               data={'username': user, 'password': password},
-                              verify=ssl_verify)
+                              verify=ssl_verify,
+                              proxies=self.proxies)
         if login.status_code == 401:
             raise RocketAuthenticationException()
 
@@ -40,14 +42,16 @@ class RocketChat:
         return requests.get(self.server_url + self.API_path + method + '?' +
                             '&'.join([i + '=' + str(args[i]) for i in args.keys()]),
                             headers=self.headers,
-                            verify=self.ssl_verify)
+                            verify=self.ssl_verify,
+                            proxies=self.proxies)
 
     def __call_api_post(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
         return requests.post(self.server_url + self.API_path + method,
                              data=args,
                              headers=self.headers,
-                             verify=self.ssl_verify)
+                             verify=self.ssl_verify,
+                             proxies=self.proxies)
 
     # Authentication
 

@@ -1,6 +1,16 @@
+from pprint import pprint
 from rocketchat_API.rocketchat import RocketChat
 
-rocket = RocketChat('mybot', 'qweqwe123!')
+proxyDict = {
+              "http"  : "http://127.0.0.1:3128",
+              "https" : "https://127.0.0.1:3128",
+            }
+
+rocket = RocketChat('user', 'password', server_url='https://demo.rocket.chat', proxies=proxyDict)
+for channel in rocket.channels_list_joined().json()['channels']:
+    if channel['name'] == 'python_rocketchat_api':
+        rocket.chat_post_message(room_id=channel['_id'],text='this message was posted using the API with a proxy')
+
 # pprint(rocket.me().json())
 # pprint(rocket.info().json())
 # pprint(rocket.users_info('AFmxxCpmAj5pgSoBy').json())
