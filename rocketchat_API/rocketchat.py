@@ -45,6 +45,7 @@ class RocketChat:
                             verify=self.ssl_verify,
                             proxies=self.proxies)
 
+    # ToDo: change this call to POST json data or make another method and replace where needed
     def __call_api_post(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
         return requests.post(self.server_url + self.API_path + method,
@@ -82,6 +83,17 @@ class RocketChat:
     def users_get_presence(self, user_id, **kwargs):
         """Gets the online presence of the a user."""
         return self.__call_api_get('users.getPresence', userId=user_id, kwargs=kwargs)
+
+    def users_create(self, email, name, password, username, **kwargs):
+        """Creates a user"""
+        return self.__call_api_post('users.create', email=email, name=name, password=password, username=username,
+                                    kwargs=kwargs)
+
+    def users_delete(self, user_id, **kwargs):
+        """Deletes a user"""
+        return self.__call_api_post('users.delete', userId=user_id, **kwargs)
+
+
 
     # Chat
 
