@@ -322,7 +322,7 @@ class RocketChat:
 
     def im_messages_others(self, room_id, **kwargs):
         """Retrieves the messages from any direct message in the server"""
-        return self.__call_api_post('im.messages.others', roomId=room_id, kwargs=kwargs)
+        return self.__call_api_get('im.messages.others', roomId=room_id, kwargs=kwargs)
 
     def im_set_topic(self, room_id, topic, **kwargs):
         """Sets the topic for the direct message"""
