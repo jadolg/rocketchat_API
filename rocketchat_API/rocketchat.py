@@ -1,3 +1,5 @@
+import json
+
 import requests
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketConnectionException, RocketAuthenticationException
@@ -45,9 +47,8 @@ class RocketChat:
                             verify=self.ssl_verify,
                             proxies=self.proxies)
 
-    # ToDo: change this call to POST json data or make another method and replace where needed
     def __call_api_post(self, method, **kwargs):
-        args = self.__reduce_kwargs(kwargs)
+        args = json.dumps(self.__reduce_kwargs(kwargs))
         return requests.post(self.server_url + self.API_path + method,
                              data=args,
                              headers=self.headers,
@@ -167,7 +168,6 @@ class RocketChat:
         """Adds the channel back to the user’s list of channels."""
         return self.__call_api_post('channels.open', roomId=room_id, kwargs=kwargs)
 
-    # ToDo: members param is not properly casting to list
     def channels_create(self, name, **kwargs):
         """Creates a new public channel, optionally including users."""
         return self.__call_api_post('channels.create', name=name, kwargs=kwargs)
@@ -250,7 +250,6 @@ class RocketChat:
         """Removes the private group from the user’s list of groups, only if you’re part of the group."""
         return self.__call_api_post('groups.close', roomId=room_id, kwargs=kwargs)
 
-    # ToDo: members param is not properly casting to list
     def groups_create(self, name, **kwargs):
         """Creates a new private group, optionally including users, only if you’re part of the group."""
         return self.__call_api_post('groups.create', name=name, kwargs=kwargs)
