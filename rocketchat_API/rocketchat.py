@@ -1,7 +1,5 @@
 # -*-coding:utf-8-*-
 
-import json
-
 import requests
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketConnectionException, RocketAuthenticationException, \
@@ -44,9 +42,8 @@ class RocketChat:
         if 'password' in reduced_args:
             reduced_args['pass'] = reduced_args['password']
 
-        args = json.dumps(reduced_args)
         return requests.post(self.server_url + self.API_path + method,
-                             data=args,
+                             json=reduced_args,
                              headers=self.headers,
                              verify=self.ssl_verify,
                              proxies=self.proxies)
