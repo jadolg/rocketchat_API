@@ -1,7 +1,5 @@
 # -*-coding:utf-8-*-
 
-import json
-
 import requests
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketConnectionException, RocketAuthenticationException, \
@@ -37,16 +35,16 @@ class RocketChat:
                             verify=self.ssl_verify,
                             proxies=self.proxies)
 
-    def __call_api_post(self, method, **kwargs):
+    def __call_api_post(self, method, files=None, **kwargs):
         reduced_args = self.__reduce_kwargs(kwargs)
         # Since pass is a reserved word in Python it has to be injected on the request dict
         # Some methods use pass (users.register) and others password (users.create)
         if 'password' in reduced_args:
             reduced_args['pass'] = reduced_args['password']
 
-        args = json.dumps(reduced_args)
         return requests.post(self.server_url + self.API_path + method,
-                             data=args,
+                             json=reduced_args,
+                             files=files,
                              headers=self.headers,
                              verify=self.ssl_verify,
                              proxies=self.proxies)
@@ -121,6 +119,13 @@ class RocketChat:
             return self.__call_api_get('users.getAvatar', username=username, kwargs=kwargs)
         else:
             raise RocketMissingParamException('userID or username required')
+
+    def users_set_avatar(self, avatar_url, **kwargs):
+        if avatar_url.startswith('http://') or avatar_url.startswith('https://'):
+            return self.__call_api_post('users.setAvatar', avatarURL=avatar_url, kwargs=kwargs)
+        else:
+            avatar_file = {"image": open(avatar_url, "rb")}
+            return self.__call_api_post('users.setAvatar', files=avatar_file, kwargs=kwargs)
 
     # Chat
 
