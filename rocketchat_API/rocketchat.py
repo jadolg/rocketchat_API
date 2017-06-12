@@ -11,14 +11,18 @@ class RocketChat:
     headers = {}
     API_path = '/api/v1/'
 
-    def __init__(self, user, password, server_url='http://127.0.0.1:3000', ssl_verify=True, proxies=None):
+    def __init__(self, user=None, password=None, server_url='http://127.0.0.1:3000', ssl_verify=True, proxies=None):
         """Creates a RocketChat object and does login on the specified server"""
         self.server_url = server_url
         self.proxies = proxies
         self.ssl_verify = ssl_verify
-        login = requests.post(server_url + self.API_path + 'login',
+        if user and password:
+            self.server_login(user, password)
+
+    def server_login(self, user, password):
+        login = requests.post(self.server_url + self.API_path + 'login',
                               data={'username': user, 'password': password},
-                              verify=ssl_verify,
+                              verify=self.ssl_verify,
                               proxies=self.proxies)
         if login.status_code == 401:
             raise RocketAuthenticationException()
@@ -27,6 +31,7 @@ class RocketChat:
             if login.json().get('status') == "success":
                 self.headers['X-Auth-Token'] = login.json().get('data').get('authToken')
                 self.headers['X-User-Id'] = login.json().get('data').get('userId')
+                return login
             else:
                 raise RocketAuthenticationException()
         else:
