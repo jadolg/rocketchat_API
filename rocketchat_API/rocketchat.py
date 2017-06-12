@@ -17,25 +17,7 @@ class RocketChat:
         self.proxies = proxies
         self.ssl_verify = ssl_verify
         if user and password:
-            self.server_login(user, password)
-
-    def server_login(self, user, password):
-        login = requests.post(self.server_url + self.API_path + 'login',
-                              data={'username': user, 'password': password},
-                              verify=self.ssl_verify,
-                              proxies=self.proxies)
-        if login.status_code == 401:
-            raise RocketAuthenticationException()
-
-        if login.status_code == 200:
-            if login.json().get('status') == "success":
-                self.headers['X-Auth-Token'] = login.json().get('data').get('authToken')
-                self.headers['X-User-Id'] = login.json().get('data').get('userId')
-                return login
-            else:
-                raise RocketAuthenticationException()
-        else:
-            raise RocketConnectionException()
+            self.login(user, password)
 
     @staticmethod
     def __reduce_kwargs(kwargs):
@@ -55,7 +37,13 @@ class RocketChat:
                             proxies=self.proxies)
 
     def __call_api_post(self, method, **kwargs):
-        args = json.dumps(self.__reduce_kwargs(kwargs))
+        reduced_args = self.__reduce_kwargs(kwargs)
+        # Since pass is a reserved word in Python it has to be injected on the request dict
+        # Some methods use pass (users.register) and others password (users.create)
+        if 'password' in reduced_args:
+            reduced_args['pass'] = reduced_args['password']
+
+        args = json.dumps(reduced_args)
         return requests.post(self.server_url + self.API_path + method,
                              data=args,
                              headers=self.headers,
@@ -63,6 +51,24 @@ class RocketChat:
                              proxies=self.proxies)
 
     # Authentication
+
+    def login(self, user, password):
+        login_request = requests.post(self.server_url + self.API_path + 'login',
+                                      data={'username': user, 'password': password},
+                                      verify=self.ssl_verify,
+                                      proxies=self.proxies)
+        if login_request.status_code == 401:
+            raise RocketAuthenticationException()
+
+        if login_request.status_code == 200:
+            if login_request.json().get('status') == "success":
+                self.headers['X-Auth-Token'] = login_request.json().get('data').get('authToken')
+                self.headers['X-User-Id'] = login_request.json().get('data').get('userId')
+                return login_request
+            else:
+                raise RocketAuthenticationException()
+        else:
+            raise RocketConnectionException()
 
     def me(self, **kwargs):
         """	Displays information about the authenticated user."""
@@ -100,6 +106,11 @@ class RocketChat:
     def users_delete(self, user_id, **kwargs):
         """Deletes a user"""
         return self.__call_api_post('users.delete', userId=user_id, **kwargs)
+
+    def users_register(self, email, name, password, username, **kwargs):
+        """Register a new user."""
+        return self.__call_api_post('users.register', email=email, name=name, password=password, username=username,
+                                    kwargs=kwargs)
 
     # Chat
 
