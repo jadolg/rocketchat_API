@@ -9,3 +9,7 @@ class RocketConnectionException(Exception):
 
 class RocketAuthenticationException(Exception):
     pass
+
+
+class RocketMissingParamException(Exception):
+    pass

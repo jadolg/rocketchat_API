@@ -4,7 +4,8 @@ import json
 
 import requests
 
-from rocketchat_API.APIExceptions.RocketExceptions import RocketConnectionException, RocketAuthenticationException
+from rocketchat_API.APIExceptions.RocketExceptions import RocketConnectionException, RocketAuthenticationException, \
+    RocketMissingParamException
 
 
 class RocketChat:
@@ -111,6 +112,15 @@ class RocketChat:
         """Register a new user."""
         return self.__call_api_post('users.register', email=email, name=name, password=password, username=username,
                                     kwargs=kwargs)
+
+    def users_get_avatar(self, user_id=None, username=None, **kwargs):
+        """Gets the URL for a user’s avatar."""
+        if user_id:
+            return self.__call_api_get('users.getAvatar', userId=user_id, kwargs=kwargs)
+        elif username:
+            return self.__call_api_get('users.getAvatar', username=username, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('userID or username required')
 
     # Chat
 
