@@ -146,6 +146,21 @@ class RocketChat:
         else:
             raise RocketMissingParamException('userID or username required')
 
+    def users_update(self, user_id, email, name, password, username, **kwargs):
+        """Update an existing user. *All params on this method except for user_id are injected into 'data' dict"""
+        data = {
+            'email': email,
+            'name': name,
+            'password': password,
+            'username': username
+        }
+
+        extra = self.__reduce_kwargs(kwargs)
+        for arg in extra:
+            data[arg] = extra.get(arg)
+
+        return self.__call_api_post('users.update', userId=user_id, data=data)
+
     # Chat
 
     def chat_post_message(self, room_id, text, **kwargs):
