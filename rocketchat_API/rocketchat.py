@@ -121,11 +121,21 @@ class RocketChat:
             raise RocketMissingParamException('userID or username required')
 
     def users_set_avatar(self, avatar_url, **kwargs):
+        """Set a user’s avatar"""
         if avatar_url.startswith('http://') or avatar_url.startswith('https://'):
             return self.__call_api_post('users.setAvatar', avatarURL=avatar_url, kwargs=kwargs)
         else:
             avatar_file = {"image": open(avatar_url, "rb")}
             return self.__call_api_post('users.setAvatar', files=avatar_file, kwargs=kwargs)
+
+    def users_reset_avatar(self, user_id=None, username=None, **kwargs):
+        """Reset a user’s avatar"""
+        if user_id:
+            return self.__call_api_post('users.resetAvatar', userId=user_id, kwargs=kwargs)
+        elif username:
+            return self.__call_api_post('users.resetAvatar', username=username, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('userID or username required')
 
     # Chat
 
