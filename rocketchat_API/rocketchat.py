@@ -137,6 +137,15 @@ class RocketChat:
         else:
             raise RocketMissingParamException('userID or username required')
 
+    def users_create_token(self, user_id=None, username=None, **kwargs):
+        """Create a user authentication token."""
+        if user_id:
+            return self.__call_api_post('users.createToken', userId=user_id, kwargs=kwargs)
+        elif username:
+            return self.__call_api_post('users.createToken', username=username, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('userID or username required')
+
     # Chat
 
     def chat_post_message(self, room_id, text, **kwargs):
