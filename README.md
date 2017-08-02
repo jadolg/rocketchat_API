@@ -23,7 +23,7 @@ proxyDict = {
 rocket = RocketChat('user', 'pass', server_url='https://demo.rocket.chat', proxies=proxyDict)
 pprint(rocket.me().json())
 pprint(rocket.channels_list().json())
-pprint(rocket.chat_post_message('GENERAL', 'good news everyone!', alias='Farnsworth').json())
+pprint(rocket.chat_post_message('good news everyone!', channel='GENERAL', alias='Farnsworth').json())
 pprint(rocket.channels_history('GENERAL', count=5).json())
 ```
 
