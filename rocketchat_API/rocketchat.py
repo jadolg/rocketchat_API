@@ -10,11 +10,13 @@ class RocketChat:
     headers = {}
     API_path = '/api/v1/'
 
-    def __init__(self, user=None, password=None, server_url='http://127.0.0.1:3000', ssl_verify=True, proxies=None):
+    def __init__(self, user=None, password=None, server_url='http://127.0.0.1:3000', ssl_verify=True, proxies=None,
+                 timeout=30):
         """Creates a RocketChat object and does login on the specified server"""
         self.server_url = server_url
         self.proxies = proxies
         self.ssl_verify = ssl_verify
+        self.timeout = timeout
         if user and password:
             self.login(user, password)
 
@@ -33,7 +35,9 @@ class RocketChat:
                             '&'.join([i + '=' + str(args[i]) for i in args.keys()]),
                             headers=self.headers,
                             verify=self.ssl_verify,
-                            proxies=self.proxies)
+                            proxies=self.proxies,
+                            timeout=self.timeout
+                            )
 
     def __call_api_post(self, method, files=None, **kwargs):
         reduced_args = self.__reduce_kwargs(kwargs)
@@ -47,7 +51,9 @@ class RocketChat:
                              files=files,
                              headers=self.headers,
                              verify=self.ssl_verify,
-                             proxies=self.proxies)
+                             proxies=self.proxies,
+                             timeout=self.timeout
+                             )
 
     # Authentication
 
