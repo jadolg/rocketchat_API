@@ -41,6 +41,10 @@ class RocketChat:
 
     def __call_api_post(self, method, files=None, **kwargs):
         reduced_args = self.__reduce_kwargs(kwargs)
+        # Since pass is a reserved word in Python it has to be injected on the request dict
+        # Some methods use pass (users.register) and others password (users.create)
+        if 'password' in reduced_args and method != 'users.create':
+            reduced_args['pass'] = reduced_args['password']
 
         return requests.post(self.server_url + self.API_path + method,
                              json=reduced_args,
