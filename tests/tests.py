@@ -31,6 +31,7 @@ class TestUsers(unittest.TestCase):
         self.password = 'password'
         self.email = 'email@domain.com'
         self.rocket.users_register(email=self.email, name=self.user, password=self.password, username=self.user)
+        self.rocket = RocketChat(self.user, self.password)
 
     def test_login(self):
         login = self.rocket.login(self.user, self.password).json()
