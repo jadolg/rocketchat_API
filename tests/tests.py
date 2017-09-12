@@ -160,7 +160,30 @@ class TestChannels(unittest.TestCase):
         self.rocket = RocketChat(self.user, self.password)
 
     def test_channels_list(self):
-        pass
+        channels_list = self.rocket.channels_list().json()
+        self.assertTrue(channels_list.get('success'))
+        self.assertIn('channels', channels_list)
+
+    def test_channels_list_joined(self):
+        channels_list_joined = self.rocket.channels_list_joined().json()
+        self.assertTrue(channels_list_joined.get('success'))
+        self.assertIn('channels', channels_list_joined)
+
+    def test_channels_info(self):
+        channels_info = self.rocket.channels_info(room_id='GENERAL').json()
+        self.assertTrue(channels_info.get('success'))
+        self.assertIn('channel', channels_info)
+        self.assertEqual(channels_info.get('channel').get('_id'), 'GENERAL')
+
+    def test_channels_history(self):
+        channels_history = self.rocket.channels_history(room_id='GENERAL').json()
+        self.assertTrue(channels_history.get('success'))
+        self.assertIn('messages', channels_history)
+
+    def test_channels_add_all(self):
+        channels_add_all = self.rocket.channels_add_all('GENERAL').json()
+        self.assertTrue(channels_add_all.get('success'))
+
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
