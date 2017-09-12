@@ -107,11 +107,12 @@ class TestUsers(unittest.TestCase):
         users_delete = self.rocket.users_delete(users_create.get('user').get('_id')).json()
         self.assertTrue(users_delete.get('success'))
 
-    def test_users_set_avatar(self):
+    def test_users_set_avatar_from_file(self):
         login = self.rocket.login(self.user, self.password).json()
         users_set_avatar = self.rocket.users_set_avatar(avatar_url='tests/avatar.png').json()
         self.assertTrue(users_set_avatar.get('success'), users_set_avatar.get('error'))
 
+    def test_users_set_avatar_from_url(self):
         # ToDo: Users.setAvatar calls https://secure.gravatar.com/avatar/ before actually do anything
         users_set_avatar = self.rocket.users_set_avatar(avatar_url='http://182.17.0.1:9999/avatar.png').json()
         self.assertTrue(users_set_avatar.get('success'), users_set_avatar.get('error'))
