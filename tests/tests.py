@@ -117,5 +117,29 @@ class TestUsers(unittest.TestCase):
         self.assertTrue(users_set_avatar.get('success'), users_set_avatar.get('error'))
 
 
+class TestChat(unittest.TestCase):
+    def setUp(self):
+        self.user = 'user1'
+        self.password = 'password'
+        self.rocket = RocketChat(self.user, self.password)
+
+    def test_chat_post_update_delete_message(self):
+        chat_post_message = self.rocket.chat_post_message("hello", channel='GENERAL').json()
+        self.assertEqual(chat_post_message.get('channel'), 'GENERAL')
+        self.assertEqual(chat_post_message.get('message').get('msg'), 'hello')
+        self.assertTrue(chat_post_message.get('success'))
+
+        chat_update = self.rocket.chat_update(room_id=chat_post_message.get('channel'),
+                                              msg_id=chat_post_message.get('message').get('_id'),
+                                              text='hello again').json()
+
+        self.assertEqual(chat_update.get('message').get('msg'), 'hello again')
+        self.assertTrue(chat_update.get('success'))
+
+        chat_delete = self.rocket.chat_delete(room_id=chat_post_message.get('channel'),
+                                              msg_id=chat_post_message.get('message').get('_id')).json()
+        self.assertTrue(chat_delete.get('success'))
+
+
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
