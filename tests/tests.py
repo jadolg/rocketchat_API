@@ -7,12 +7,21 @@ from rocketchat_API.rocketchat import RocketChat
 class TestServer(unittest.TestCase):
     def setUp(self):
         self.rocket = RocketChat()
+        self.user = 'user1'
+        self.password = 'password'
+        self.email = 'email@domain.com'
+        self.rocket.users_register(email=self.email, name=self.user, password=self.password, username=self.user)
+        self.rocket = RocketChat(self.user, self.password)
 
     def test_info(self):
         info = self.rocket.info().json()
 
         self.assertTrue('info' in info)
         self.assertTrue(info.get('success'))
+
+    def test_statistics(self):
+        statistics = self.rocket.statistics().json()
+        self.assertTrue(statistics.get('success'))
 
 
 class TestUsers(unittest.TestCase):
@@ -90,7 +99,7 @@ class TestUsers(unittest.TestCase):
         self.assertIn('userId', users_create_token.get('data'))
 
     def test_users_create_update_delete(self):
-        login = self.rocket.login(self.user, self.password).json()
+        self.rocket.login(self.user, self.password).json()
 
         self.rocket.login(self.user, self.password).json()
         users_create = self.rocket.users_create(email='email2@domain.com', name='user2', password=self.password,
@@ -108,7 +117,7 @@ class TestUsers(unittest.TestCase):
         self.assertTrue(users_delete.get('success'))
 
     def test_users_set_avatar_from_file(self):
-        login = self.rocket.login(self.user, self.password).json()
+        self.rocket.login(self.user, self.password).json()
         users_set_avatar = self.rocket.users_set_avatar(avatar_url='tests/avatar.png').json()
         self.assertTrue(users_set_avatar.get('success'), users_set_avatar.get('error'))
 
@@ -120,8 +129,11 @@ class TestUsers(unittest.TestCase):
 
 class TestChat(unittest.TestCase):
     def setUp(self):
+        self.rocket = RocketChat()
         self.user = 'user1'
         self.password = 'password'
+        self.email = 'email@domain.com'
+        self.rocket.users_register(email=self.email, name=self.user, password=self.password, username=self.user)
         self.rocket = RocketChat(self.user, self.password)
 
     def test_chat_post_update_delete_message(self):
