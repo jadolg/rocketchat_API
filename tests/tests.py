@@ -1,4 +1,5 @@
 import unittest
+import uuid
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketAuthenticationException, RocketMissingParamException
 from rocketchat_API.rocketchat import RocketChat
@@ -157,7 +158,12 @@ class TestChannels(unittest.TestCase):
         self.password = 'password'
         self.email = 'email@domain.com'
         self.rocket.users_register(email=self.email, name=self.user, password=self.password, username=self.user)
+        self.rocket.channels_add_owner('GENERAL', username=self.user)
         self.rocket = RocketChat(self.user, self.password)
+        self.testuser = self.rocket.users_create('email0@domain.com', 'user0', 'password', 'user0').json()
+
+    def tearDown(self):
+        self.rocket.users_delete(self.testuser.get('user').get('_id'))
 
     def test_channels_list(self):
         channels_list = self.rocket.channels_list().json()
@@ -183,6 +189,76 @@ class TestChannels(unittest.TestCase):
     def test_channels_add_all(self):
         channels_add_all = self.rocket.channels_add_all('GENERAL').json()
         self.assertTrue(channels_add_all.get('success'))
+
+    def test_channels_add_and_remove_moderator(self):
+        me = self.rocket.me().json()
+        channels_add_moderator = self.rocket.channels_add_moderator('GENERAL', me.get('_id')).json()
+        self.assertTrue(channels_add_moderator.get('success'))
+        channels_remove_moderator = self.rocket.channels_remove_moderator('GENERAL', me.get('_id')).json()
+        self.assertTrue(channels_remove_moderator.get('success'))
+
+    def test_channels_add_and_remove_owner(self):
+        channels_add_owner = self.rocket.channels_add_owner('GENERAL',
+                                                            user_id=self.testuser.get('user').get('_id')).json()
+        self.assertTrue(channels_add_owner.get('success'), channels_add_owner.get('error'))
+        channels_remove_owner = self.rocket.channels_remove_owner('GENERAL',
+                                                                  user_id=self.testuser.get('user').get('_id')).json()
+        self.assertTrue(channels_remove_owner.get('success'), channels_remove_owner.get('error'))
+
+    def test_channels_archive_unarchive(self):
+        channels_archive = self.rocket.channels_archive('GENERAL').json()
+        self.assertTrue(channels_archive.get('success'))
+        channels_unarchive = self.rocket.channels_unarchive('GENERAL').json()
+        self.assertTrue(channels_unarchive.get('success'))
+
+    def test_channels_close_open(self):
+        channels_close = self.rocket.channels_close('GENERAL').json()
+        self.assertTrue(channels_close.get('success'))
+        channels_open = self.rocket.channels_open('GENERAL').json()
+        self.assertTrue(channels_open.get('success'))
+
+    def test_channels_create(self):
+        name = str(uuid.uuid1())
+        channels_create = self.rocket.channels_create(name).json()
+        self.assertTrue(channels_create.get('success'))
+        self.assertEqual(name, channels_create.get('channel').get('name'))
+
+    def test_channels_get_integrations(self):
+        channels_get_integrations = self.rocket.channels_get_integrations(room_id='GENERAL').json()
+        self.assertTrue(channels_get_integrations.get('success'))
+
+    def test_channels_invite(self):
+        channels_invite = self.rocket.channels_invite('GENERAL', self.testuser.get('user').get('_id')).json()
+        self.assertTrue(channels_invite.get('success'))
+        self.assertIn(self.testuser.get('user').get('username'), channels_invite.get('channel').get('usernames'))
+
+    def test_channels_kick(self):
+        channels_kick = self.rocket.channels_kick('GENERAL', self.testuser.get('user').get('_id')).json()
+        self.assertTrue(channels_kick.get('success'))
+        self.assertNotIn(self.testuser.get('user').get('username'), channels_kick.get('channel').get('usernames'))
+
+    def test_channels_leave(self):
+        channels_leave = self.rocket.channels_leave('GENERAL').json()
+        self.assertFalse(channels_leave.get('success'))
+        self.assertEqual(channels_leave.get('errorType'), 'error-you-are-last-owner')
+
+        name = str(uuid.uuid1())
+        channels_create = self.rocket.channels_create(name).json()
+        self.rocket.channels_invite(room_id=channels_create.get('channel').get('_id'),
+                                    user_id=self.testuser.get('user').get('_id'))
+        self.rocket.channels_add_owner(channels_create.get('channel').get('_id'),
+                                       user_id=self.testuser.get('user').get('_id')).json()
+        channels_leave = self.rocket.channels_leave(channels_create.get('channel').get('_id')).json()
+        self.assertTrue(channels_leave.get('success'))
+
+    def test_channels_rename(self):
+        name = str(uuid.uuid1())
+        name2 = str(uuid.uuid1())
+        channels_create = self.rocket.channels_create(name).json()
+        channels_rename = self.rocket.channels_rename(room_id=channels_create.get('channel').get('_id'),
+                                                      name=name2).json()
+        self.assertTrue(channels_rename.get('success'))
+        self.assertEqual(channels_rename.get('channel').get('name'), name2)
 
 
 if __name__ == '__main__':
