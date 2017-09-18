@@ -221,9 +221,14 @@ class RocketChat:
         """Removes the role of moderator from a user in the current channel."""
         return self.__call_api_post('channels.removeModerator', roomId=room_id, userId=user_id, kwargs=kwargs)
 
-    def channels_add_owner(self, room_id, user_id, **kwargs):
+    def channels_add_owner(self, room_id, user_id=None, username=None, **kwargs):
         """Gives the role of owner for a user in the current channel."""
-        return self.__call_api_post('channels.addOwner', roomId=room_id, userId=user_id, kwargs=kwargs)
+        if user_id:
+            return self.__call_api_post('channels.addOwner', roomId=room_id, userId=user_id, kwargs=kwargs)
+        elif username:
+            return self.__call_api_post('channels.addOwner', roomId=room_id, username=username, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('userID or username required')
 
     def channels_remove_owner(self, room_id, user_id, **kwargs):
         """Removes the role of owner from a user in the current channel."""
