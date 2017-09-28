@@ -298,5 +298,142 @@ class TestChannels(unittest.TestCase):
         self.assertFalse(channels_set_type.get('success'))  # should fail because this is no more a channel
 
 
+class TestGroups(unittest.TestCase):
+    def setUp(self):
+        self.rocket = RocketChat()
+        self.user = 'user1'
+        self.password = 'password'
+        self.email = 'email@domain.com'
+        self.rocket.users_register(email=self.email, name=self.user, password=self.password, username=self.user)
+        self.rocket = RocketChat(self.user, self.password)
+        self.testuser = self.rocket.users_create('email0@domain.com', 'user0', 'password', 'user0').json()
+        self.test_group_id = self.rocket.groups_create(str(uuid.uuid1())).json().get('group').get('_id')
+
+    def tearDown(self):
+        self.rocket.users_delete(self.testuser.get('user').get('_id'))
+
+    def test_groups_list(self):
+        groups_list = self.rocket.groups_list().json()
+        self.assertTrue(groups_list.get('success'))
+        self.assertIn('groups', groups_list)
+
+    def test_groups_info(self):
+        groups_info = self.rocket.groups_info(room_id=self.test_group_id).json()
+        self.assertTrue(groups_info.get('success'))
+        self.assertIn('group', groups_info)
+        self.assertEqual(groups_info.get('group').get('_id'), self.test_group_id)
+
+    def test_groups_history(self):
+        groups_history = self.rocket.groups_history(room_id=self.test_group_id).json()
+        self.assertTrue(groups_history.get('success'))
+        self.assertIn('messages', groups_history)
+
+    def test_groups_add_and_remove_moderator(self):
+        me = self.rocket.me().json()
+        groups_add_moderator = self.rocket.groups_add_moderator(self.test_group_id, me.get('_id')).json()
+        self.assertTrue(groups_add_moderator.get('success'))
+        groups_remove_moderator = self.rocket.groups_remove_moderator(self.test_group_id, me.get('_id')).json()
+        self.assertTrue(groups_remove_moderator.get('success'))
+
+    def test_groups_add_and_remove_owner(self):
+        self.rocket.groups_invite(self.test_group_id, self.testuser.get('user').get('_id'))
+        groups_add_owner = self.rocket.groups_add_owner(self.test_group_id,
+                                                        user_id=self.testuser.get('user').get('_id')).json()
+        self.assertTrue(groups_add_owner.get('success'), groups_add_owner.get('error'))
+
+        groups_remove_owner = self.rocket.groups_remove_owner(self.test_group_id,
+                                                              user_id=self.testuser.get('user').get('_id')).json()
+        self.assertTrue(groups_remove_owner.get('success'), groups_remove_owner.get('error'))
+
+    def test_groups_archive_unarchive(self):
+        groups_archive = self.rocket.groups_archive(self.test_group_id).json()
+        self.assertTrue(groups_archive.get('success'))
+        groups_unarchive = self.rocket.groups_unarchive(self.test_group_id).json()
+        self.assertTrue(groups_unarchive.get('success'))
+
+    def test_groups_close_open(self):
+        groups_close = self.rocket.groups_close(self.test_group_id).json()
+        self.assertTrue(groups_close.get('success'))
+        groups_open = self.rocket.groups_open(self.test_group_id).json()
+        self.assertTrue(groups_open.get('success'))
+
+    def test_groups_create(self):
+        name = str(uuid.uuid1())
+        groups_create = self.rocket.groups_create(name).json()
+        self.assertTrue(groups_create.get('success'))
+        self.assertEqual(name, groups_create.get('group').get('name'))
+
+    def test_groups_get_integrations(self):
+        groups_get_integrations = self.rocket.groups_get_integrations(room_id=self.test_group_id).json()
+        self.assertTrue(groups_get_integrations.get('success'))
+
+    def test_groups_invite(self):
+        groups_invite = self.rocket.groups_invite(self.test_group_id, self.testuser.get('user').get('_id')).json()
+        self.assertTrue(groups_invite.get('success'))
+        self.assertIn(self.testuser.get('user').get('username'), groups_invite.get('group').get('usernames'))
+
+    def test_groups_kick(self):
+        id_group_created = self.rocket.groups_create(str(uuid.uuid1())).json().get('group').get('_id')
+        groups_invite = self.rocket.groups_invite(id_group_created, self.testuser.get('user').get('_id')).json()
+        self.assertTrue(groups_invite.get('success'))
+        groups_kick = self.rocket.groups_kick(id_group_created, self.testuser.get('user').get('_id')).json()
+        self.assertTrue(groups_kick.get('success'))
+
+    def test_groups_leave(self):
+        groups_leave = self.rocket.groups_leave(self.test_group_id).json()
+        self.assertFalse(groups_leave.get('success'))
+        self.assertEqual(groups_leave.get('errorType'), 'error-you-are-last-owner')
+
+        name = str(uuid.uuid1())
+        groups_create = self.rocket.groups_create(name).json()
+        self.rocket.groups_invite(room_id=groups_create.get('group').get('_id'),
+                                  user_id=self.testuser.get('user').get('_id'))
+        self.rocket.groups_add_owner(groups_create.get('group').get('_id'),
+                                     user_id=self.testuser.get('user').get('_id')).json()
+        groups_leave = self.rocket.groups_leave(groups_create.get('group').get('_id')).json()
+        self.assertTrue(groups_leave.get('success'))
+
+    def test_groups_rename(self):
+        name = str(uuid.uuid1())
+        name2 = str(uuid.uuid1())
+        groups_create = self.rocket.groups_create(name).json()
+        groups_rename = self.rocket.groups_rename(room_id=groups_create.get('group').get('_id'),
+                                                  name=name2).json()
+        self.assertTrue(groups_rename.get('success'))
+        self.assertEqual(groups_rename.get('group').get('name'), name2)
+
+    def test_groups_set_description(self):
+        description = str(uuid.uuid1())
+        groups_set_description = self.rocket.groups_set_description(self.test_group_id, description).json()
+        self.assertTrue(groups_set_description.get('success'))
+        self.assertEqual(groups_set_description.get('description'), description,
+                         'Description does not match')
+
+    def test_groups_set_read_only(self):
+        groups_set_read_only = self.rocket.groups_set_read_only(self.test_group_id, True).json()
+        self.assertTrue(groups_set_read_only.get('success'))
+        groups_set_read_only = self.rocket.groups_set_read_only(self.test_group_id, False).json()
+        self.assertTrue(groups_set_read_only.get('success'))
+
+    def test_groups_set_topic(self):
+        topic = str(uuid.uuid1())
+        groups_set_topic = self.rocket.groups_set_topic(self.test_group_id, topic).json()
+        self.assertTrue(groups_set_topic.get('success'))
+        self.assertEqual(groups_set_topic.get('topic'), topic,
+                         'Topic does not match')
+
+    def test_groups_set_type(self):
+        name = str(uuid.uuid1())
+        groups_create = self.rocket.groups_create(name).json()
+        self.assertTrue(groups_create.get('success'))
+
+        groups_set_type = self.rocket.groups_set_type(groups_create.get('group').get('_id'), 'c').json()
+        self.assertTrue(groups_set_type.get('success'))
+        self.assertTrue(groups_set_type.get('group').get('t'), 'p')
+
+        groups_set_type = self.rocket.groups_set_type(groups_create.get('group').get('_id'), 'p').json()
+        self.assertFalse(groups_set_type.get('success'))  # should fail because this is no more a group
+
+
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
