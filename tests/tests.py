@@ -260,6 +260,13 @@ class TestChannels(unittest.TestCase):
         self.assertTrue(channels_rename.get('success'))
         self.assertEqual(channels_rename.get('channel').get('name'), name2)
 
+    def test_channels_set_description(self):
+        description = str(uuid.uuid1())
+        channels_set_description = self.rocket.channels_set_description('GENERAL', description).json()
+        self.assertTrue(channels_set_description.get('success'))
+        self.assertEqual(channels_set_description.get('description'), description,
+                         'Description does not match')
+
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
