@@ -267,6 +267,36 @@ class TestChannels(unittest.TestCase):
         self.assertEqual(channels_set_description.get('description'), description,
                          'Description does not match')
 
+    def test_channels_set_join_code(self):
+        join_code = str(uuid.uuid1())
+        channels_set_join_code = self.rocket.channels_set_join_code('GENERAL', join_code).json()
+        self.assertTrue(channels_set_join_code.get('success'))
+
+    def test_channels_set_read_only(self):
+        channels_set_read_only = self.rocket.channels_set_read_only('GENERAL', True).json()
+        self.assertTrue(channels_set_read_only.get('success'))
+        channels_set_read_only = self.rocket.channels_set_read_only('GENERAL', False).json()
+        self.assertTrue(channels_set_read_only.get('success'))
+
+    def test_channels_set_topic(self):
+        topic = str(uuid.uuid1())
+        channels_set_topic = self.rocket.channels_set_topic('GENERAL', topic).json()
+        self.assertTrue(channels_set_topic.get('success'))
+        self.assertEqual(channels_set_topic.get('topic'), topic,
+                         'Topic does not match')
+
+    def test_channels_set_type(self):
+        name = str(uuid.uuid1())
+        channels_create = self.rocket.channels_create(name).json()
+        self.assertTrue(channels_create.get('success'))
+
+        channels_set_type = self.rocket.channels_set_type(channels_create.get('channel').get('_id'), 'p').json()
+        self.assertTrue(channels_set_type.get('success'))
+        self.assertTrue(channels_set_type.get('channel').get('t'), 'p')
+
+        channels_set_type = self.rocket.channels_set_type(channels_create.get('channel').get('_id'), 'c').json()
+        self.assertFalse(channels_set_type.get('success'))  # should fail because this is no more a channel
+
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
