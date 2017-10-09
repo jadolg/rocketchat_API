@@ -57,9 +57,15 @@ class TestUsers(unittest.TestCase):
 
     def test_users_info(self):
         login = self.rocket.login(self.user, self.password).json()
-        users_info = self.rocket.users_info(user_id=login.get('data').get('userId')).json()
-        self.assertTrue(users_info.get('success'))
-        self.assertEqual(users_info.get('user').get('name'), self.user)
+        user_id = login.get('data').get('userId')
+
+        users_info_by_id = self.rocket.users_info(user_id=user_id).json()
+        self.assertTrue(users_info_by_id.get('success'))
+        self.assertEqual(users_info_by_id.get('user').get('_id'), user_id)
+
+        users_info_by_name = self.rocket.users_info(username=self.user).json()
+        self.assertTrue(users_info_by_name.get('success'))
+        self.assertEqual(users_info_by_name.get('user').get('name'), self.user)
 
     def test_users_get_presence(self):
         login = self.rocket.login(self.user, self.password).json()
