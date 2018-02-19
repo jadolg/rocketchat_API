@@ -14,6 +14,9 @@ services:
       - ./uploads:/app/uploads
     depends_on:
       - mongo
+    links:
+      - mongo:mongo
+      - mongo:secure.gravatar.com
 
   mongo:
     image: mongo:3.3
