@@ -191,6 +191,18 @@ class RocketChat:
     def chat_get_message(self, msg_id, **kwargs):
         return self.__call_api_get('chat.getMessage', msgId=msg_id, kwargs=kwargs)
 
+    def chat_pin_message(self, msg_id, **kwargs):
+        return self.__call_api_post('chat.pinMessage', messageId=msg_id, kwargs=kwargs)
+
+    def chat_unpin_message(self, msg_id, **kwargs):
+        return self.__call_api_post('chat.unPinMessage', messageId=msg_id, kwargs=kwargs)
+
+    def chat_star_message(self, msg_id, **kwargs):
+        return self.__call_api_post('chat.starMessage', messageId=msg_id, kwargs=kwargs)
+
+    def chat_unstar_message(self, msg_id, **kwargs):
+        return self.__call_api_post('chat.unStarMessage', messageId=msg_id, kwargs=kwargs)
+
     def chat_delete(self, room_id, msg_id, **kwargs):
         """Deletes a chat message."""
         return self.__call_api_post('chat.delete', roomId=room_id, msgId=msg_id, kwargs=kwargs)
@@ -198,6 +210,10 @@ class RocketChat:
     def chat_update(self, room_id, msg_id, text, **kwargs):
         """Updates the text of the chat message."""
         return self.__call_api_post('chat.update', roomId=room_id, msgId=msg_id, text=text, kwargs=kwargs)
+
+    def chat_react(self, msg_id, emoji='smile', **kwargs):
+        """Updates the text of the chat message."""
+        return self.__call_api_post('chat.react', messageId=msg_id, emoji=emoji, kwargs=kwargs)
 
     # Channels
 

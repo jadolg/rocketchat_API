@@ -161,6 +161,29 @@ class TestChat(unittest.TestCase):
                                               msg_id=chat_post_message.get('message').get('_id')).json()
         self.assertTrue(chat_delete.get('success'))
 
+    def test_chat_post_react(self):
+        self.skipTest("Still not added but already documented endpoint")
+        message_id = self.rocket.chat_post_message("hello", channel='GENERAL').json().get('message').get('_id')
+        chat_react = self.rocket.chat_react(msg_id=message_id).json()
+        self.assertTrue(chat_react.get('success'))
+
+    def test_post_pin_unpin(self):
+        message_id = self.rocket.chat_post_message("hello", channel='GENERAL').json().get('message').get('_id')
+        chat_pin_message = self.rocket.chat_pin_message(message_id).json()
+        self.assertTrue(chat_pin_message.get('success'))
+        self.assertEqual(chat_pin_message.get('message').get('t'), 'message_pinned')
+
+        chat_unpin_message = self.rocket.chat_unpin_message(message_id).json()
+        self.assertTrue(chat_unpin_message.get('success'))
+
+    def test_post_star_unstar(self):
+        message_id = self.rocket.chat_post_message("hello", channel='GENERAL').json().get('message').get('_id')
+        chat_star_message = self.rocket.chat_star_message(message_id).json()
+        self.assertTrue(chat_star_message.get('success'))
+
+        chat_unstar_message = self.rocket.chat_unstar_message(message_id).json()
+        self.assertTrue(chat_unstar_message.get('success'))
+
 
 class TestChannels(unittest.TestCase):
     def setUp(self):
