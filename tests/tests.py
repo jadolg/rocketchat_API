@@ -146,6 +146,10 @@ class TestChat(unittest.TestCase):
         self.assertEqual(chat_post_message.get('message').get('msg'), 'hello')
         self.assertTrue(chat_post_message.get('success'))
 
+        msg_id = chat_post_message.get('message').get('_id')
+        chat_get_message = self.rocket.chat_get_message(msg_id=msg_id).json()
+        self.assertEqual(chat_get_message.get('message').get('_id'), msg_id)
+
         chat_update = self.rocket.chat_update(room_id=chat_post_message.get('channel'),
                                               msg_id=chat_post_message.get('message').get('_id'),
                                               text='hello again').json()
