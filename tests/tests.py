@@ -171,7 +171,12 @@ class TestChannels(unittest.TestCase):
         self.rocket.users_register(email=self.email, name=self.user, password=self.password, username=self.user)
         self.rocket.channels_add_owner('GENERAL', username=self.user)
         self.rocket = RocketChat(self.user, self.password)
-        self.testuser = self.rocket.users_create('email0@domain.com', 'user0', 'password', 'user0').json()
+        self.testuser = self.rocket.users_create('testuser1@domain.com', 'testuser1', 'password', 'testuser1').json()
+        if not self.testuser.get('success'):
+            user_id = self.rocket.users_info(username='testuser1').json().get('user').get('_id')
+            self.rocket.users_delete(user_id)
+            self.testuser = self.rocket.users_create('testuser1@domain.com', 'testuser1', 'password',
+                                                     'testuser1').json()
 
     def tearDown(self):
         self.rocket.users_delete(self.testuser.get('user').get('_id'))
@@ -317,7 +322,12 @@ class TestGroups(unittest.TestCase):
         self.email = 'email@domain.com'
         self.rocket.users_register(email=self.email, name=self.user, password=self.password, username=self.user)
         self.rocket = RocketChat(self.user, self.password)
-        self.testuser = self.rocket.users_create('email0@domain.com', 'user0', 'password', 'user0').json()
+        self.testuser = self.rocket.users_create('testuser1@domain.com', 'testuser1', 'password', 'testuser1').json()
+        if not self.testuser.get('success'):
+            user_id = self.rocket.users_info(username='testuser1').json().get('user').get('_id')
+            self.rocket.users_delete(user_id)
+            self.testuser = self.rocket.users_create('testuser1@domain.com', 'testuser1', 'password',
+                                                     'testuser1').json()
         self.test_group_id = self.rocket.groups_create(str(uuid.uuid1())).json().get('group').get('_id')
 
     def tearDown(self):
