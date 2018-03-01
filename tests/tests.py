@@ -110,14 +110,15 @@ class TestUsers(unittest.TestCase):
                                                 username='user2').json()
         self.assertTrue(users_create.get('success'), users_create.get('error'))
 
-        users_update = self.rocket.users_update(users_create.get('user').get('_id'), 'anewemail@domain.com',
-                                                name='newname', password=self.password, username='newusername').json()
+        user_id = users_create.get('user').get('_id')
+        users_update = self.rocket.users_update(user_id, email='anewemail@domain.com', name='newname',
+                                                password=self.password, username='newusername').json()
         self.assertTrue(users_update.get('success'))
         self.assertEqual(users_update.get('user').get('email'), 'anewemail@domain.com')
         self.assertEqual(users_update.get('user').get('name'), 'newname')
         self.assertEqual(users_update.get('user').get('username'), 'newusername')
 
-        users_delete = self.rocket.users_delete(users_create.get('user').get('_id')).json()
+        users_delete = self.rocket.users_delete(user_id).json()
         self.assertTrue(users_delete.get('success'))
 
     def test_users_set_avatar_from_file(self):
