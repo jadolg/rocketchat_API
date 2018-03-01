@@ -40,9 +40,7 @@ Most of the API methods are already implemented. If you are interested in a spec
 ### Tests
 We started writing tests :D 
 
-Tests run on a Rocket.Chat Docker container so install Docker and run `tests/run_rocketchat.sh` and whe Rocket.Chat is active run `py.test tests/tests.py`. After testing, remember to stop and remove containers run `tests/stop_rocketchat.sh`
-
-We are on an early stage testing so must of the code is still untested. There is an open issue on this and help is wanted ;)
+Tests run on a Rocket.Chat Docker container so install Docker and docker-compose. To start test server do `docker-compose up` on `tests/testserver` and to take test server down `docker-compose down`
 
 ### Contributing
 You can contribute by doing Pull Requests. (It may take a while to merge your code but if it's good it will be merged). We hang out [here](https://demo.rocket.chat/channel/python_rocketchat_api) if you want to talk.
