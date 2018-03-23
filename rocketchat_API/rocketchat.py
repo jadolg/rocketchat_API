@@ -314,6 +314,13 @@ class RocketChat:
 
     # Groups
 
+    def groups_list_all(self, **kwargs):
+        """
+        List all the private groups on the server.
+        The calling user must have the 'view-room-administration' right
+        """
+        return self.__call_api_get('groups.listAll', kwargs=kwargs)
+
     def groups_list(self, **kwargs):
         """List the private groups the caller is part of."""
         return self.__call_api_get('groups.list', kwargs=kwargs)
