@@ -357,6 +357,11 @@ class TestGroups(unittest.TestCase):
     def tearDown(self):
         self.rocket.users_delete(self.testuser.get('user').get('_id'))
 
+    def test_groups_list_all(self):
+        groups_list = self.rocket.groups_list_all().json()
+        self.assertTrue(groups_list.get('success'))
+        self.assertIn('groups', groups_list)
+
     def test_groups_list(self):
         groups_list = self.rocket.groups_list().json()
         self.assertTrue(groups_list.get('success'))
