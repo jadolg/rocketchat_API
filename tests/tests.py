@@ -504,6 +504,9 @@ class TestRooms(unittest.TestCase):
         rooms_upload = self.rocket.rooms_upload('GENERAL', file='avatar.png', description='hey there').json()
         self.assertTrue(rooms_upload.get('success'))
 
+    def test_rooms_get(self):
+        rooms_get = self.rocket.rooms_get().json()
+        self.assertTrue(rooms_get.get('success'))
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')

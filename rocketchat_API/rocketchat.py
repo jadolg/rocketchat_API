@@ -467,3 +467,6 @@ class RocketChat:
             'file': open(file, 'rb')
         }
         return self.__call_api_post('rooms.upload/' + rid, kwargs=kwargs, use_json=False, files=files)
+
+    def rooms_get(self, **kwargs):
+        return self.__call_api_get('rooms.get', kwargs=kwargs)
