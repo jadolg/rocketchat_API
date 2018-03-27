@@ -2,7 +2,7 @@ version: "2"
 
 services:
   rocketchat:
-    image: rocketchat/rocket.chat:0.59.6
+    image: rocketchat/rocket.chat:0.62.2
     ports:
       - 3000:3000
     restart: always
