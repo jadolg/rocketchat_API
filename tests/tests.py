@@ -33,6 +33,10 @@ class TestUsers(unittest.TestCase):
         self.email = 'email@domain.com'
         self.rocket.users_register(email=self.email, name=self.user, password=self.password, username=self.user)
         self.rocket = RocketChat(self.user, self.password)
+        user2_exists = self.rocket.users_info(username='user2').json().get('success')
+        if user2_exists:
+            user_id = self.rocket.users_info(username='user2').json().get('user').get('_id')
+            self.rocket.users_delete(user_id)
 
     def test_login(self):
         login = self.rocket.login(self.user, self.password).json()
@@ -480,6 +484,25 @@ class TestGroups(unittest.TestCase):
 
         groups_set_type = self.rocket.groups_set_type(groups_create.get('group').get('_id'), 'p').json()
         self.assertFalse(groups_set_type.get('success'))  # should fail because this is no more a group
+
+
+class TestRooms(unittest.TestCase):
+    def setUp(self):
+        self.rocket = RocketChat()
+        self.user = 'user1'
+        self.password = 'password'
+        self.email = 'email@domain.com'
+        self.rocket.users_register(email=self.email, name=self.user, password=self.password, username=self.user)
+        self.rocket = RocketChat(self.user, self.password)
+
+    def tearDown(self):
+        pass
+
+    def test_rooms_upload(self):
+        # ToDo: Find a better way to test that this endpoint actually works fine (when using json and not data fails
+        # silently)
+        rooms_upload = self.rocket.rooms_upload('GENERAL', file='avatar.png', description='hey there').json()
+        self.assertTrue(rooms_upload.get('success'))
 
 
 if __name__ == '__main__':

@@ -39,21 +39,30 @@ class RocketChat:
                             timeout=self.timeout
                             )
 
-    def __call_api_post(self, method, files=None, **kwargs):
+    def __call_api_post(self, method, files=None, use_json=True, **kwargs):
         reduced_args = self.__reduce_kwargs(kwargs)
         # Since pass is a reserved word in Python it has to be injected on the request dict
         # Some methods use pass (users.register) and others password (users.create)
         if 'password' in reduced_args and method != 'users.create':
             reduced_args['pass'] = reduced_args['password']
-
-        return requests.post(self.server_url + self.API_path + method,
-                             json=reduced_args,
-                             files=files,
-                             headers=self.headers,
-                             verify=self.ssl_verify,
-                             proxies=self.proxies,
-                             timeout=self.timeout
-                             )
+        if use_json:
+            return requests.post(self.server_url + self.API_path + method,
+                                 json=reduced_args,
+                                 files=files,
+                                 headers=self.headers,
+                                 verify=self.ssl_verify,
+                                 proxies=self.proxies,
+                                 timeout=self.timeout
+                                 )
+        else:
+            return requests.post(self.server_url + self.API_path + method,
+                                 data=reduced_args,
+                                 files=files,
+                                 headers=self.headers,
+                                 verify=self.ssl_verify,
+                                 proxies=self.proxies,
+                                 timeout=self.timeout
+                                 )
 
     # Authentication
 
@@ -449,3 +458,12 @@ class RocketChat:
     def settings_update(self, _id, value):
         """Updates the setting for the provided _id."""
         return self.__call_api_post('settings/' + _id, value=value)
+
+    # Rooms
+
+    def rooms_upload(self, rid, file, **kwargs):
+        """Post a message with attached file to a dedicated room."""
+        files = {
+            'file': open(file, 'rb')
+        }
+        return self.__call_api_post('rooms.upload/' + rid, kwargs=kwargs, use_json=False, files=files)
