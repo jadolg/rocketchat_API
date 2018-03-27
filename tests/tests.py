@@ -270,12 +270,10 @@ class TestChannels(unittest.TestCase):
     def test_channels_invite(self):
         channels_invite = self.rocket.channels_invite('GENERAL', self.testuser.get('user').get('_id')).json()
         self.assertTrue(channels_invite.get('success'))
-        self.assertIn(self.testuser.get('user').get('username'), channels_invite.get('channel').get('usernames'))
 
     def test_channels_kick(self):
         channels_kick = self.rocket.channels_kick('GENERAL', self.testuser.get('user').get('_id')).json()
         self.assertTrue(channels_kick.get('success'))
-        self.assertNotIn(self.testuser.get('user').get('username'), channels_kick.get('channel').get('usernames'))
 
     def test_channels_leave(self):
         channels_leave = self.rocket.channels_leave('GENERAL').json()
@@ -420,7 +418,6 @@ class TestGroups(unittest.TestCase):
     def test_groups_invite(self):
         groups_invite = self.rocket.groups_invite(self.test_group_id, self.testuser.get('user').get('_id')).json()
         self.assertTrue(groups_invite.get('success'))
-        self.assertIn(self.testuser.get('user').get('username'), groups_invite.get('group').get('usernames'))
 
     def test_groups_kick(self):
         id_group_created = self.rocket.groups_create(str(uuid.uuid1())).json().get('group').get('_id')
