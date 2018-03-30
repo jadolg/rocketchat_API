@@ -501,12 +501,13 @@ class TestRooms(unittest.TestCase):
     def test_rooms_upload(self):
         # ToDo: Find a better way to test that this endpoint actually works fine (when using json and not data fails
         # silently)
-        rooms_upload = self.rocket.rooms_upload('GENERAL', file='avatar.png', description='hey there').json()
+        rooms_upload = self.rocket.rooms_upload('GENERAL', file='tests/avatar.png', description='hey there').json()
         self.assertTrue(rooms_upload.get('success'))
 
     def test_rooms_get(self):
         rooms_get = self.rocket.rooms_get().json()
         self.assertTrue(rooms_get.get('success'))
+
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
