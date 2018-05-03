@@ -10,8 +10,7 @@ services:
       - PORT=3000
       - ROOT_URL=http://localhost:3000
       - MONGO_URL=mongodb://mongo:27017/rocketchat
-    volumes:
-      - ./uploads:/app/uploads
+
     depends_on:
       - mongo
     links:
@@ -22,5 +21,3 @@ services:
     image: mongo:3.3
     restart: always
     command: mongod --smallfiles
-    volumes:
-     - ./data/db:/data/db
