@@ -509,5 +509,38 @@ class TestRooms(unittest.TestCase):
         self.assertTrue(rooms_get.get('success'))
 
 
+class TestIMs(unittest.TestCase):
+    def setUp(self):
+        self.rocket = RocketChat()
+        self.user = 'user1'
+        self.password = 'password'
+        self.email = 'email@domain.com'
+        self.rocket.users_register(
+            email=self.email, name=self.user,
+            password=self.password, username=self.user)
+        # Register DM recipient
+        self.recipient_user = 'user2'
+        self.recipient_password = 'password'
+        self.recipient_email = 'email2@domain.com'
+        self.rocket.users_register(
+            email=self.recipient_email, name=self.recipient_user,
+            password=self.recipient_password, username=self.recipient_user)
+        self.rocket = RocketChat(self.user, self.password)
+
+    def tearDown(self):
+        pass
+
+    def test_im_create(self):
+        im_create = self.rocket.im_create(self.recipient_user).json()
+        self.assertTrue(im_create.get('success'))
+
+    def test_im_send(self):
+        im_create = self.rocket.im_create(self.recipient_user).json()
+        room_id = im_create.get('room').get('_id')
+        im_send = self.rocket.chat_post_message(room_id=room_id,
+                                                text='test').json()
+        self.assertTrue(im_send.get('success'))
+
+
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
