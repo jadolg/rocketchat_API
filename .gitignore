@@ -47,6 +47,7 @@ nosetests.xml
 coverage.xml
 *,cover
 .hypothesis/
+.pytest_cache/
 
 # Translations
 *.mo
@@ -96,3 +97,4 @@ ENV/
 .ropeproject
 .idea/
 rocketchat_API.egg-info/
+.vscode/
