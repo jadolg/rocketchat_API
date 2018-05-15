@@ -432,6 +432,10 @@ class RocketChat:
         """Retrieves the history for a private im chat"""
         return self.__call_api_get('im.history', roomId=room_id, kwargs=kwargs)
 
+    def im_create(self, username, **kwargs):
+        """Create a direct message session with another user."""
+        return self.__call_api_post('im.create', username=username, kwargs=kwargs)
+
     def im_open(self, room_id, **kwargs):
         """Adds the direct message back to the user’s list of direct messages."""
         return self.__call_api_post('im.open', roomId=room_id, kwargs=kwargs)
