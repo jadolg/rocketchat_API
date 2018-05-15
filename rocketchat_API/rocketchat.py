@@ -222,9 +222,14 @@ class RocketChat:
         """Lists all of the channels the calling user has joined"""
         return self.__call_api_get('channels.list.joined', kwargs=kwargs)
 
-    def channels_info(self, room_id, **kwargs):
+    def channels_info(self, room_id=None, channel=None, **kwargs):
         """Gets a channel’s information."""
-        return self.__call_api_get('channels.info', roomId=room_id, kwargs=kwargs)
+        if room_id:
+            return self.__call_api_get('channels.info', roomId=room_id, kwargs=kwargs)
+        elif channel:
+            return self.__call_api_get('channels.info', roomName=channel, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or channel required')
 
     def channels_history(self, room_id, **kwargs):
         """Retrieves the messages from a channel."""
