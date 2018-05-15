@@ -224,6 +224,12 @@ class TestChannels(unittest.TestCase):
         self.assertTrue(channels_info.get('success'))
         self.assertIn('channel', channels_info)
         self.assertEqual(channels_info.get('channel').get('_id'), 'GENERAL')
+        channel_name = channels_info.get('channel').get('name')
+        channels_info = self.rocket.channels_info(channel=channel_name).json()
+        self.assertTrue(channels_info.get('success'))
+        self.assertIn('channel', channels_info)
+        self.assertEqual(channels_info.get('channel').get('_id'), 'GENERAL')
+        self.assertEqual(channels_info.get('channel').get('name'), channel_name)
 
     def test_channels_history(self):
         channels_history = self.rocket.channels_history(room_id='GENERAL').json()
