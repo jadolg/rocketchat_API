@@ -23,8 +23,8 @@ class RocketChat:
     @staticmethod
     def __reduce_kwargs(kwargs):
         if 'kwargs' in kwargs:
-            for value in kwargs['kwargs'].values():
-                kwargs.update(value)
+            for arg in kwargs['kwargs'].keys():
+                kwargs[arg] = kwargs['kwargs'][arg]
 
             del kwargs['kwargs']
         return kwargs
