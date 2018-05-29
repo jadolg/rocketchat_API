@@ -15,5 +15,5 @@ before_install:
   
 script:
   - docker ps
-  - curl http://localhost:3000/api/v1/info
+  - until curl http://localhost:3000/api/v1/info; do sleep 5; echo "waiting for Rocket.Chat server to start"; done
   - pytest tests/tests.py
