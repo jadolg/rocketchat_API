@@ -167,7 +167,6 @@ class TestChat(unittest.TestCase):
         self.assertTrue(chat_delete.get('success'))
 
     def test_chat_post_react(self):
-        self.skipTest("Still not added but already documented endpoint")
         message_id = self.rocket.chat_post_message("hello", channel='GENERAL').json().get('message').get('_id')
         chat_react = self.rocket.chat_react(msg_id=message_id).json()
         self.assertTrue(chat_react.get('success'))
