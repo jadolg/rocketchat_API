@@ -16,3 +16,4 @@ before_install:
   
 script:
   - docker ps
+  - pytest tests/tests.py
