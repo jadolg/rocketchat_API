@@ -9,7 +9,7 @@ Python API wrapper for [Rocket.Chat](https://docs.rocket.chat/developer-guides/r
 Clone our repository and `python3 setup.py install`
 
 ### Requirements
-- [requests](https://github.com/kennethreitz/requests)==2.13.0
+- [requests](https://github.com/kennethreitz/requests)==2.18.4
 
 ### Usage
 ```
@@ -36,12 +36,16 @@ Only required parameters are explicit on the RocketChat class but you can still 
 ### API coverage
 Most of the API methods are already implemented. If you are interested in a specific call just open an issue or open a pull request.
 
-*note*: Library updated to work with Rocket.Chat >= 0.58.0
+*note*: Library updated to work with Rocket.Chat >= 0.64.1
 
 ### Tests
-We started writing tests :D 
+We are actively testing :) 
 
-Tests run on a Rocket.Chat Docker container so install Docker and docker-compose. To start test server do `docker-compose up` on `tests/testserver` and to take test server down `docker-compose down`
+Tests run on a Rocket.Chat Docker container so install Docker and docker-compose. To start test server do `docker-compose -f docker-compose-test-setver.yml up` and to take test server down `docker-compose -f docker-compose-test-setver.yml down`
 
 ### Contributing
-You can contribute by doing Pull Requests. (It may take a while to merge your code but if it's good it will be merged). We hang out [here](https://demo.rocket.chat/channel/python_rocketchat_api) if you want to talk.
+You can contribute by doing Pull Requests. (It may take a while to merge your code but if it's good it will be merged). Please, try to implement tests for all your code and use a PEP8 compliant code style.
+
+Reporting bugs and asking for features is also contributing ;) Feel free to help us grow by registering issues.
+
+We hang out [here](https://demo.rocket.chat/channel/python_rocketchat_api) if you want to talk. 
