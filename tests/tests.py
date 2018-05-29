@@ -613,5 +613,6 @@ class TestSettings(unittest.TestCase):
         settings = self.rocket.settings().json()
         self.assertTrue(settings.get('success'))
 
+
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
