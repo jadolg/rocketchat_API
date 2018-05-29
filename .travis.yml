@@ -12,7 +12,7 @@ before_install:
   - docker version
   - pip install docker-compose
   - docker-compose -f docker-compose-test-server.yml up -d
-  - docker ps
   
 script:
+  - docker ps
   - pytest tests/tests.py
