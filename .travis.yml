@@ -12,6 +12,7 @@ services:
 before_install:
 - docker version
 - pip install docker-compose
+- pip install pytest-cov
 - docker-compose -f docker-compose-test-server.yml up -d
 
 script:
