@@ -1,6 +1,9 @@
 sudo: required
 
 language: python
+python:
+  - "3.6"
+  - "2.7"
 
 services:
   - docker
@@ -8,6 +11,8 @@ services:
 before_install:
   - docker version
   - pip install docker-compose
+  - cd tests/testserver
+  - docker-compose up -d
   
 script:
   - docker ps
