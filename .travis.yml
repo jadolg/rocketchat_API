@@ -12,8 +12,10 @@ before_install:
   - docker version
   - pip install docker-compose
   - cd tests/testserver
-  - docker-compose up -d
+#  - docker-compose up -d
   
 script:
   - docker ps
+  - cd ../..
+  - pwd
   - pytest tests/tests.py
