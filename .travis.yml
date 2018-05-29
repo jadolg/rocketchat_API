@@ -11,10 +11,8 @@ services:
 before_install:
   - docker version
   - pip install docker-compose
-  - cd tests/testserver
-  - docker-compose up -d
+  - docker-compose -f docker-compose-test-server.yml up -d
   - docker ps
   
 script:
-  - cd ../..
   - pytest tests/tests.py
