@@ -1,19 +1,29 @@
 sudo: required
 
 language: python
+
 python:
-  - "3.6"
-  - "2.7"
+- '3.6'
+- '2.7'
 
 services:
-  - docker
+- docker
 
 before_install:
-  - docker version
-  - pip install docker-compose
-  - docker-compose -f docker-compose-test-server.yml up -d
-  
+- docker version
+- pip install docker-compose
+- docker-compose -f docker-compose-test-server.yml up -d
+
 script:
-  - docker ps
-  - until curl http://localhost:3000/api/v1/info; do sleep 5; echo "waiting for Rocket.Chat server to start"; done
-  - pytest tests/tests.py
+- docker ps
+- until curl http://localhost:3000/api/v1/info; do sleep 5; echo "waiting for Rocket.Chat
+  server to start"; done
+- pytest tests/tests.py
+
+deploy:
+  provider: pypi
+  user: jadolg
+  password:
+    secure: hgO2xSgwhBN/aBpzX2dtltJIBRMxXL5QNiYv91FuR6vNYeSDG96bhiGF9bMBN/WQm69yzk60WEDS+3iu8N+HnN60uFmAkVQRBk41Tp9TSg60RSyUSzXEYA7+pzOeAsQB5gwB8vC5U3Z0HO+9/5HQPe9x8w9/sySoRgaqWELHv2syerkqyf6ouAdDwjm2oM+touh1cPfKo3IhGknCBz3lDIpKPUUZ2rmUWZjoe7JW4wIbfW+fEe5Vy8NzVBReCWTF+RLr/UNRkvI5AKo+/V7ILj32Tn3ZE/W5Xv6VAy4oFDoJqfYtD1ikpvijNcNumrjCtSq101htuW4Hm+ENK14etE0SO+C1NMn+AEjxrgMVFtdcjgO31yKX7VcK7ogedvmdghY7kx/GI8ocStSPo6yalsCWxA15xvReGg9/dB9s0iT9Ou84OjitE6clIoTO3EI7GlaIgttPhGf70Re26Xe2jYnGxV2x7E7sYBKQslQZs1k888jFdjSW4OdJdReYU4zBb41LuRdJcSkGqBE+t6SYgUR3ui+mkLnUJ42CTYHwNOIo8H+QeWU6SEaV0uZT/VttMauSChM45RnVaWe1FGLd738rMPKtE7Mo7bFh5KstVIHDeotVhNouFR5GaP1XVgsHwW3Cy4YFS+kxOrTy3yl8cQKbP1wWNZQVPNtHSLCjrug=
+  on:
+    tags: true
