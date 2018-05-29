@@ -15,4 +15,5 @@ before_install:
   
 script:
   - docker ps
+  - curl http://localhost:3000/api/v1/info
   - pytest tests/tests.py
