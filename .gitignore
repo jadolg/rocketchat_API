@@ -98,3 +98,4 @@ ENV/
 .idea/
 rocketchat_API.egg-info/
 .vscode/
+data/
