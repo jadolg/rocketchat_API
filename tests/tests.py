@@ -346,10 +346,11 @@ class TestChannels(unittest.TestCase):
 
     def test_channels_set_announcement(self):
         announcement = str(uuid.uuid1())
-        channels_set_announcement = self.rocket.channels_set_topic('GENERAL', announcement).json()
+        channels_set_announcement = self.rocket.channels_set_announcement('GENERAL', announcement).json()
         self.assertTrue(channels_set_announcement.get('success'))
-        self.assertEqual(channels_set_announcement.get('topic'), announcement,
+        self.assertEqual(channels_set_announcement.get('announcement'), announcement,
                          'Topic does not match')
+
 
 class TestGroups(unittest.TestCase):
     def setUp(self):
@@ -551,6 +552,46 @@ class TestIMs(unittest.TestCase):
         im_send = self.rocket.chat_post_message(room_id=room_id,
                                                 text='test').json()
         self.assertTrue(im_send.get('success'))
+
+    def test_im_list(self):
+        self.rocket.im_create(self.recipient_user)
+        im_list = self.rocket.im_list().json()
+        self.assertTrue(im_list.get('success'))
+        self.assertEqual(im_list.get('total'), 1)
+
+    def test_im_close_open(self):
+        im_create = self.rocket.im_create(self.recipient_user).json()
+        room_id = im_create.get('room').get('_id')
+        im_close = self.rocket.im_close(room_id).json()
+        self.assertTrue(im_close.get('success'))
+        im_open = self.rocket.im_open(room_id).json()
+        self.assertTrue(im_open.get('success'))
+
+    def test_im_set_topic(self):
+        topic = 'this is my new topic'
+        im_create = self.rocket.im_create(self.recipient_user).json()
+        room_id = im_create.get('room').get('_id')
+        im_set_topic = self.rocket.im_set_topic(room_id, topic).json()
+        self.assertTrue(im_set_topic.get('success'))
+        self.assertEqual(im_set_topic.get('topic'), topic, 'Topic set does not match topic returned')
+
+    def test_im_list_everyone(self):
+        im_list_everyone = self.rocket.im_list_everyone().json()
+        self.assertTrue(im_list_everyone.get('success'))
+        self.assertEqual(im_list_everyone.get('total'), 1)
+
+    def test_im_history(self):
+        im_create = self.rocket.im_create(self.recipient_user).json()
+        room_id = im_create.get('room').get('_id')
+        im_history = self.rocket.im_history(room_id).json()
+        self.assertTrue(im_history.get('success'))
+
+    def test_im_messages_others(self):
+        # ToDo: Try changing the access configuration so endpoint can be successfully tested
+        im_create = self.rocket.im_create(self.recipient_user).json()
+        room_id = im_create.get('room').get('_id')
+        im_messages_others = self.rocket.im_messages_others(room_id).json()
+        self.assertFalse(im_messages_others.get('success'))
 
 
 if __name__ == '__main__':
