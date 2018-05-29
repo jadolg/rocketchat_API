@@ -16,13 +16,16 @@ class TestServer(unittest.TestCase):
 
     def test_info(self):
         info = self.rocket.info().json()
-
         self.assertTrue('info' in info)
         self.assertTrue(info.get('success'))
 
     def test_statistics(self):
         statistics = self.rocket.statistics().json()
         self.assertTrue(statistics.get('success'))
+
+    def test_statistics_list(self):
+        statistics_list = self.rocket.statistics_list().json()
+        self.assertTrue(statistics_list.get('success'))
 
 
 class TestUsers(unittest.TestCase):
