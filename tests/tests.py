@@ -345,6 +345,12 @@ class TestChannels(unittest.TestCase):
         channels_set_type = self.rocket.channels_set_type(channels_create.get('channel').get('_id'), 'c').json()
         self.assertFalse(channels_set_type.get('success'))  # should fail because this is no more a channel
 
+    def test_channels_set_announcement(self):
+        announcement = str(uuid.uuid1())
+        channels_set_announcement = self.rocket.channels_set_topic('GENERAL', announcement).json()
+        self.assertTrue(channels_set_announcement.get('success'))
+        self.assertEqual(channels_set_announcement.get('topic'), announcement,
+                         'Topic does not match')
 
 class TestGroups(unittest.TestCase):
     def setUp(self):

@@ -326,6 +326,9 @@ class RocketChat:
         """Sets the type of room this channel should be. The type of room this channel should be, either c or p."""
         return self.__call_api_post('channels.setType', roomId=room_id, type=a_type, kwargs=kwargs)
 
+    def channels_set_announcement(self, room_id, announce, **kwargs):
+        return self.__call_api_post('channels.setAnnouncement', roomId=room_id, announcement=announce, kwargs=kwargs)
+
     # Groups
 
     def groups_list_all(self, **kwargs):
