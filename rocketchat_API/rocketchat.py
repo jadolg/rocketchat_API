@@ -475,6 +475,10 @@ class RocketChat:
         """Updates the setting for the provided _id."""
         return self.__call_api_post('settings/' + _id, value=value)
 
+    def settings(self):
+        """List all private settings."""
+        return self.__call_api_get('settings')
+
     # Rooms
 
     def rooms_upload(self, rid, file, **kwargs):

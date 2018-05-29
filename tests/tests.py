@@ -597,5 +597,21 @@ class TestIMs(unittest.TestCase):
         self.assertFalse(im_messages_others.get('success'))
 
 
+class TestSettings(unittest.TestCase):
+    def setUp(self):
+        self.rocket = RocketChat()
+        self.user = 'user1'
+        self.password = 'password'
+        self.email = 'email@domain.com'
+        self.rocket.users_register(email=self.email, name=self.user, password=self.password, username=self.user)
+        self.rocket = RocketChat(self.user, self.password)
+
+    def tearDown(self):
+        pass
+
+    def test_settings(self):
+        settings = self.rocket.settings().json()
+        self.assertTrue(settings.get('success'))
+
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
