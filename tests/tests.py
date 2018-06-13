@@ -523,6 +523,12 @@ class TestRooms(unittest.TestCase):
         rooms_get = self.rocket.rooms_get().json()
         self.assertTrue(rooms_get.get('success'))
 
+    def test_rooms_set_custom_fields(self):
+        cf = {'key': 'value'}
+        rooms_set_custom_fields = self.rocket.rooms_set_custom_fields('GENERAL', cf).json()
+        self.assertTrue(rooms_set_custom_fields.get('success'))
+        self.assertEqual(cf, rooms_set_custom_fields.get('customFields'))
+
 
 class TestIMs(unittest.TestCase):
     def setUp(self):
