@@ -527,7 +527,7 @@ class TestRooms(unittest.TestCase):
         cf = {'key': 'value'}
         rooms_set_custom_fields = self.rocket.rooms_set_custom_fields('GENERAL', cf).json()
         self.assertTrue(rooms_set_custom_fields.get('success'))
-        self.assertEqual(cf, rooms_set_custom_fields.get('customFields'))
+        self.assertEqual(cf, rooms_set_custom_fields['channel']['customFields'])
 
 
 class TestIMs(unittest.TestCase):
