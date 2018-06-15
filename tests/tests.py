@@ -354,6 +354,12 @@ class TestChannels(unittest.TestCase):
         self.assertEqual(channels_set_announcement.get('announcement'), announcement,
                          'Topic does not match')
 
+    def test_channels_set_custom_fields(self):
+        cf = {'key': 'value'}
+        channels_set_custom_fields = self.rocket.channels_set_custom_fields('GENERAL', cf).json()
+        self.assertTrue(channels_set_custom_fields.get('success'))
+        self.assertEqual(cf, channels_set_custom_fields['channel']['customFields'])
+
 
 class TestGroups(unittest.TestCase):
     def setUp(self):
