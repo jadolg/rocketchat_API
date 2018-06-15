@@ -327,7 +327,12 @@ class RocketChat:
         return self.__call_api_post('channels.setType', roomId=room_id, type=a_type, kwargs=kwargs)
 
     def channels_set_announcement(self, room_id, announce, **kwargs):
+        """Sets the announcement for the channel."""
         return self.__call_api_post('channels.setAnnouncement', roomId=room_id, announcement=announce, kwargs=kwargs)
+
+    def channels_set_custom_fields(self, rid, custom_fields):
+        """Sets the custom fields for the channel."""
+        return self.__call_api_post('channels.setCustomFields', roomId=rid, customFields=custom_fields)
 
     # Groups
 
@@ -491,5 +496,3 @@ class RocketChat:
     def rooms_get(self, **kwargs):
         return self.__call_api_get('rooms.get', kwargs=kwargs)
 
-    def channels_set_custom_fields(self, rid, custom_fields):
-        return self.__call_api_post('channels.setCustomFields', roomId=rid, customFields=custom_fields)
