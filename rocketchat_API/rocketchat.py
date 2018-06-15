@@ -491,5 +491,5 @@ class RocketChat:
     def rooms_get(self, **kwargs):
         return self.__call_api_get('rooms.get', kwargs=kwargs)
 
-    def rooms_set_custom_fields(self, rid, custom_fields):
+    def channels_set_custom_fields(self, rid, custom_fields):
         return self.__call_api_post('channels.setCustomFields', roomId=rid, customFields=custom_fields)
