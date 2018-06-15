@@ -495,4 +495,3 @@ class RocketChat:
 
     def rooms_get(self, **kwargs):
         return self.__call_api_get('rooms.get', kwargs=kwargs)
-
