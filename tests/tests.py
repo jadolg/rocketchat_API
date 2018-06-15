@@ -361,7 +361,6 @@ class TestChannels(unittest.TestCase):
         self.assertEqual(cf, rooms_set_custom_fields['channel']['customFields'])
 
 
-
 class TestGroups(unittest.TestCase):
     def setUp(self):
         self.rocket = RocketChat()
