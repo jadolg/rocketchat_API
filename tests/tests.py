@@ -148,6 +148,10 @@ class TestUsers(unittest.TestCase):
         users_set_avatar = self.rocket.users_set_avatar(avatar_url='http://182.17.0.1:9999/avatar.png').json()
         self.assertTrue(users_set_avatar.get('success'), users_set_avatar.get('error'))
 
+    def test_users_forgot_password(self):
+        users_forgot_password = self.rocket.users_forgot_password(email='email@domain.com').json()
+        self.assertTrue(users_forgot_password.get('success'))
+
 
 class TestChat(unittest.TestCase):
     def setUp(self):

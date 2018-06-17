@@ -183,7 +183,12 @@ class RocketChat:
             raise RocketMissingParamException('userID or username required')
 
     def users_update(self, user_id, **kwargs):
+        """Update an existing user."""
         return self.__call_api_post('users.update', userId=user_id, data=kwargs)
+
+    def users_forgot_password(self, email, **kwargs):
+        """Send email to reset your password."""
+        return self.__call_api_post('users.forgotPassword', email=email, data=kwargs)
 
     # Chat
 
