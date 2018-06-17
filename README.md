@@ -36,7 +36,7 @@ Only required parameters are explicit on the RocketChat class but you can still 
 ### API coverage
 Most of the API methods are already implemented. If you are interested in a specific call just open an issue or open a pull request.
 
-*note*: Library updated to work with Rocket.Chat >= 0.64.1
+*note*: Library updated to work with Rocket.Chat >= 0.65.1
 
 ### Tests
 We are actively testing :) 
