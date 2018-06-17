@@ -31,6 +31,12 @@ class TestServer(unittest.TestCase):
         directory = self.rocket.directory(query={'text': 'rocket', 'type': 'users'}).json()
         self.assertTrue(directory.get('success'))
 
+    def test_spotlight(self):
+        spotlight = self.rocket.spotlight(query='user1').json()
+        self.assertTrue(spotlight.get('success'))
+        self.assertIsNotNone(spotlight.get('users'), 'No users list found')
+        self.assertIsNotNone(spotlight.get('rooms'), 'No rooms list found')
+
 
 class TestUsers(unittest.TestCase):
     def setUp(self):

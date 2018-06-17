@@ -105,6 +105,10 @@ class RocketChat:
 
         return self.__call_api_get('directory', query=query, kwargs=kwargs)
 
+    def spotlight(self, query, **kwargs):
+        """Searches for users or rooms that are visible to the user."""
+        return self.__call_api_get('spotlight', query=query, kwargs=kwargs)
+
     # Users
 
     def users_info(self, user_id=None, username=None, **kwargs):
