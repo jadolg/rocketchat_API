@@ -98,6 +98,13 @@ class RocketChat:
         """Information about the Rocket.Chat server."""
         return self.__call_api_get('info', kwargs=kwargs)
 
+    def directory(self, query, **kwargs):
+        """Search by users or channels on all server."""
+        if query.__class__ == dict:
+            query = str(query).replace("'", '"')
+
+        return self.__call_api_get('directory', query=query, kwargs=kwargs)
+
     # Users
 
     def users_info(self, user_id=None, username=None, **kwargs):

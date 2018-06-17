@@ -27,6 +27,10 @@ class TestServer(unittest.TestCase):
         statistics_list = self.rocket.statistics_list().json()
         self.assertTrue(statistics_list.get('success'))
 
+    def test_directory(self):
+        directory = self.rocket.directory(query={'text': 'rocket', 'type': 'users'}).json()
+        self.assertTrue(directory.get('success'))
+
 
 class TestUsers(unittest.TestCase):
     def setUp(self):
