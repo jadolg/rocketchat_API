@@ -288,7 +288,7 @@ class TestChannels(unittest.TestCase):
         channels_create = self.rocket.channels_create(name).json()
         self.assertTrue(channels_create.get('success'))
         self.assertEqual(name, channels_create.get('channel').get('name'))
-        channels_delete = self.rocket.channels_delete(cannel=name).json()
+        channels_delete = self.rocket.channels_delete(channel=name).json()
         self.assertTrue(channels_delete.get('success'))
         channels_create = self.rocket.channels_create(name).json()
         self.assertTrue(channels_create.get('success'))
