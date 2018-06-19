@@ -453,7 +453,7 @@ class TestGroups(unittest.TestCase):
         self.assertTrue(groups_create.get('success'))
         self.assertEqual(name, groups_create.get('group').get('name'))
         room_id = groups_create.get('group').get('_id')
-        groups_delete = self.rocket.channels_delete(room_id).json()
+        groups_delete = self.rocket.groups_delete(room_id).json()
         self.assertTrue(groups_delete.get('success'))
 
     def test_groups_get_integrations(self):
