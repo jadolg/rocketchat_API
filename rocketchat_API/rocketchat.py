@@ -349,6 +349,10 @@ class RocketChat:
     def channels_set_custom_fields(self, rid, custom_fields):
         """Sets the custom fields for the channel."""
         return self.__call_api_post('channels.setCustomFields', roomId=rid, customFields=custom_fields)
+    
+    def channels_delete(self, room_id, **kwargs):
+        """Delete a public channel"""
+        return self.__call_api_post('channels.delete', roomId=room_id, kwargs=kwargs)
 
     # Groups
 
