@@ -350,10 +350,14 @@ class RocketChat:
         """Sets the custom fields for the channel."""
         return self.__call_api_post('channels.setCustomFields', roomId=rid, customFields=custom_fields)
 
-    def channels_delete(self, room_id, **kwargs):
-        """Delete a public channel"""
-        return self.__call_api_post('channels.delete', roomId=room_id, kwargs=kwargs)
-
+    def channels_delete(self, room_id=None, channel=None, **kwargs):
+        """Delete a public channel"""        
+        if room_id:
+            return self.__call_api_post('channels.delete', roomId=room_id, kwargs=kwargs)
+        elif channel:
+            return self.__call_api_post('channels.delete', roomName=channel, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or channel required')
     # Groups
 
     def groups_list_all(self, **kwargs):
@@ -447,9 +451,14 @@ class RocketChat:
         """Sets the type of room this group should be. The type of room this channel should be, either c or p."""
         return self.__call_api_post('groups.setType', roomId=room_id, type=a_type, kwargs=kwargs)
 
-    def groups_delete(self, room_id, **kwargs):
-        """Delete a public channel"""
-        return self.__call_api_post('groups.delete', roomId=room_id, kwargs=kwargs)
+    def groups_delete(self, room_id=None, channel=None, **kwargs):
+        """Delete a public channel"""        
+        if room_id:
+            return self.__call_api_post('groups.delete', roomId=room_id, kwargs=kwargs)
+        elif channel:
+            return self.__call_api_post('groups.delete', roomName=channel, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or channel required')
 
     # IM
     def im_list(self, **kwargs):

@@ -288,8 +288,12 @@ class TestChannels(unittest.TestCase):
         channels_create = self.rocket.channels_create(name).json()
         self.assertTrue(channels_create.get('success'))
         self.assertEqual(name, channels_create.get('channel').get('name'))
+        channels_delete = self.rocket.channels_delete(cannel=name).json()
+        self.assertTrue(channels_delete.get('success'))
+        channels_create = self.rocket.channels_create(name).json()
+        self.assertTrue(channels_create.get('success'))
         room_id = channels_create.get('channel').get('_id')
-        channels_delete = self.rocket.channels_delete(room_id).json()
+        channels_delete = self.rocket.channels_delete(room_id=room_id).json()
         self.assertTrue(channels_delete.get('success'))
 
     def test_channels_get_integrations(self):
@@ -452,8 +456,12 @@ class TestGroups(unittest.TestCase):
         groups_create = self.rocket.groups_create(name).json()
         self.assertTrue(groups_create.get('success'))
         self.assertEqual(name, groups_create.get('group').get('name'))
+        groups_delete = self.rocket.groups_delete(channel=name).json()
+        self.assertTrue(groups_delete.get('success'))
+        groups_create = self.rocket.groups_create(name).json()
+        self.assertTrue(groups_create.get('success'))
         room_id = groups_create.get('group').get('_id')
-        groups_delete = self.rocket.groups_delete(room_id).json()
+        groups_delete = self.rocket.groups_delete(room_id=room_id).json()
         self.assertTrue(groups_delete.get('success'))
 
     def test_groups_get_integrations(self):
