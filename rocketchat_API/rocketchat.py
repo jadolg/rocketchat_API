@@ -447,6 +447,10 @@ class RocketChat:
         """Sets the type of room this group should be. The type of room this channel should be, either c or p."""
         return self.__call_api_post('groups.setType', roomId=room_id, type=a_type, kwargs=kwargs)
 
+    def groups_delete(self, room_id, **kwargs):
+        """Delete a public channel"""
+        return self.__call_api_post('groups.delete', roomId=room_id, kwargs=kwargs)
+
     # IM
     def im_list(self, **kwargs):
         """List the private im chats for logged user"""

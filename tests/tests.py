@@ -447,11 +447,14 @@ class TestGroups(unittest.TestCase):
         groups_open = self.rocket.groups_open(self.test_group_id).json()
         self.assertTrue(groups_open.get('success'))
 
-    def test_groups_create(self):
+    def test_groups_create_delete(self):
         name = str(uuid.uuid1())
         groups_create = self.rocket.groups_create(name).json()
         self.assertTrue(groups_create.get('success'))
         self.assertEqual(name, groups_create.get('group').get('name'))
+        room_id = groups_create.get('group').get('_id')
+        groups_delete = self.rocket.channels_delete(room_id).json()
+        self.assertTrue(groups_delete.get('success'))
 
     def test_groups_get_integrations(self):
         groups_get_integrations = self.rocket.groups_get_integrations(room_id=self.test_group_id).json()
