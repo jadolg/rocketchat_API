@@ -1,5 +1,5 @@
 ## rocketchat_API
-Python API wrapper for [Rocket.Chat](https://docs.rocket.chat/developer-guides/rest-api)
+Python API wrapper for [Rocket.Chat](https://rocket.chat/docs/developer-guides/rest-api/)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/fff725d9a0974c6597c2dd007daaa86e)](https://www.codacy.com/app/jadolg/rocketchat_API?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jadolg/rocketchat_API&amp;utm_campaign=Badge_Grade) [![Build Status](https://travis-ci.org/jadolg/rocketchat_API.png)](https://travis-ci.org/jadolg/rocketchat_API) [![codecov](https://codecov.io/gh/jadolg/rocketchat_API/branch/master/graph/badge.svg)](https://codecov.io/gh/jadolg/rocketchat_API) ![PyPI](https://img.shields.io/pypi/v/rocketchat_API.svg) [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/jadolg)
 ### Installation
