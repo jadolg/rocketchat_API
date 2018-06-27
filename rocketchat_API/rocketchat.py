@@ -359,6 +359,15 @@ class RocketChat:
         else:
             raise RocketMissingParamException('roomId or channel required')
 
+    def channels_members(self, room_id=None, channel=None, **kwargs):
+        """Lists all channel users."""
+        if room_id:
+            return self.__call_api_get('channels.members', roomId=room_id, kwargs=kwargs)
+        elif channel:
+            return self.__call_api_get('channels.members', roomName=channel, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or channel required')
+
     # Groups
 
     def groups_list_all(self, **kwargs):
@@ -452,14 +461,23 @@ class RocketChat:
         """Sets the type of room this group should be. The type of room this channel should be, either c or p."""
         return self.__call_api_post('groups.setType', roomId=room_id, type=a_type, kwargs=kwargs)
 
-    def groups_delete(self, room_id=None, channel=None, **kwargs):
+    def groups_delete(self, room_id=None, group=None, **kwargs):
         """Delete a private group."""
         if room_id:
             return self.__call_api_post('groups.delete', roomId=room_id, kwargs=kwargs)
-        elif channel:
-            return self.__call_api_post('groups.delete', roomName=channel, kwargs=kwargs)
+        elif group:
+            return self.__call_api_post('groups.delete', roomName=group, kwargs=kwargs)
         else:
-            raise RocketMissingParamException('roomId or channel required')
+            raise RocketMissingParamException('roomId or group required')
+
+    def groups_members(self, room_id=None, group=None, **kwargs):
+        """Lists all group users."""
+        if room_id:
+            return self.__call_api_get('groups.members', roomId=room_id, kwargs=kwargs)
+        elif group:
+            return self.__call_api_get('groups.members', roomName=group, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or group required')
 
     # IM
     def im_list(self, **kwargs):
