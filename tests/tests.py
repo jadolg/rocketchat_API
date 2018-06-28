@@ -384,6 +384,15 @@ class TestChannels(unittest.TestCase):
         self.assertTrue(channels_set_custom_fields.get('success'))
         self.assertEqual(cf, channels_set_custom_fields['channel']['customFields'])
 
+    def test_channels_members(self):
+        channels_members = self.rocket.channels_members(room_id='GENERAL').json()
+        self.assertTrue(channels_members.get('success'))
+        channels_members = self.rocket.channels_members(channel='general').json()
+        self.assertTrue(channels_members.get('success'))
+
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.channels_members()
+
 
 class TestGroups(unittest.TestCase):
     def setUp(self):
@@ -399,7 +408,8 @@ class TestGroups(unittest.TestCase):
             self.rocket.users_delete(user_id)
             self.testuser = self.rocket.users_create('testuser1@domain.com', 'testuser1', 'password',
                                                      'testuser1').json()
-        self.test_group_id = self.rocket.groups_create(str(uuid.uuid1())).json().get('group').get('_id')
+        self.test_group_name = str(uuid.uuid1())
+        self.test_group_id = self.rocket.groups_create(self.test_group_name).json().get('group').get('_id')
 
     def tearDown(self):
         self.rocket.users_delete(self.testuser.get('user').get('_id'))
@@ -459,7 +469,7 @@ class TestGroups(unittest.TestCase):
         groups_create = self.rocket.groups_create(name).json()
         self.assertTrue(groups_create.get('success'))
         self.assertEqual(name, groups_create.get('group').get('name'))
-        groups_delete = self.rocket.groups_delete(channel=name).json()
+        groups_delete = self.rocket.groups_delete(group=name).json()
         self.assertTrue(groups_delete.get('success'))
         groups_create = self.rocket.groups_create(name).json()
         self.assertTrue(groups_create.get('success'))
@@ -539,6 +549,15 @@ class TestGroups(unittest.TestCase):
 
         groups_set_type = self.rocket.groups_set_type(groups_create.get('group').get('_id'), 'p').json()
         self.assertFalse(groups_set_type.get('success'))  # should fail because this is no more a group
+
+    def test_groups_members(self):
+        groups_members = self.rocket.groups_members(room_id=self.test_group_id).json()
+        self.assertTrue(groups_members.get('success'))
+        groups_members = self.rocket.groups_members(group=self.test_group_name).json()
+        self.assertTrue(groups_members.get('success'))
+
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.groups_members()
 
 
 class TestRooms(unittest.TestCase):
