@@ -12,7 +12,7 @@ services:
 before_install:
 - wget https://github.com/aleph-engineering/rocketchat-notification/releases/download/1.0/rocket-notification
 - chmod +x rocket-notification
-- ./rocket-notification -c python_rocketchat_api -u rcnotification -p qweqwe123! -s https://open.rocket.chat -m "Started CI pipeline"
+- echo "["$TRAVIS_PYTHON_VERSION"] Started pipeline commit "$TRAVIS_COMMIT" "$TRAVIS_COMMIT_MESSAGE | ./rocket-notification -c python_rocketchat_api -u rcnotification -p qweqwe123! -s https://open.rocket.chat
 - docker version
 - pip install docker-compose
 - pip install codecov pytest-cov pytest-flakes pytest-pep8
@@ -24,7 +24,6 @@ script:
   server to start"; done
 - pytest tests rocketchat_API -x --cov=./ --pep8 --flakes
 - codecov
-- - ./rocket-notification -c python_rocketchat_api -u rcnotification -p qweqwe123! -s https://open.rocket.chat -m "Finished"
 
 deploy:
   provider: pypi
