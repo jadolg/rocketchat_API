@@ -11,7 +11,7 @@ services:
 
 before_install:
 - wget https://github.com/aleph-engineering/rocketchat-notification/releases/download/1.0/rocket-notification && chmod +x rocket-notification
-- echo "*[Python:"$TRAVIS_PYTHON_VERSION"]* Started pipeline commit _"$TRAVIS_COMMIT"_ "$TRAVIS_COMMIT_MESSAGE | ./rocket-notification -c python_rocketchat_api -u rcnotification -p qweqwe123! -s https://open.rocket.chat
+- echo "*[Python:"$TRAVIS_PYTHON_VERSION"]* Started pipeline commit _"$TRAVIS_COMMIT"_ "$TRAVIS_COMMIT_MESSAGE | ./rocket-notification -c python_rocketchat_api -u rcnotification -p $ROCKET_PASSWORD -s https://open.rocket.chat
 - docker version
 - pip install docker-compose
 - pip install codecov pytest-cov pytest-flakes pytest-pep8
@@ -26,15 +26,15 @@ script:
 
 after_failure:
 - wget https://github.com/aleph-engineering/rocketchat-notification/releases/download/1.0/rocket-notification && chmod +x rocket-notification
-- echo "*[Python:"$TRAVIS_PYTHON_VERSION"]* CI has failed commit _"$TRAVIS_COMMIT"_ "$TRAVIS_COMMIT_MESSAGE | ./rocket-notification -c python_rocketchat_api -u rcnotification -p qweqwe123! -s https://open.rocket.chat
+- echo "*[Python:"$TRAVIS_PYTHON_VERSION"]* CI has failed commit _"$TRAVIS_COMMIT"_ "$TRAVIS_COMMIT_MESSAGE | ./rocket-notification -c python_rocketchat_api -u rcnotification -p $ROCKET_PASSWORD -s https://open.rocket.chat
 
 after_success:
 - wget https://github.com/aleph-engineering/rocketchat-notification/releases/download/1.0/rocket-notification && chmod +x rocket-notification
-- echo "*[Python:"$TRAVIS_PYTHON_VERSION"]* Finished pipeline commit _"$TRAVIS_COMMIT"_ "$TRAVIS_COMMIT_MESSAGE | ./rocket-notification -c python_rocketchat_api -u rcnotification -p qweqwe123! -s https://open.rocket.chat
+- echo "*[Python:"$TRAVIS_PYTHON_VERSION"]* Finished pipeline commit _"$TRAVIS_COMMIT"_ "$TRAVIS_COMMIT_MESSAGE | ./rocket-notification -c python_rocketchat_api -u rcnotification -p $ROCKET_PASSWORD -s https://open.rocket.chat
 
 after_deploy:
 - wget https://github.com/aleph-engineering/rocketchat-notification/releases/download/1.0/rocket-notification && chmod +x rocket-notification
-- echo "*[Python:"$TRAVIS_PYTHON_VERSION"]* Deployed commit _"$TRAVIS_COMMIT"_ "$TRAVIS_COMMIT_MESSAGE | ./rocket-notification -c python_rocketchat_api -u rcnotification -p qweqwe123! -s https://open.rocket.chat
+- echo "*[Python:"$TRAVIS_PYTHON_VERSION"]* Deployed commit _"$TRAVIS_COMMIT"_ "$TRAVIS_COMMIT_MESSAGE | ./rocket-notification -c python_rocketchat_api -u rcnotification -p $ROCKET_PASSWORD -s https://open.rocket.chat
 
 deploy:
   provider: pypi
