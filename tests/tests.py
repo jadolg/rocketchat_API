@@ -393,6 +393,14 @@ class TestChannels(unittest.TestCase):
         with self.assertRaises(RocketMissingParamException):
             self.rocket.channels_members()
 
+    def test_channels_roles(self):
+        channels_roles = self.rocket.channels_roles(room_id='GENERAL').json()
+        self.assertTrue(channels_roles.get('success'))
+        self.assertIsNotNone(channels_roles.get('roles'))
+        channels_roles = self.rocket.channels_roles(room_name='general').json()
+        self.assertTrue(channels_roles.get('success'))
+        self.assertIsNotNone(channels_roles.get('roles'))
+
 
 class TestGroups(unittest.TestCase):
     def setUp(self):

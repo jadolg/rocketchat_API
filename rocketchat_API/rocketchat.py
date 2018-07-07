@@ -368,6 +368,15 @@ class RocketChat:
         else:
             raise RocketMissingParamException('roomId or channel required')
 
+    def channels_roles(self, room_id=None, room_name=None, **kwargs):
+        """Lists all user’s roles in the channel."""
+        if room_id:
+            return self.__call_api_get('channels.roles', roomId=room_id, kwargs=kwargs)
+        elif room_name:
+            return self.__call_api_get('channels.roles', roomName=room_name, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or room_name required')
+
     # Groups
 
     def groups_list_all(self, **kwargs):
