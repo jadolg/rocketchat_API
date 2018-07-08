@@ -488,6 +488,15 @@ class RocketChat:
         else:
             raise RocketMissingParamException('roomId or group required')
 
+    def groups_roles(self, room_id=None, room_name=None, **kwargs):
+        """Lists all user’s roles in the private group."""
+        if room_id:
+            return self.__call_api_get('groups.roles', roomId=room_id, kwargs=kwargs)
+        elif room_name:
+            return self.__call_api_get('groups.roles', roomName=room_name, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or room_name required')
+
     # IM
     def im_list(self, **kwargs):
         """List the private im chats for logged user"""

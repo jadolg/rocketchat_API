@@ -567,6 +567,19 @@ class TestGroups(unittest.TestCase):
         with self.assertRaises(RocketMissingParamException):
             self.rocket.groups_members()
 
+    def test_groups_roles(self):
+        name = str(uuid.uuid1())
+        groups_create = self.rocket.groups_create(name).json()
+        self.assertTrue(groups_create.get('success'))
+
+        groups_roles = self.rocket.groups_roles(room_id=groups_create.get('group').get('_id')).json()
+        self.assertTrue(groups_roles.get('success'))
+        self.assertIsNotNone(groups_roles.get('roles'))
+        
+        groups_roles = self.rocket.groups_roles(room_name=name).json()
+        self.assertTrue(groups_roles.get('success'))
+        self.assertIsNotNone(groups_roles.get('roles'))
+
 
 class TestRooms(unittest.TestCase):
     def setUp(self):
