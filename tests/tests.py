@@ -575,7 +575,7 @@ class TestGroups(unittest.TestCase):
         groups_roles = self.rocket.groups_roles(room_id=groups_create.get('group').get('_id')).json()
         self.assertTrue(groups_roles.get('success'))
         self.assertIsNotNone(groups_roles.get('roles'))
-        
+
         groups_roles = self.rocket.groups_roles(room_name=name).json()
         self.assertTrue(groups_roles.get('success'))
         self.assertIsNotNone(groups_roles.get('roles'))
