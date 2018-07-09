@@ -497,6 +497,15 @@ class RocketChat:
         else:
             raise RocketMissingParamException('roomId or room_name required')
 
+    def groups_files(self, room_id=None, room_name=None, **kwargs):
+        """Retrieves the files from a private group."""
+        if room_id:
+            return self.__call_api_get('groups.files', roomId=room_id, kwargs=kwargs)
+        elif room_name:
+            return self.__call_api_get('groups.files', roomName=room_name, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or room_name required')
+
     # IM
     def im_list(self, **kwargs):
         """List the private im chats for logged user"""

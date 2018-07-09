@@ -580,6 +580,17 @@ class TestGroups(unittest.TestCase):
         self.assertTrue(groups_roles.get('success'))
         self.assertIsNotNone(groups_roles.get('roles'))
 
+    def test_groups_files(self):
+        name = str(uuid.uuid1())
+        groups_create = self.rocket.groups_create(name).json()
+        self.assertTrue(groups_create.get('success'))
+
+        groups_files = self.rocket.groups_files(room_id=groups_create.get('group').get('_id')).json()
+        self.assertTrue(groups_files.get('success'))
+
+        groups_files = self.rocket.groups_files(room_name=name).json()
+        self.assertTrue(groups_files.get('success'))
+
 
 class TestRooms(unittest.TestCase):
     def setUp(self):
