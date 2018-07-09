@@ -658,7 +658,6 @@ class TestIMs(unittest.TestCase):
         self.rocket.im_create(self.recipient_user)
         im_list = self.rocket.im_list().json()
         self.assertTrue(im_list.get('success'))
-        self.assertEqual(im_list.get('total'), 1)
 
     def test_im_close_open(self):
         im_create = self.rocket.im_create(self.recipient_user).json()
@@ -679,7 +678,6 @@ class TestIMs(unittest.TestCase):
     def test_im_list_everyone(self):
         im_list_everyone = self.rocket.im_list_everyone().json()
         self.assertTrue(im_list_everyone.get('success'))
-        self.assertEqual(im_list_everyone.get('total'), 1)
 
     def test_im_history(self):
         im_create = self.rocket.im_create(self.recipient_user).json()
@@ -703,6 +701,16 @@ class TestIMs(unittest.TestCase):
 
         im_files = self.rocket.im_files(user_name=self.recipient_user).json()
         self.assertTrue(im_files.get('success'))
+
+    def test_im_counters(self):
+        im_create = self.rocket.im_create(self.recipient_user).json()
+        self.assertTrue(im_create.get('success'))
+
+        im_counters = self.rocket.im_counters(room_id=im_create.get('room').get('_id')).json()
+        self.assertTrue(im_counters.get('success'))
+
+        im_counters = self.rocket.im_counters(user_name=self.rocket.me().json().get('_id')).json()
+        self.assertTrue(im_counters.get('success'))
 
 
 class TestSettings(unittest.TestCase):

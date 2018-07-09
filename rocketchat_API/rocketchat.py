@@ -557,6 +557,15 @@ class RocketChat:
         else:
             raise RocketMissingParamException('roomId or username required')
 
+    def im_counters(self, room_id=None, user_name=None, **kwargs):
+        """Gets counters of direct messages."""
+        if room_id:
+            return self.__call_api_get('im.counters', roomId=room_id, kwargs=kwargs)
+        elif user_name:
+            return self.__call_api_get('im.counters', username=user_name, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or username required')
+
     # Statistics
 
     def statistics(self, **kwargs):
