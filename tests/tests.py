@@ -401,6 +401,13 @@ class TestChannels(unittest.TestCase):
         self.assertTrue(channels_roles.get('success'))
         self.assertIsNotNone(channels_roles.get('roles'))
 
+    def test_channels_files(self):
+        channels_files = self.rocket.channels_files(room_id='GENERAL').json()
+        self.assertTrue(channels_files.get('success'))
+
+        channels_files = self.rocket.channels_files(room_name='general').json()
+        self.assertTrue(channels_files.get('success'))
+
 
 class TestGroups(unittest.TestCase):
     def setUp(self):

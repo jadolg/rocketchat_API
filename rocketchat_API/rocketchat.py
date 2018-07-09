@@ -377,6 +377,15 @@ class RocketChat:
         else:
             raise RocketMissingParamException('roomId or room_name required')
 
+    def channels_files(self, room_id=None, room_name=None, **kwargs):
+        """Retrieves the files from a channel."""
+        if room_id:
+            return self.__call_api_get('channels.files', roomId=room_id, kwargs=kwargs)
+        elif room_name:
+            return self.__call_api_get('channels.files', roomName=room_name, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or room_name required')
+
     # Groups
 
     def groups_list_all(self, **kwargs):
