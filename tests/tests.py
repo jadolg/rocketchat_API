@@ -621,6 +621,12 @@ class TestRooms(unittest.TestCase):
         rooms_get = self.rocket.rooms_get().json()
         self.assertTrue(rooms_get.get('success'))
 
+    def test_rooms_clean_history(self):
+        """Cleans up a room, removing messages from the provided time range."""
+        rooms_clean_history = self.rocket.rooms_clean_history(room_id='GENERAL', latest='2016-09-30T13:42:25.304Z',
+                                                              oldest='2016-05-30T13:42:25.304Z').json()
+        self.assertTrue(rooms_clean_history.get('success'))
+
 
 class TestIMs(unittest.TestCase):
     def setUp(self):

@@ -602,3 +602,7 @@ class RocketChat:
     def rooms_get(self, **kwargs):
         """Get all opened rooms for this user."""
         return self.__call_api_get('rooms.get', kwargs=kwargs)
+
+    def rooms_clean_history(self, room_id, latest, oldest, **kwargs):
+        """Cleans up a room, removing messages from the provided time range."""
+        return self.__call_api_post('rooms.cleanHistory', roomId=room_id, latest=latest, oldest=oldest, kwargs=kwargs)
