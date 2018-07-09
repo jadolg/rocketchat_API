@@ -600,4 +600,5 @@ class RocketChat:
         return self.__call_api_post('rooms.upload/' + rid, kwargs=kwargs, use_json=False, files=files)
 
     def rooms_get(self, **kwargs):
+        """Get all opened rooms for this user."""
         return self.__call_api_get('rooms.get', kwargs=kwargs)
