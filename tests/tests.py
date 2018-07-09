@@ -622,10 +622,22 @@ class TestRooms(unittest.TestCase):
         self.assertTrue(rooms_get.get('success'))
 
     def test_rooms_clean_history(self):
-        """Cleans up a room, removing messages from the provided time range."""
         rooms_clean_history = self.rocket.rooms_clean_history(room_id='GENERAL', latest='2016-09-30T13:42:25.304Z',
                                                               oldest='2016-05-30T13:42:25.304Z').json()
         self.assertTrue(rooms_clean_history.get('success'))
+
+    def test_rooms_favorite(self):
+        rooms_favorite = self.rocket.rooms_favorite(room_id='GENERAL', favorite=True).json()
+        self.assertTrue(rooms_favorite.get('success'))
+
+        rooms_favorite = self.rocket.rooms_favorite(room_name='general', favorite=True).json()
+        self.assertTrue(rooms_favorite.get('success'))
+
+        rooms_favorite = self.rocket.rooms_favorite(room_id='unexisting_channel', favorite=True).json()
+        self.assertFalse(rooms_favorite.get('success'))
+
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.rooms_favorite()
 
 
 class TestIMs(unittest.TestCase):

@@ -606,3 +606,12 @@ class RocketChat:
     def rooms_clean_history(self, room_id, latest, oldest, **kwargs):
         """Cleans up a room, removing messages from the provided time range."""
         return self.__call_api_post('rooms.cleanHistory', roomId=room_id, latest=latest, oldest=oldest, kwargs=kwargs)
+
+    def rooms_favorite(self, room_id=None, room_name=None, favorite=True):
+        """Favorite or unfavorite room."""
+        if room_id is not None:
+            return self.__call_api_post('rooms.favorite', roomId=room_id, favorite=favorite)
+        elif room_name is not None:
+            return self.__call_api_post('rooms.favorite', roomName=room_name, favorite=favorite)
+        else:
+            raise RocketMissingParamException('roomId or roomName required')
