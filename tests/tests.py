@@ -694,6 +694,17 @@ class TestIMs(unittest.TestCase):
         im_messages_others = self.rocket.im_messages_others(room_id).json()
         self.assertFalse(im_messages_others.get('success'))
 
+    def test_im_files(self):
+        name = str(uuid.uuid1())
+        im_create = self.rocket.im_create(self.recipient_user).json()
+        self.assertTrue(im_create.get('success'))
+
+        im_files = self.rocket.im_files(room_id=im_create.get('room').get('_id')).json()
+        self.assertTrue(im_files.get('success'))
+
+        im_files = self.rocket.im_files(user_name=self.recipient_user).json()
+        self.assertTrue(im_files.get('success'))
+
 
 class TestSettings(unittest.TestCase):
     def setUp(self):

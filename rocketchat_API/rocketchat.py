@@ -548,6 +548,15 @@ class RocketChat:
         """Sets the topic for the direct message"""
         return self.__call_api_post('im.setTopic', roomId=room_id, topic=topic, kwargs=kwargs)
 
+    def im_files(self, room_id=None, user_name=None, **kwargs):
+        """Retrieves the files from a direct message."""
+        if room_id:
+            return self.__call_api_get('im.files', roomId=room_id, kwargs=kwargs)
+        elif user_name:
+            return self.__call_api_get('im.files', username=user_name, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or username required')
+
     # Statistics
 
     def statistics(self, **kwargs):
