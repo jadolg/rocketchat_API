@@ -695,7 +695,6 @@ class TestIMs(unittest.TestCase):
         self.assertFalse(im_messages_others.get('success'))
 
     def test_im_files(self):
-        name = str(uuid.uuid1())
         im_create = self.rocket.im_create(self.recipient_user).json()
         self.assertTrue(im_create.get('success'))
 
