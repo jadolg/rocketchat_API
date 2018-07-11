@@ -21,5 +21,7 @@ services:
     image: mongo:3.3
     restart: always
     command: mongod --smallfiles
+    ports:
+        - "27017:27017"
     volumes:
      - ./data/db:/data/db
