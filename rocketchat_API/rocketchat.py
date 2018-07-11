@@ -1,9 +1,12 @@
 # -*-coding:utf-8-*-
+import logging
 
 import requests
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketConnectionException, RocketAuthenticationException, \
     RocketMissingParamException
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
 
 class RocketChat:
@@ -295,6 +298,7 @@ class RocketChat:
     # this endpoint isn't working properly
     def channels_clean_history(self, room_id, latest, oldest, **kwargs):
         """Cleans up a channel, removing messages from the provided time range."""
+        logging.warning("channels.cleanHistory will be removed on Rocket.Chat 0.67.0")
         return self.__call_api_post('channels.cleanHistory', roomId=room_id, latest=latest, oldest=oldest,
                                     kwargs=kwargs)
 
