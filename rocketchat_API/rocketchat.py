@@ -109,6 +109,14 @@ class RocketChat:
         """Searches for users or rooms that are visible to the user."""
         return self.__call_api_get('spotlight', query=query, kwargs=kwargs)
 
+    def users_get_preferences(self, **kwargs):
+        """Gets all preferences of user."""
+        return self.__call_api_get('users.getPreferences', kwargs=kwargs)
+
+    def users_set_preferences(self, user_id, data, **kwargs):
+        """Set user’s preferences."""
+        return self.__call_api_post('users.setPreferences', userId=user_id, data=data, kwargs=kwargs)
+
     # Users
 
     def users_info(self, user_id=None, username=None, **kwargs):

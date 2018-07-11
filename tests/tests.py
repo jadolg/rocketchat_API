@@ -152,6 +152,13 @@ class TestUsers(unittest.TestCase):
         users_forgot_password = self.rocket.users_forgot_password(email='email@domain.com').json()
         self.assertTrue(users_forgot_password.get('success'))
 
+    def test_users_set_get_preferences(self):
+        users_set_preferences = self.rocket.users_set_preferences(user_id=self.rocket.me().json().get('_id'),
+                                                                  data={'useEmojis': False}).json()
+        self.assertTrue(users_set_preferences.get('success'))
+        users_get_preferences = self.rocket.users_get_preferences().json()
+        self.assertTrue(users_get_preferences.get('success'))
+
 
 class TestChat(unittest.TestCase):
     def setUp(self):
