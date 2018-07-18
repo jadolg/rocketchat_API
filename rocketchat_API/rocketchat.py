@@ -451,9 +451,14 @@ class RocketChat:
         """Retrieves the integrations which the group has"""
         return self.__call_api_get('groups.getIntegrations', roomId=room_id, kwargs=kwargs)
 
-    def groups_info(self, room_id, **kwargs):
+    def groups_info(self, room_id=None, room_name=None, **kwargs):
         """GRetrieves the information about the private group, only if you’re part of the group."""
-        return self.__call_api_get('groups.info', roomId=room_id, kwargs=kwargs)
+        if room_id:
+            return self.__call_api_get('groups.info', roomId=room_id, kwargs=kwargs)
+        elif room_name:
+            return self.__call_api_get('groups.info', roomName=room_name, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or roomName required')
 
     def groups_invite(self, room_id, user_id, **kwargs):
         """Adds a user to the private group."""

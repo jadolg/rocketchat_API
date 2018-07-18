@@ -447,10 +447,15 @@ class TestGroups(unittest.TestCase):
         self.assertIn('groups', groups_list)
 
     def test_groups_info(self):
-        groups_info = self.rocket.groups_info(room_id=self.test_group_id).json()
-        self.assertTrue(groups_info.get('success'))
-        self.assertIn('group', groups_info)
-        self.assertEqual(groups_info.get('group').get('_id'), self.test_group_id)
+        groups_info_by_id = self.rocket.groups_info(room_id=self.test_group_id).json()
+        self.assertTrue(groups_info_by_id.get('success'))
+        self.assertIn('group', groups_info_by_id)
+        self.assertEqual(groups_info_by_id.get('group').get('_id'), self.test_group_id)
+
+        groups_info_by_name = self.rocket.groups_info(room_name=self.test_group_name).json()
+        self.assertTrue(groups_info_by_name.get('success'))
+        self.assertIn('group', groups_info_by_name)
+        self.assertEqual(groups_info_by_name.get('group').get('_id'), self.test_group_id)
 
     def test_groups_history(self):
         groups_history = self.rocket.groups_history(room_id=self.test_group_id).json()
