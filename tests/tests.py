@@ -84,6 +84,9 @@ class TestUsers(unittest.TestCase):
         self.assertTrue(users_info_by_name.get('success'))
         self.assertEqual(users_info_by_name.get('user').get('name'), self.user)
 
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.users_info()
+
     def test_users_get_presence(self):
         login = self.rocket.login(self.user, self.password).json()
         users_get_presence = self.rocket.users_get_presence(user_id=login.get('data').get('userId')).json()
@@ -91,6 +94,9 @@ class TestUsers(unittest.TestCase):
 
         users_get_presence_by_name = self.rocket.users_get_presence(username=self.user).json()
         self.assertTrue(users_get_presence_by_name.get('success'))
+
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.users_get_presence()
 
     def test_users_get_avatar(self):
         login = self.rocket.login(self.user, self.password).json()
@@ -115,12 +121,18 @@ class TestUsers(unittest.TestCase):
         users_reset_avatar = self.rocket.users_reset_avatar(username=self.user).json()
         self.assertTrue(users_reset_avatar.get('success'))
 
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.users_reset_avatar()
+
     def test_users_create_token(self):
         login = self.rocket.login(self.user, self.password).json()
         users_create_token = self.rocket.users_create_token(user_id=login.get('data').get('userId')).json()
         self.assertTrue(users_create_token.get('success'))
         self.assertIn('authToken', users_create_token.get('data'))
         self.assertIn('userId', users_create_token.get('data'))
+
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.users_create_token()
 
     def test_users_create_update_delete(self):
         users_create = self.rocket.users_create(email='email2@domain.com', name='user2', password=self.password,
@@ -178,6 +190,9 @@ class TestChat(unittest.TestCase):
         self.assertEqual(chat_post_message.get('channel'), 'GENERAL')
         self.assertEqual(chat_post_message.get('message').get('msg'), 'hello')
         self.assertTrue(chat_post_message.get('success'))
+
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.chat_post_message(text='text')
 
         msg_id = chat_post_message.get('message').get('_id')
         chat_get_message = self.rocket.chat_get_message(msg_id=msg_id).json()
@@ -258,6 +273,9 @@ class TestChannels(unittest.TestCase):
         self.assertEqual(channels_info.get('channel').get('_id'), 'GENERAL')
         self.assertEqual(channels_info.get('channel').get('name'), channel_name)
 
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.channels_info()
+
     def test_channels_history(self):
         channels_history = self.rocket.channels_history(room_id='GENERAL').json()
         self.assertTrue(channels_history.get('success'))
@@ -281,6 +299,9 @@ class TestChannels(unittest.TestCase):
         channels_remove_owner = self.rocket.channels_remove_owner('GENERAL',
                                                                   user_id=self.testuser.get('user').get('_id')).json()
         self.assertTrue(channels_remove_owner.get('success'), channels_remove_owner.get('error'))
+
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.channels_add_owner(room_id='GENERAL')
 
     def test_channels_archive_unarchive(self):
         channels_archive = self.rocket.channels_archive('GENERAL').json()
@@ -419,6 +440,9 @@ class TestChannels(unittest.TestCase):
         channels_files = self.rocket.channels_files(room_name='general').json()
         self.assertTrue(channels_files.get('success'))
 
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.channels_files()
+
 
 class TestGroups(unittest.TestCase):
     def setUp(self):
@@ -460,6 +484,9 @@ class TestGroups(unittest.TestCase):
         self.assertTrue(groups_info_by_name.get('success'))
         self.assertIn('group', groups_info_by_name)
         self.assertEqual(groups_info_by_name.get('group').get('_id'), self.test_group_id)
+
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.groups_info()
 
     def test_groups_history(self):
         groups_history = self.rocket.groups_history(room_id=self.test_group_id).json()
@@ -603,6 +630,9 @@ class TestGroups(unittest.TestCase):
         self.assertTrue(groups_roles.get('success'))
         self.assertIsNotNone(groups_roles.get('roles'))
 
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.groups_roles()
+
     def test_groups_files(self):
         name = str(uuid.uuid1())
         groups_create = self.rocket.groups_create(name).json()
@@ -613,6 +643,9 @@ class TestGroups(unittest.TestCase):
 
         groups_files = self.rocket.groups_files(room_name=name).json()
         self.assertTrue(groups_files.get('success'))
+
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.groups_files()
 
 
 class TestRooms(unittest.TestCase):
@@ -736,6 +769,9 @@ class TestIMs(unittest.TestCase):
         im_files = self.rocket.im_files(user_name=self.recipient_user).json()
         self.assertTrue(im_files.get('success'))
 
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.im_files()
+
     def test_im_counters(self):
         im_create = self.rocket.im_create(self.recipient_user).json()
         self.assertTrue(im_create.get('success'))
@@ -745,6 +781,9 @@ class TestIMs(unittest.TestCase):
 
         im_counters = self.rocket.im_counters(user_name=self.rocket.me().json().get('_id')).json()
         self.assertTrue(im_counters.get('success'))
+
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.im_counters()
 
 
 class TestSettings(unittest.TestCase):
