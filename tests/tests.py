@@ -438,6 +438,9 @@ class TestChannels(unittest.TestCase):
         self.assertTrue(channels_roles.get('success'))
         self.assertIsNotNone(channels_roles.get('roles'))
 
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.channels_roles()
+
     def test_channels_files(self):
         channels_files = self.rocket.channels_files(room_id='GENERAL').json()
         self.assertTrue(channels_files.get('success'))
