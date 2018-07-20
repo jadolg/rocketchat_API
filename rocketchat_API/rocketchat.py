@@ -103,7 +103,7 @@ class RocketChat:
 
     def directory(self, query, **kwargs):
         """Search by users or channels on all server."""
-        if query.__class__ == dict:
+        if isinstance(query, dict):
             query = str(query).replace("'", '"')
 
         return self.__call_api_get('directory', query=query, kwargs=kwargs)

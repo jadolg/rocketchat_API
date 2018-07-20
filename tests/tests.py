@@ -159,6 +159,10 @@ class TestUsers(unittest.TestCase):
         users_get_preferences = self.rocket.users_get_preferences().json()
         self.assertTrue(users_get_preferences.get('success'))
 
+    def test_users_list(self):
+        users_list = self.rocket.users_list().json()
+        self.assertTrue(users_list.get('success'))
+
 
 class TestChat(unittest.TestCase):
     def setUp(self):
