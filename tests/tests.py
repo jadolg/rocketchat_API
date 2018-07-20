@@ -815,6 +815,11 @@ class TestSettings(unittest.TestCase):
     def test_settings(self):
         settings = self.rocket.settings().json()
         self.assertTrue(settings.get('success'))
+        settings_get = self.rocket.settings_get(_id='API_Allow_Infinite_Count').json()
+        self.assertTrue(settings_get.get('success'))
+        self.assertTrue(settings_get.get('value'))
+        settings_update = self.rocket.settings_update(_id='API_Allow_Infinite_Count', value=True).json()
+        self.assertTrue(settings_update.get('success'))
 
 
 if __name__ == '__main__':
