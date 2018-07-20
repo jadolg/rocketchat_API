@@ -451,6 +451,12 @@ class TestChannels(unittest.TestCase):
         with self.assertRaises(RocketMissingParamException):
             self.rocket.channels_files()
 
+    def test_channels_clean_history(self):
+        channels_clean_history = self.rocket.channels_clean_history(room_id='GENERAL',
+                                                                    latest='2016-09-30T13:42:25.304Z',
+                                                                    oldest='2016-05-30T13:42:25.304Z').json()
+        self.assertTrue(channels_clean_history.get('success'))
+
 
 class TestGroups(unittest.TestCase):
     def setUp(self):
