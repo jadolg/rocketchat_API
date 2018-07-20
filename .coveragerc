@@ -2,6 +2,7 @@
 branch = True
 omit=
     tests/tests.py
+    setup.py
 
 [report]
 exclude_lines =
