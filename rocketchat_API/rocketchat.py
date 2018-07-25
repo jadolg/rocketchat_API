@@ -653,3 +653,7 @@ class RocketChat:
     def subscriptions_get(self, **kwargs):
         """Get all subscriptions."""
         return self.__call_api_get('subscriptions.get', kwargs=kwargs)
+
+    def subscriptions_get_one(self, room_id, **kwargs):
+        """Get the subscription by room id."""
+        return self.__call_api_get('subscriptions.getOne', roomId=room_id, kwargs=kwargs)

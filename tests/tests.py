@@ -959,6 +959,10 @@ class TestSubscriptions(unittest.TestCase):
         self.assertTrue(subscriptions_get.get('success'))
         self.assertIn('update', subscriptions_get)
 
+    def test_subscriptions_get_one(self):
+        subscriptions_get_one = self.rocket.subscriptions_get_one(room_id='GENERAL').json()
+        self.assertTrue(subscriptions_get_one.get('success'))
+        self.assertIn('subscription', subscriptions_get_one)
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
