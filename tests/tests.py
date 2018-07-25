@@ -941,5 +941,24 @@ class TestSettings(unittest.TestCase):
         self.assertTrue(settings_update.get('success'))
 
 
+class TestSubscriptions(unittest.TestCase):
+    def setUp(self):
+        self.rocket = RocketChat()
+        self.user = 'user1'
+        self.password = 'password'
+        self.email = 'email@domain.com'
+        self.rocket.users_register(
+            email=self.email, name=self.user, password=self.password, username=self.user)
+        self.rocket = RocketChat(self.user, self.password)
+
+    def tearDown(self):
+        pass
+
+    def test_subscriptions_get(self):
+        subscriptions_get = self.rocket.subscriptions_get().json()
+        self.assertTrue(subscriptions_get.get('success'))
+        self.assertIn('update', subscriptions_get)
+
+
 if __name__ == '__main__':
     unittest.main(warnings='ignore')

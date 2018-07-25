@@ -647,3 +647,9 @@ class RocketChat:
             return self.__call_api_post('rooms.favorite', roomName=room_name, favorite=favorite)
         else:
             raise RocketMissingParamException('roomId or roomName required')
+
+    # Subscriptions
+
+    def subscriptions_get(self, **kwargs):
+        """Get all subscriptions."""
+        return self.__call_api_get('subscriptions.get', kwargs=kwargs)
