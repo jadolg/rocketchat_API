@@ -264,6 +264,11 @@ class TestChat(unittest.TestCase):
             message_id).json()
         self.assertTrue(chat_unstar_message.get('success'))
 
+    def test_chat_search(self):
+        chat_search = self.rocket.chat_search(
+            room_id='GENERAL', search_text='hello').json()
+        self.assertTrue(chat_search.get('success'))
+
 
 class TestChannels(unittest.TestCase):
     def setUp(self):
@@ -515,7 +520,8 @@ class TestChannels(unittest.TestCase):
     def test_channels_get_all_user_mentions_by_channel(self):
         channels_get_all_user_mentions_by_channel = self.rocket.channels_get_all_user_mentions_by_channel(
             room_id='GENERAL').json()
-        self.assertTrue(channels_get_all_user_mentions_by_channel.get('success'))
+        self.assertTrue(
+            channels_get_all_user_mentions_by_channel.get('success'))
 
 
 class TestGroups(unittest.TestCase):

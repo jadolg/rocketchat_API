@@ -241,6 +241,10 @@ class RocketChat:
         """Updates the text of the chat message."""
         return self.__call_api_post('chat.react', messageId=msg_id, emoji=emoji, kwargs=kwargs)
 
+    def chat_search(self, room_id, search_text, **kwargs):
+        """Search for messages in a channel by id and text message."""
+        return self.__call_api_get('chat.search', roomId=room_id, searchText=search_text, kwargs=kwargs)
+
     # Channels
 
     def channels_list(self, **kwargs):
