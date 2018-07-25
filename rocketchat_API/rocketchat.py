@@ -5,7 +5,8 @@ import requests
 from rocketchat_API.APIExceptions.RocketExceptions import RocketConnectionException, RocketAuthenticationException, \
     RocketMissingParamException
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
 
 class RocketChat:
@@ -34,7 +35,8 @@ class RocketChat:
     def __call_api_get(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
         return requests.get(self.server_url + self.API_path + method + '?' +
-                            '&'.join([i + '=' + str(args[i]) for i in args.keys()]),
+                            '&'.join([i + '=' + str(args[i])
+                                      for i in args.keys()]),
                             headers=self.headers,
                             verify=self.ssl_verify,
                             proxies=self.proxies,
@@ -70,7 +72,8 @@ class RocketChat:
 
     def login(self, user, password):
         login_request = requests.post(self.server_url + self.API_path + 'login',
-                                      data={'username': user, 'password': password},
+                                      data={'username': user,
+                                            'password': password},
                                       verify=self.ssl_verify,
                                       proxies=self.proxies)
         if login_request.status_code == 401:
@@ -297,7 +300,8 @@ class RocketChat:
     # this endpoint isn't working properly
     def channels_clean_history(self, room_id, latest, oldest, **kwargs):
         """Cleans up a channel, removing messages from the provided time range."""
-        logging.warning("channels.cleanHistory will be removed on Rocket.Chat 0.67.0")
+        logging.warning(
+            "channels.cleanHistory will be removed on Rocket.Chat 0.67.0")
         return self.__call_api_post('channels.cleanHistory', roomId=room_id, latest=latest, oldest=oldest,
                                     kwargs=kwargs)
 
@@ -396,6 +400,10 @@ class RocketChat:
             return self.__call_api_get('channels.files', roomName=room_name, kwargs=kwargs)
         else:
             raise RocketMissingParamException('roomId or room_name required')
+
+    def channels_get_all_user_mentions_by_channel(self, room_id, **kwargs):
+        """Gets all the mentions of a channel."""
+        return self.__call_api_get('channels.getAllUserMentionsByChannel', roomId=room_id, kwargs=kwargs)
 
     # Groups
 
