@@ -1,6 +1,5 @@
 # -*-coding:utf-8-*-
 import logging
-
 import requests
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketConnectionException, RocketAuthenticationException, \
