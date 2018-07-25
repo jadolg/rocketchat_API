@@ -245,6 +245,10 @@ class RocketChat:
         """Search for messages in a channel by id and text message."""
         return self.__call_api_get('chat.search', roomId=room_id, searchText=search_text, kwargs=kwargs)
 
+    def chat_get_message_read_receipts(self, message_id, **kwargs):
+        """Get Message Read Receipts"""
+        return self.__call_api_get('chat.getMessageReadReceipts', messageId=message_id, kwargs=kwargs)
+
     # Channels
 
     def channels_list(self, **kwargs):

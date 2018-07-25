@@ -269,6 +269,14 @@ class TestChat(unittest.TestCase):
             room_id='GENERAL', search_text='hello').json()
         self.assertTrue(chat_search.get('success'))
 
+    def test_chat_get_message_read_receipts(self):
+        message_id = self.rocket.chat_post_message(
+            "hello", channel='GENERAL').json().get('message').get('_id')
+        chat_get_message_read_receipts = self.rocket.chat_get_message_read_receipts(
+            message_id=message_id).json()
+        self.assertTrue(chat_get_message_read_receipts.get('success'))
+        self.assertIn('receipts', chat_get_message_read_receipts)
+
 
 class TestChannels(unittest.TestCase):
     def setUp(self):
