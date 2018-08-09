@@ -306,14 +306,6 @@ class RocketChat:
         """Unarchives a channel."""
         return self.__call_api_post('channels.unarchive', roomId=room_id, kwargs=kwargs)
 
-    # this endpoint isn't working properly
-    def channels_clean_history(self, room_id, latest, oldest, **kwargs):
-        """Cleans up a channel, removing messages from the provided time range."""
-        logging.warning(
-            "channels.cleanHistory will be removed on Rocket.Chat 0.67.0")
-        return self.__call_api_post('channels.cleanHistory', roomId=room_id, latest=latest, oldest=oldest,
-                                    kwargs=kwargs)
-
     def channels_close(self, room_id, **kwargs):
         """Removes the channel from the user’s list of channels."""
         return self.__call_api_post('channels.close', roomId=room_id, kwargs=kwargs)
