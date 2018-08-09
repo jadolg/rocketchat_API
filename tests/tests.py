@@ -960,9 +960,25 @@ class TestSubscriptions(unittest.TestCase):
         self.assertIn('update', subscriptions_get)
 
     def test_subscriptions_get_one(self):
-        subscriptions_get_one = self.rocket.subscriptions_get_one(room_id='GENERAL').json()
+        subscriptions_get_one = self.rocket.subscriptions_get_one(
+            room_id='GENERAL').json()
         self.assertTrue(subscriptions_get_one.get('success'))
         self.assertIn('subscription', subscriptions_get_one)
+
+    def test_subscriptions_unread(self):
+        subscriptions_unread = self.rocket.subscriptions_unread(
+            room_id='GENERAL').json()
+        self.assertTrue(subscriptions_unread.get('success'), 'Call did not succeed')
+
+    def test_subscriptions_unread_message_id(self):
+        self.skipTest(
+            "possible API bug on this endpoint when using only message")
+        chat_post_message_id = self.rocket.chat_post_message(
+            "hello", channel='GENERAL').json().get('message').get('_id')
+        subscriptions_unread = self.rocket.subscriptions_unread(
+            first_unread_message_id=chat_post_message_id).json()
+        self.assertTrue(subscriptions_unread.get('success'))
+
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
