@@ -157,11 +157,11 @@ class TestUsers(unittest.TestCase):
         self.assertTrue(users_create.get('success'), users_create.get('error'))
 
         user_id = users_create.get('user').get('_id')
-        users_update = self.rocket.users_update(user_id, email='anewemail@domain.com', name='newname',
+        users_update = self.rocket.users_update(user_id, email='anewemailhere@domain.com', name='newname',
                                                 password=self.password, username='newusername').json()
-        self.assertTrue(users_update.get('success'))
+        self.assertTrue(users_update.get('success'), 'Can not update user')
         self.assertEqual(users_update.get('user').get(
-            'email'), 'anewemail@domain.com')
+            'emails')[0].get('address'), 'anewemailhere@domain.com')
         self.assertEqual(users_update.get('user').get('name'), 'newname')
         self.assertEqual(users_update.get(
             'user').get('username'), 'newusername')
@@ -288,17 +288,18 @@ class TestChannels(unittest.TestCase):
             email=self.email, name=self.user, password=self.password, username=self.user)
         self.rocket.channels_add_owner('GENERAL', username=self.user)
         self.rocket = RocketChat(self.user, self.password)
-        self.testuser = self.rocket.users_create(
-            'testuser1@domain.com', 'testuser1', 'password', 'testuser1').json()
-        if not self.testuser.get('success'):
-            user_id = self.rocket.users_info(
-                username='testuser1').json().get('user').get('_id')
-            self.rocket.users_delete(user_id)
-            self.testuser = self.rocket.users_create('testuser1@domain.com', 'testuser1', 'password',
-                                                     'testuser1').json()
+
+        testuser = self.rocket.users_info(username='testuser1').json()
+        if not testuser.get('success'):
+            testuser = self.rocket.users_create(
+                'testuser1@domain.com', 'testuser1', 'password', 'testuser1').json()
+            if not testuser.get('success'):
+                self.fail("can't create test user")
+
+        self.testuser_id = testuser.get('user').get('_id')
 
     def tearDown(self):
-        self.rocket.users_delete(self.testuser.get('user').get('_id'))
+        self.rocket.users_delete(self.testuser_id)
 
     def test_channels_list(self):
         channels_list = self.rocket.channels_list().json()
@@ -347,11 +348,11 @@ class TestChannels(unittest.TestCase):
 
     def test_channels_add_and_remove_owner(self):
         channels_add_owner = self.rocket.channels_add_owner('GENERAL',
-                                                            user_id=self.testuser.get('user').get('_id')).json()
+                                                            user_id=self.testuser_id).json()
         self.assertTrue(channels_add_owner.get('success'),
                         channels_add_owner.get('error'))
         channels_remove_owner = self.rocket.channels_remove_owner('GENERAL',
-                                                                  user_id=self.testuser.get('user').get('_id')).json()
+                                                                  user_id=self.testuser_id).json()
         self.assertTrue(channels_remove_owner.get('success'),
                         channels_remove_owner.get('error'))
 
@@ -393,12 +394,12 @@ class TestChannels(unittest.TestCase):
 
     def test_channels_invite(self):
         channels_invite = self.rocket.channels_invite(
-            'GENERAL', self.testuser.get('user').get('_id')).json()
+            'GENERAL', self.testuser_id).json()
         self.assertTrue(channels_invite.get('success'))
 
     def test_channels_kick(self):
         channels_kick = self.rocket.channels_kick(
-            'GENERAL', self.testuser.get('user').get('_id')).json()
+            'GENERAL', self.testuser_id).json()
         self.assertTrue(channels_kick.get('success'))
 
     def test_channels_leave(self):
@@ -410,9 +411,9 @@ class TestChannels(unittest.TestCase):
         name = str(uuid.uuid1())
         channels_create = self.rocket.channels_create(name).json()
         self.rocket.channels_invite(room_id=channels_create.get('channel').get('_id'),
-                                    user_id=self.testuser.get('user').get('_id'))
+                                    user_id=self.testuser_id)
         self.rocket.channels_add_owner(channels_create.get('channel').get('_id'),
-                                       user_id=self.testuser.get('user').get('_id')).json()
+                                       user_id=self.testuser_id).json()
         channels_leave = self.rocket.channels_leave(
             channels_create.get('channel').get('_id')).json()
         self.assertTrue(channels_leave.get('success'))
@@ -535,20 +536,20 @@ class TestGroups(unittest.TestCase):
         self.rocket.users_register(
             email=self.email, name=self.user, password=self.password, username=self.user)
         self.rocket = RocketChat(self.user, self.password)
-        self.testuser = self.rocket.users_create(
-            'testuser1@domain.com', 'testuser1', 'password', 'testuser1').json()
-        if not self.testuser.get('success'):
-            user_id = self.rocket.users_info(
-                username='testuser1').json().get('user').get('_id')
-            self.rocket.users_delete(user_id)
-            self.testuser = self.rocket.users_create('testuser1@domain.com', 'testuser1', 'password',
-                                                     'testuser1').json()
+        testuser = self.rocket.users_info(username='testuser1').json()
+        if not testuser.get('success'):
+            testuser = self.rocket.users_create(
+                'testuser1@domain.com', 'testuser1', 'password', 'testuser1').json()
+            if not testuser.get('success'):
+                self.fail("can't create test user")
+
+        self.testuser_id = testuser.get('user').get('_id')
         self.test_group_name = str(uuid.uuid1())
         self.test_group_id = self.rocket.groups_create(
             self.test_group_name).json().get('group').get('_id')
 
     def tearDown(self):
-        self.rocket.users_delete(self.testuser.get('user').get('_id'))
+        self.rocket.users_delete(self.testuser_id)
 
     def test_groups_list_all(self):
         groups_list = self.rocket.groups_list_all().json()
@@ -595,14 +596,14 @@ class TestGroups(unittest.TestCase):
 
     def test_groups_add_and_remove_owner(self):
         self.rocket.groups_invite(
-            self.test_group_id, self.testuser.get('user').get('_id'))
+            self.test_group_id, self.testuser_id)
         groups_add_owner = self.rocket.groups_add_owner(self.test_group_id,
-                                                        user_id=self.testuser.get('user').get('_id')).json()
+                                                        user_id=self.testuser_id).json()
         self.assertTrue(groups_add_owner.get('success'),
                         groups_add_owner.get('error'))
 
         groups_remove_owner = self.rocket.groups_remove_owner(self.test_group_id,
-                                                              user_id=self.testuser.get('user').get('_id')).json()
+                                                              user_id=self.testuser_id).json()
         self.assertTrue(groups_remove_owner.get('success'),
                         groups_remove_owner.get('error'))
 
@@ -642,17 +643,17 @@ class TestGroups(unittest.TestCase):
 
     def test_groups_invite(self):
         groups_invite = self.rocket.groups_invite(
-            self.test_group_id, self.testuser.get('user').get('_id')).json()
+            self.test_group_id, self.testuser_id).json()
         self.assertTrue(groups_invite.get('success'))
 
     def test_groups_kick(self):
         id_group_created = self.rocket.groups_create(
             str(uuid.uuid1())).json().get('group').get('_id')
         groups_invite = self.rocket.groups_invite(
-            id_group_created, self.testuser.get('user').get('_id')).json()
+            id_group_created, self.testuser_id).json()
         self.assertTrue(groups_invite.get('success'))
         groups_kick = self.rocket.groups_kick(
-            id_group_created, self.testuser.get('user').get('_id')).json()
+            id_group_created, self.testuser_id).json()
         self.assertTrue(groups_kick.get('success'))
 
     def test_groups_leave(self):
@@ -664,9 +665,9 @@ class TestGroups(unittest.TestCase):
         name = str(uuid.uuid1())
         groups_create = self.rocket.groups_create(name).json()
         self.rocket.groups_invite(room_id=groups_create.get('group').get('_id'),
-                                  user_id=self.testuser.get('user').get('_id'))
+                                  user_id=self.testuser_id)
         self.rocket.groups_add_owner(groups_create.get('group').get('_id'),
-                                     user_id=self.testuser.get('user').get('_id')).json()
+                                     user_id=self.testuser_id).json()
         groups_leave = self.rocket.groups_leave(
             groups_create.get('group').get('_id')).json()
         self.assertTrue(groups_leave.get('success'))
