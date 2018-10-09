@@ -651,11 +651,6 @@ class RocketChat:
         """Get the subscription by room id."""
         return self.__call_api_get('subscriptions.getOne', roomId=room_id, kwargs=kwargs)
 
-    def subscriptions_unread(self, room_id=None, first_unread_message_id=None, **kwargs):
+    def subscriptions_unread(self, room_id, **kwargs):
         """Mark messages as unread by roomId or from a message"""
-        if room_id is not None:
-            return self.__call_api_post('subscriptions.unread', roomId=room_id, kwargs=kwargs)
-        elif first_unread_message_id is not None:
-            firstUnreadMessage = {'_id': first_unread_message_id}
-            return self.__call_api_post('subscriptions.unread',
-                                        firstUnreadMessage=firstUnreadMessage, kwargs=kwargs)
+        return self.__call_api_post('subscriptions.unread', roomId=room_id, kwargs=kwargs)

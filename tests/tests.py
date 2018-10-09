@@ -967,15 +967,6 @@ class TestSubscriptions(unittest.TestCase):
             room_id='GENERAL').json()
         self.assertTrue(subscriptions_unread.get('success'), 'Call did not succeed')
 
-    def test_subscriptions_unread_message_id(self):
-        self.skipTest(
-            "possible API bug on this endpoint when using only message")
-        chat_post_message_id = self.rocket.chat_post_message(
-            "hello", channel='GENERAL').json().get('message').get('_id')
-        subscriptions_unread = self.rocket.subscriptions_unread(
-            first_unread_message_id=chat_post_message_id).json()
-        self.assertTrue(subscriptions_unread.get('success'))
-
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
