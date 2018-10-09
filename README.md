@@ -3,7 +3,7 @@ Python API wrapper for [Rocket.Chat](https://rocket.chat/docs/developer-guides/r
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/fff725d9a0974c6597c2dd007daaa86e)](https://www.codacy.com/app/jadolg/rocketchat_API?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jadolg/rocketchat_API&amp;utm_campaign=Badge_Grade) [![Build Status](https://travis-ci.org/jadolg/rocketchat_API.png)](https://travis-ci.org/jadolg/rocketchat_API) [![codecov](https://codecov.io/gh/jadolg/rocketchat_API/branch/master/graph/badge.svg)](https://codecov.io/gh/jadolg/rocketchat_API) ![PyPI](https://img.shields.io/pypi/v/rocketchat_API.svg) [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/jadolg) 
 
-Do you like my library? buy me a 🍺 ➡️ [![Donate Bitcoin](https://img.shields.io/badge/donate-€5-orange.svg)](https://jadolg.github.io/donate-bitcoin/index.html)
+Do you like my library? buy me a 🍺 ➡️ [![Donate Bitcoin](https://img.shields.io/badge/donate-€5-orange.svg)](https://jadolg.github.io/donate-bitcoin/index.html) or [![ko-fi](https://www.ko-fi.com/img/donate_sm.png)](https://ko-fi.com/G2G6GWVV)
 ### Installation
 - From pypi:
 `pip3 install rocketchat_API`
@@ -38,7 +38,7 @@ Only required parameters are explicit on the RocketChat class but you can still 
 ### API coverage
 Most of the API methods are already implemented. If you are interested in a specific call just open an issue or open a pull request.
 
-*note*: Library updated to work with Rocket.Chat >= 0.66.0
+*note*: Library updated to work with Rocket.Chat >= 0.70.3
 
 ### Tests
 We are actively testing :) 
