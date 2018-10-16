@@ -14,7 +14,8 @@ class RocketChat:
     headers = {}
     API_path = '/api/v1/'
 
-    def __init__(self, user=None, password=None, server_url='http://127.0.0.1:3000', ssl_verify=True, proxies=None,
+    def __init__(self, user=None, password=None, auth_token=None, user_id=None,
+                 server_url='http://127.0.0.1:3000', ssl_verify=True, proxies=None,
                  timeout=30):
         """Creates a RocketChat object and does login on the specified server"""
         self.server_url = server_url
@@ -23,6 +24,9 @@ class RocketChat:
         self.timeout = timeout
         if user and password:
             self.login(user, password)
+        if auth_token and user_id:
+            self.headers['X-Auth-Token'] = auth_token
+            self.headers['X-User-Id'] = user_id
 
     @staticmethod
     def __reduce_kwargs(kwargs):
