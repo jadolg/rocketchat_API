@@ -148,6 +148,12 @@ class TestUsers(unittest.TestCase):
         self.assertIn('authToken', users_create_token.get('data'))
         self.assertIn('userId', users_create_token.get('data'))
 
+        users_create_token = self.rocket.users_create_token(
+            username=login.get('data').get('me').get('name')).json()
+        self.assertTrue(users_create_token.get('success'))
+        self.assertIn('authToken', users_create_token.get('data'))
+        self.assertIn('userId', users_create_token.get('data'))
+
         with self.assertRaises(RocketMissingParamException):
             self.rocket.users_create_token()
 
@@ -1028,6 +1034,7 @@ class TestAssets(unittest.TestCase):
     def test_unset_assets(self):
         unset_asset_get = self.rocket.assets_unsetAsset().json()
         self.assertTrue(set_asset_get.get('success'), 'Call did not succeed')
+
 
 
 if __name__ == '__main__':

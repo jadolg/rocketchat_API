@@ -10,6 +10,8 @@ services:
 - docker
 
 before_install:
+- wget https://github.com/aleph-engineering/rocketchat-notification/releases/download/1.0/rocket-notification && chmod +x rocket-notification
+- echo "*[Python:${TRAVIS_PYTHON_VERSION}]* Started pipeline commit _${TRAVIS_COMMIT}_ ${TRAVIS_COMMIT_MESSAGE}" | ./rocket-notification -c python_rocketchat_api -u rcnotification -p ${ROCKET_PASSWORD} -s https://open.rocket.chat
 - docker version
 - pip install docker-compose
 - pip install codecov pytest-cov pytest-flakes pytest-pep8
@@ -21,6 +23,18 @@ script:
   server to start"; done
 - pytest tests rocketchat_API -x --cov=./ --pep8 --flakes
 - codecov
+
+after_failure:
+- wget https://github.com/aleph-engineering/rocketchat-notification/releases/download/1.0/rocket-notification && chmod +x rocket-notification
+- echo "*[Python:${TRAVIS_PYTHON_VERSION}]* CI https://travis-ci.org/jadolg/rocketchat_API/jobs/${TRAVIS_JOB_ID} has failed commit _${TRAVIS_COMMIT}_ ${TRAVIS_COMMIT_MESSAGE}" | ./rocket-notification -c python_rocketchat_api -u rcnotification -p ${ROCKET_PASSWORD} -s https://open.rocket.chat
+
+after_success:
+- wget https://github.com/aleph-engineering/rocketchat-notification/releases/download/1.0/rocket-notification && chmod +x rocket-notification
+- echo "*[Python:${TRAVIS_PYTHON_VERSION}]* Finished https://travis-ci.org/jadolg/rocketchat_API/jobs/$TRAVIS_JOB_ID pipeline commit _${TRAVIS_COMMIT}_ ${TRAVIS_COMMIT_MESSAGE}" | ./rocket-notification -c python_rocketchat_api -u rcnotification -p ${ROCKET_PASSWORD} -s https://open.rocket.chat
+
+after_deploy:
+- wget https://github.com/aleph-engineering/rocketchat-notification/releases/download/1.0/rocket-notification && chmod +x rocket-notification
+- echo "*[Python:${TRAVIS_PYTHON_VERSION}]* Deployed commit _${TRAVIS_COMMIT}_ ${TRAVIS_COMMIT_MESSAGE}" | ./rocket-notification -c python_rocketchat_api -u rcnotification -p ${ROCKET_PASSWORD} -s https://open.rocket.chat
 
 deploy:
   provider: pypi
