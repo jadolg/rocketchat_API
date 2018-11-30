@@ -11,7 +11,7 @@ Do you like my library? buy me a 🍺 ➡️ [![Donate Bitcoin](https://img.shie
 Clone our repository and `python3 setup.py install`
 
 ### Requirements
-- [requests](https://github.com/kennethreitz/requests)==2.19.1
+- [requests](https://github.com/kennethreitz/requests)==2.20.1
 
 ### Usage
 ```
