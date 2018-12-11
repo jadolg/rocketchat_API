@@ -178,11 +178,9 @@ class TestUsers(unittest.TestCase):
                         users_set_avatar.get('error'))
 
     def test_users_set_avatar_from_url(self):
-        # ToDo: Users.setAvatar calls https://secure.gravatar.com/avatar/ before actually do anything
-        self.skipTest(
-            "possible API bug on users.setAvatar when using avatarUrl")
+        # ToDo: Modify this test so it can run while offline
         users_set_avatar = self.rocket.users_set_avatar(
-            avatar_url='http://182.17.0.1:9999/avatar.png').json()
+            avatar_url='https://api.adorable.io/avatars/285/rocket.face.png').json()
         self.assertTrue(users_set_avatar.get('success'),
                         users_set_avatar.get('error'))
 
