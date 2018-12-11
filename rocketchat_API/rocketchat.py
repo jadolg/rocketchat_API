@@ -177,7 +177,7 @@ class RocketChat:
     def users_set_avatar(self, avatar_url, **kwargs):
         """Set a user’s avatar"""
         if avatar_url.startswith('http://') or avatar_url.startswith('https://'):
-            return self.__call_api_post('users.setAvatar', avatarURL=avatar_url, kwargs=kwargs)
+            return self.__call_api_post('users.setAvatar', avatarUrl=avatar_url, kwargs=kwargs)
         else:
             avatar_file = {"image": open(avatar_url, "rb")}
             return self.__call_api_post('users.setAvatar', files=avatar_file, kwargs=kwargs)
