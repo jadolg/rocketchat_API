@@ -1,5 +1,6 @@
 # -*-coding:utf-8-*-
 import logging
+import mimetypes
 
 import requests
 
@@ -658,3 +659,13 @@ class RocketChat:
     def subscriptions_unread(self, room_id, **kwargs):
         """Mark messages as unread by roomId or from a message"""
         return self.__call_api_post('subscriptions.unread', roomId=room_id, kwargs=kwargs)
+
+    # Assets
+
+    def assets_set_asset(self, asset_name, file, **kwargs):
+        """Set an asset image by name."""        
+        content_type = mimetypes.MimeTypes().guess_type(file)
+        files = {
+            asset_name: (file, open(file, 'rb'), content_type[0], {'Expires': '0'}),
+        }
+        return self.__call_api_post('assets.setAsset', kwargs=kwargs, use_json=False, files=files)

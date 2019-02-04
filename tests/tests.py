@@ -966,5 +966,23 @@ class TestSubscriptions(unittest.TestCase):
         self.assertTrue(subscriptions_unread.get('success'), 'Call did not succeed')
 
 
+class TestAssets(unittest.TestCase):
+    def setUp(self):
+        self.rocket = RocketChat()
+        self.user = 'user1'
+        self.password = 'password'
+        self.email = 'email@domain.com'
+        self.rocket.users_register(
+            email=self.email, name=self.user, password=self.password, username=self.user)
+        self.rocket = RocketChat(self.user, self.password)
+
+    def tearDown(self):
+        pass
+
+    def test_assets_set_asset(self):
+        assets_set_asset = self.rocket.assets_set_asset(asset_name='logo', file='logo.png').json()
+        self.assertTrue(assets_set_asset.get('success'))
+        
+
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
