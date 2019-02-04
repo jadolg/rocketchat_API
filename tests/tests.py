@@ -809,6 +809,16 @@ class TestRooms(unittest.TestCase):
         with self.assertRaises(RocketMissingParamException):
             self.rocket.rooms_favorite()
 
+    def test_rooms_info(self):
+        rooms_infoby_name = self.rocket.rooms_info(room_name='general').json()
+        self.assertTrue(rooms_infoby_name.get('success'))
+        self.assertEqual('GENERAL', rooms_infoby_name.get('room').get('_id'))
+        rooms_info_by_id = self.rocket.rooms_info(room_id='GENERAL').json()
+        self.assertTrue(rooms_info_by_id.get('success'))
+        self.assertEqual('GENERAL', rooms_info_by_id.get('room').get('_id'))
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.rooms_info()
+
 
 class TestIMs(unittest.TestCase):
     def setUp(self):
@@ -982,11 +992,11 @@ class TestAssets(unittest.TestCase):
     def test_assets_set_asset(self):
         assets_set_asset = self.rocket.assets_set_asset(asset_name='logo', file='logo.png').json()
         self.assertTrue(assets_set_asset.get('success'))
-        
+
     def test_assets_unset_asset(self):
         assets_unset_asset = self.rocket.assets_unset_asset(asset_name='logo').json()
         self.assertTrue(assets_unset_asset.get('success'))
-        
+
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')

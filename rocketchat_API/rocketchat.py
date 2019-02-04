@@ -646,6 +646,15 @@ class RocketChat:
         else:
             raise RocketMissingParamException('roomId or roomName required')
 
+    def rooms_info(self, room_id=None, room_name=None):
+        """Retrieves the information about the room."""
+        if room_id is not None:
+            return self.__call_api_get('rooms.info', roomId=room_id)
+        elif room_name is not None:
+            return self.__call_api_get('rooms.info', roomName=room_name)
+        else:
+            raise RocketMissingParamException('roomId or roomName required')
+
     # Subscriptions
 
     def subscriptions_get(self, **kwargs):
@@ -663,13 +672,13 @@ class RocketChat:
     # Assets
 
     def assets_set_asset(self, asset_name, file, **kwargs):
-        """Set an asset image by name."""        
+        """Set an asset image by name."""
         content_type = mimetypes.MimeTypes().guess_type(file)
         files = {
             asset_name: (file, open(file, 'rb'), content_type[0], {'Expires': '0'}),
         }
         return self.__call_api_post('assets.setAsset', kwargs=kwargs, use_json=False, files=files)
-    
+
     def assets_unset_asset(self, asset_name):
         """Unset an asset by name"""
         return self.__call_api_post('assets.unsetAsset', assetName=asset_name)
