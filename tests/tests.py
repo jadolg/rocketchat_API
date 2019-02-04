@@ -983,6 +983,10 @@ class TestAssets(unittest.TestCase):
         assets_set_asset = self.rocket.assets_set_asset(asset_name='logo', file='logo.png').json()
         self.assertTrue(assets_set_asset.get('success'))
         
+    def test_assets_unset_asset(self):
+        assets_unset_asset = self.rocket.assets_unset_asset(asset_name='logo').json()
+        self.assertTrue(assets_unset_asset.get('success'))
+        
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
