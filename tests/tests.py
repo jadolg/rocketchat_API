@@ -990,7 +990,7 @@ class TestAssets(unittest.TestCase):
         pass
 
     def test_assets_set_asset(self):
-        assets_set_asset = self.rocket.assets_set_asset(asset_name='logo', file='logo.png').json()
+        assets_set_asset = self.rocket.assets_set_asset(asset_name='logo', file='tests/logo.png').json()
         self.assertTrue(assets_set_asset.get('success'))
 
     def test_assets_unset_asset(self):
