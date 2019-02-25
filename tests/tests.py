@@ -975,6 +975,11 @@ class TestSubscriptions(unittest.TestCase):
             room_id='GENERAL').json()
         self.assertTrue(subscriptions_unread.get('success'), 'Call did not succeed')
 
+    def test_subscriptions_read(self):
+        subscriptions_read = self.rocket.subscriptions_read(
+            rid='GENERAL').json()
+        self.assertTrue(subscriptions_read.get('success'), 'Call did not succeed')
+
 
 class TestAssets(unittest.TestCase):
     def setUp(self):

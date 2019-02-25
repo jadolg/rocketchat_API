@@ -669,6 +669,10 @@ class RocketChat:
         """Mark messages as unread by roomId or from a message"""
         return self.__call_api_post('subscriptions.unread', roomId=room_id, kwargs=kwargs)
 
+    def subscriptions_read(self, rid, **kwargs):
+        """Mark room as read"""
+        return self.__call_api_post('subscriptions.read', rid=rid, kwargs=kwargs)
+
     # Assets
 
     def assets_set_asset(self, asset_name, file, **kwargs):

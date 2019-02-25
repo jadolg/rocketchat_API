@@ -43,7 +43,7 @@ Most of the API methods are already implemented. If you are interested in a spec
 ### Tests
 We are actively testing :) 
 
-Tests run on a Rocket.Chat Docker container so install Docker and docker-compose. To start test server do `docker-compose -f docker-compose-test-setver.yml up` and to take test server down `docker-compose -f docker-compose-test-setver.yml down`
+Tests run on a Rocket.Chat Docker container so install Docker and docker-compose. To start test server do `docker-compose -f docker-compose-test-server.yml up` and to take test server down `docker-compose -f docker-compose-test-server.yml down`
 
 ### Contributing
 You can contribute by doing Pull Requests. (It may take a while to merge your code but if it's good it will be merged). Please, try to implement tests for all your code and use a PEP8 compliant code style.
