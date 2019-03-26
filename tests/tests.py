@@ -1003,5 +1003,25 @@ class TestAssets(unittest.TestCase):
         self.assertTrue(assets_unset_asset.get('success'))
 
 
+class TestPermissions(unittest.TestCase):
+    def setUp(self):
+        self.rocket = RocketChat()
+        self.user = 'user1'
+        self.password = 'password'
+        self.email = 'email@domain.com'
+        self.rocket.users_register(
+            email=self.email, name=self.user, password=self.password, username=self.user)
+        self.rocket = RocketChat(self.user, self.password)
+
+    def tearDown(self):
+        pass
+
+    def test_permissions_list_all(self):
+        permissions_list_all = self.rocket.permissions_list_all().json()
+        self.assertTrue(permissions_list_all.get('success'))
+        self.assertIn('update', permissions_list_all)
+        self.assertIn('remove', permissions_list_all)
+
+
 if __name__ == '__main__':
     unittest.main(warnings='ignore')

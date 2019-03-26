@@ -686,3 +686,8 @@ class RocketChat:
     def assets_unset_asset(self, asset_name):
         """Unset an asset by name"""
         return self.__call_api_post('assets.unsetAsset', assetName=asset_name)
+
+    # Permissions
+    def permissions_list_all(self, **kwargs):
+        """Returns all permissions from the server."""
+        return self.__call_api_get('permissions.listAll', kwargs=kwargs)
