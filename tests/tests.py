@@ -1022,6 +1022,12 @@ class TestPermissions(unittest.TestCase):
         self.assertIn('update', permissions_list_all)
         self.assertIn('remove', permissions_list_all)
 
+    def test_permissions_list_all_with_updatedSince(self):
+        permissions_list_all = self.rocket.permissions_list_all(updatedSince='2017-11-25T15:08:17.248Z').json()
+        self.assertTrue(permissions_list_all.get('success'))
+        self.assertIn('update', permissions_list_all)
+        self.assertIn('remove', permissions_list_all)
+
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
