@@ -2,7 +2,7 @@ version: "2"
 
 services:
   rocketchat:
-    image: rocketchat/rocket.chat:0.72.0
+    image: rocketchat/rocket.chat:0.73.1
     ports:
       - 127.0.0.1:3000:3000
     restart: always
@@ -21,7 +21,5 @@ services:
     image: mongo:3.3
     restart: always
     command: mongod --smallfiles
-    ports:
-        - "27017:27017"
     volumes:
      - ./data/db:/data/db
