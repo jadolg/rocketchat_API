@@ -1029,5 +1029,22 @@ class TestPermissions(unittest.TestCase):
         self.assertIn('remove', permissions_list_all)
 
 
+class TestLiveChat(unittest.TestCase):
+    def setUp(self):
+        self.rocket = RocketChat()
+
+    def tearDown(self):
+        pass
+
+    def test_livechat_visitor_by_token(self):
+        livechat_visitor_by_token = self.rocket.livechat_visitor_by_token(token='iNKE8a6k6cjbqWhWd').json()
+        self.assertTrue(livechat_visitor_by_token.get('success'))
+
+    def test_livechat_visitor(self):
+        livechat_visitor = self.rocket.livechat_visitor(name='Akiel', email='akiel@aleph.engineering',
+                                                        token='iNKE8a6k6cjbqWhWp', phone='556655447').json()
+        self.assertTrue(livechat_visitor.get('success'))
+
+
 if __name__ == '__main__':
     unittest.main(warnings='ignore')

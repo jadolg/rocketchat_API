@@ -691,3 +691,20 @@ class RocketChat:
     def permissions_list_all(self, **kwargs):
         """Returns all permissions from the server."""
         return self.__call_api_get('permissions.listAll', kwargs=kwargs)
+
+    # LiveChat
+    def livechat_visitor_by_token(self, token):
+        """Retrieve a visitor data"""
+        return self.__call_api_get('livechat/visitor/{}'.format(token))
+
+    def livechat_visitor(self, name, email, token, phone, ):
+        """Register a new Livechat visitor"""
+
+        visitor = {
+            "nomo": "Livechat Visitor",
+            "email": "visitor@rocket.chat",
+            "token": "iNKE8a6k6cjbqWhWd",
+            "phone": "55 51 5555-5555"
+        }
+
+        return self.__call_api_post('livechat/visitor', visitor=visitor, use_json=True)
