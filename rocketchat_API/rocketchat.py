@@ -1,6 +1,7 @@
 # -*-coding:utf-8-*-
 import logging
 import mimetypes
+import os
 
 import requests
 
@@ -625,7 +626,7 @@ class RocketChat:
     def rooms_upload(self, rid, file, **kwargs):
         """Post a message with attached file to a dedicated room."""
         files = {
-            'file': open(file, 'rb')
+            'file': (os.path.basename(file), open(file, 'rb'), mimetypes.guess_type(file)[0]),
         }
         return self.__call_api_post('rooms.upload/' + rid, kwargs=kwargs, use_json=False, files=files)
 
