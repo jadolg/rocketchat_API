@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='rocketchat_API',
-    version='0.6.27',
+    version='0.6.28',
     packages=['rocketchat_API', 'rocketchat_API.APIExceptions'],
     url='https://github.com/jadolg/rocketchat_API',
     license='MIT',
