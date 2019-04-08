@@ -348,13 +348,13 @@ class TestChannels(unittest.TestCase):
 
     def test_channels_list_moderator(self):
         me = self.rocket.me().json()
-        channels_add_moderator = self.rocket.channels_add_moderator(
-            'GENERAL', me.get('_id')).json()
+        self.rocket.channels_add_moderator(
+            'GENERAL', me.get('_id'))
         channels_list_moderator = self.rocket.channels_moderators(
             room_id='GENERAL').json()
         self.assertTrue(channels_list_moderator.get('success'))
-        channels_remove_moderator = self.rocket.channels_remove_moderator(
-            'GENERAL', me.get('_id')).json()
+        self.rocket.channels_remove_moderator(
+            'GENERAL', me.get('_id'))
 
     def test_channels_add_and_remove_owner(self):
         channels_add_owner = self.rocket.channels_add_owner('GENERAL',
