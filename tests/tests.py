@@ -346,6 +346,17 @@ class TestChannels(unittest.TestCase):
             'GENERAL', me.get('_id')).json()
         self.assertTrue(channels_remove_moderator.get('success'))
 
+    def test_channels_list_moderator(self):
+        channels_list_moderator = self.rocket.channels_moderators(
+            room_id='GENERAL').json()
+        self.assertTrue(channels_list_moderator.get('success'))
+        channel_name = self.rocket.channels_info(room_id='GENERAL').json().get("channel").get("name")
+        channels_list_moderator_by_name = self.rocket.channels_moderators(
+            channel=channel_name).json()
+        self.assertTrue(channels_list_moderator_by_name.get('success'))
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.channels_moderators()
+
     def test_channels_add_and_remove_owner(self):
         channels_add_owner = self.rocket.channels_add_owner('GENERAL',
                                                             user_id=self.testuser_id).json()
@@ -593,6 +604,16 @@ class TestGroups(unittest.TestCase):
         groups_remove_moderator = self.rocket.groups_remove_moderator(
             self.test_group_id, me.get('_id')).json()
         self.assertTrue(groups_remove_moderator.get('success'))
+
+    def test_groups_list_moderator(self):
+        groups_list_moderator = self.rocket.groups_moderators(
+            room_id=self.test_group_id).json()
+        self.assertTrue(groups_list_moderator.get('success'))
+        groups_list_moderator_by_name = self.rocket.groups_moderators(
+            group=self.test_group_name).json()
+        self.assertTrue(groups_list_moderator_by_name.get('success'))
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.groups_moderators()
 
     def test_groups_add_and_remove_owner(self):
         self.rocket.groups_invite(
