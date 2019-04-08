@@ -346,6 +346,18 @@ class TestChannels(unittest.TestCase):
             'GENERAL', me.get('_id')).json()
         self.assertTrue(channels_remove_moderator.get('success'))
 
+    def test_channels_list_moderator(self):
+        me = self.rocket.me().json()
+        channels_add_moderator = self.rocket.channels_add_moderator(
+            'GENERAL', me.get('_id')).json()
+        print(channels_add_moderator)
+        channels_list_moderator = self.rocket.channels_moderators(
+            room_id='GENERAL').json()
+        print(channels_list_moderator)
+        self.assertTrue(channels_list_moderator.get('success'))
+        channels_remove_moderator = self.rocket.channels_remove_moderator(
+            'GENERAL', me.get('_id')).json()
+
     def test_channels_add_and_remove_owner(self):
         channels_add_owner = self.rocket.channels_add_owner('GENERAL',
                                                             user_id=self.testuser_id).json()
@@ -593,6 +605,17 @@ class TestGroups(unittest.TestCase):
         groups_remove_moderator = self.rocket.groups_remove_moderator(
             self.test_group_id, me.get('_id')).json()
         self.assertTrue(groups_remove_moderator.get('success'))
+
+    def test_groups_list_moderator(self):
+        me = self.rocket.me().json()
+        self.rocket.channels_add_moderator(
+            self.test_group_id, me.get('_id'))
+        groups_list_moderator = self.rocket.groups_moderators(
+            room_id=self.test_group_id).json()
+        print(groups_list_moderator)
+        self.assertTrue(groups_list_moderator.get('success'))
+        self.rocket.channels_remove_moderator(
+            self.test_group_id, me.get('_id'))
 
     def test_groups_add_and_remove_owner(self):
         self.rocket.groups_invite(

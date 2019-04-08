@@ -291,6 +291,15 @@ class RocketChat:
         """Removes the role of moderator from a user in the current channel."""
         return self.__call_api_post('channels.removeModerator', roomId=room_id, userId=user_id, kwargs=kwargs)
 
+    def channels_moderators(self, room_id=None, channel=None, **kwargs):
+        """Lists all moderators of a channel."""
+        if room_id:
+            return self.__call_api_get('channels.moderators', roomId=room_id, kwargs=kwargs)
+        elif channel:
+            return self.__call_api_get('channels.moderators', roomName=channel, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or channel required')
+
     def channels_add_owner(self, room_id, user_id=None, username=None, **kwargs):
         """Gives the role of owner for a user in the current channel."""
         if user_id:
@@ -436,6 +445,15 @@ class RocketChat:
     def groups_remove_moderator(self, room_id, user_id, **kwargs):
         """Removes the role of moderator from a user in the current groups."""
         return self.__call_api_post('groups.removeModerator', roomId=room_id, userId=user_id, kwargs=kwargs)
+
+    def groups_moderators(self, room_id=None, group=None, **kwargs):
+        """Lists all moderators of a group."""
+        if room_id:
+            return self.__call_api_get('groups.moderators', roomId=room_id, kwargs=kwargs)
+        elif group:
+            return self.__call_api_get('groups.moderators', roomName=group, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('roomId or group required')
 
     def groups_add_owner(self, room_id, user_id, **kwargs):
         """Gives the role of owner for a user in the current Group."""
