@@ -350,10 +350,8 @@ class TestChannels(unittest.TestCase):
         me = self.rocket.me().json()
         channels_add_moderator = self.rocket.channels_add_moderator(
             'GENERAL', me.get('_id')).json()
-        print(channels_add_moderator)
         channels_list_moderator = self.rocket.channels_moderators(
             room_id='GENERAL').json()
-        print(channels_list_moderator)
         self.assertTrue(channels_list_moderator.get('success'))
         channels_remove_moderator = self.rocket.channels_remove_moderator(
             'GENERAL', me.get('_id')).json()
@@ -612,7 +610,6 @@ class TestGroups(unittest.TestCase):
             self.test_group_id, me.get('_id'))
         groups_list_moderator = self.rocket.groups_moderators(
             room_id=self.test_group_id).json()
-        print(groups_list_moderator)
         self.assertTrue(groups_list_moderator.get('success'))
         self.rocket.channels_remove_moderator(
             self.test_group_id, me.get('_id'))
