@@ -362,6 +362,8 @@ class TestChannels(unittest.TestCase):
                                                             user_id=self.testuser_id).json()
         self.assertTrue(channels_add_owner.get('success'),
                         channels_add_owner.get('error'))
+        another_owner_id = self.rocket.users_info(username='user1').json().get('user').get('_id')
+        self.rocket.channels_add_owner('GENERAL', user_id=another_owner_id).json()
         channels_remove_owner = self.rocket.channels_remove_owner('GENERAL',
                                                                   user_id=self.testuser_id).json()
         self.assertTrue(channels_remove_owner.get('success'),
