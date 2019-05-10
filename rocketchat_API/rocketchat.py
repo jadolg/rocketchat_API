@@ -86,8 +86,7 @@ class RocketChat:
         else:
             request_data['username']= user
         login_request = requests.post(self.server_url + self.API_path + 'login',
-                                      data={'username': user,
-                                            'password': password},
+                                      data=request_data,
                                       verify=self.ssl_verify,
                                       proxies=self.proxies)
         if login_request.status_code == 401:
