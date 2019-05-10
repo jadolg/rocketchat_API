@@ -2,6 +2,7 @@
 import logging
 import mimetypes
 import os
+import re
 
 import requests
 
@@ -78,9 +79,15 @@ class RocketChat:
     # Authentication
 
     def login(self, user, password):
+        request_data = {
+            'password': password
+        }
+        if re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', user):
+            request_data['user'] = user
+        else:
+            request_data['username']: user
         login_request = requests.post(self.server_url + self.API_path + 'login',
-                                      data={'username': user,
-                                            'password': password},
+                                      data=request_data,
                                       verify=self.ssl_verify,
                                       proxies=self.proxies)
         if login_request.status_code == 401:
