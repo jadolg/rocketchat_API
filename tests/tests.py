@@ -65,7 +65,7 @@ class TestUsers(unittest.TestCase):
         self.assertEqual(login.get('status'), 'success')
         self.assertTrue('authToken' in login.get('data'))
         self.assertTrue('userId' in login.get('data'))
-    
+
     def test_login_email(self):
         login = self.rocket.login(self.email, self.password).json()
 
