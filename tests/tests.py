@@ -58,20 +58,24 @@ class TestUsers(unittest.TestCase):
 
     def test_login(self):
         login = self.rocket.login(self.user, self.password).json()
+
         with self.assertRaises(RocketAuthenticationException):
             self.rocket.login(self.user, 'bad_password')
+
         self.assertEqual(login.get('status'), 'success')
         self.assertTrue('authToken' in login.get('data'))
         self.assertTrue('userId' in login.get('data'))
-        
+    
     def test_login_email(self):
         login = self.rocket.login(self.email, self.password).json()
+
         with self.assertRaises(RocketAuthenticationException):
             self.rocket.login(self.user, 'bad_password')
+
         self.assertEqual(login.get('status'), 'success')
         self.assertTrue('authToken' in login.get('data'))
         self.assertTrue('userId' in login.get('data'))
-        
+
     def test_me(self):
         me = self.rocket.me().json()
         self.assertTrue(me.get('success'))
