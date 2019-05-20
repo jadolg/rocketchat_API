@@ -209,6 +209,38 @@ class RocketChat:
     def users_forgot_password(self, email, **kwargs):
         """Send email to reset your password."""
         return self.__call_api_post('users.forgotPassword', email=email, data=kwargs)
+    
+    def users_set_active_status(self, user_id=None, active_status=None, **kwargs):
+        """Set user active status"""
+        if user_id:
+            return self.__call_api_post('users.setActiveStatus', userId=user_id, activeStatus=active_status, data=kwargs)
+        else:
+            raise RocketMissingParamException('userId required')
+    
+    def users_generate_personal_access_token(self, token_name=None, **kwargs):
+        """Generate a random personal access token."""
+        if token_name:
+            return self.__call_api_post('users.generatePersonalAccessToken', tokenName=token_name, data=kwargs)
+        else:
+            raise RocketMissingParamException('tokenName required')
+    
+    def users_get_personal_access_tokens(self, **kwargs):
+        """List all personal access tokens."""
+        return self.__call_api_get('users.getPersonalAccessTokens', data=kwargs)
+    
+    def users_regenerate_personal_access_token(self, token_name=None, **kwargs):
+        """Regenerate a personal access token by name."""
+        if token_name:
+            return self.__call_api_post('users.regeneratePersonalAccessToken', tokenName=token_name, data=kwargs)
+        else:
+            raise RocketMissingParamException('tokenName required')
+    
+    def users_remove_personal_access_token(self, token_name=None, **kwargs):
+        """Remove a personal access token by name."""
+        if token_name:
+            return self.__call_api_post('users.removePersonalAccessToken', tokenName=token_name, data=kwargs)
+        else:
+            raise RocketMissingParamException('tokenName required')
 
     # Chat
 
