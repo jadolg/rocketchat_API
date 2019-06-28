@@ -41,14 +41,8 @@ class RocketChat:
 
     def __call_api_get(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
-        return requests.get(self.server_url + self.API_path + method + '?' +
-                            '&'.join([i + '=' + str(args[i])
-                                      for i in args.keys()]),
-                            headers=self.headers,
-                            verify=self.ssl_verify,
-                            proxies=self.proxies,
-                            timeout=self.timeout
-                            )
+        query_params = '&'.join([i + '=' + str(args[i]) for i in args.keys()])
+        return self.call_api_get(endpoint=method, query_params=query_params)
 
     def __call_api_post(self, method, files=None, use_json=True, **kwargs):
         reduced_args = self.__reduce_kwargs(kwargs)
@@ -56,9 +50,22 @@ class RocketChat:
         # Some methods use pass (users.register) and others password (users.create)
         if 'password' in reduced_args and method != 'users.create':
             reduced_args['pass'] = reduced_args['password']
+        return self.call_api_post(method=method, files=files, use_json=use_json, data=reduced_args)
+
+    # Direct API
+
+    def call_api_get(self, endpoint, query_params):
+        return requests.get(self.server_url + self.API_path + endpoint + '?' + query_params, headers=self.headers,
+                            verify=self.ssl_verify,
+                            proxies=self.proxies,
+                            timeout=self.timeout)
+
+    def call_api_post(self, method, files=None, data=None, use_json=True):
+        if data is None:
+            data = {}
         if use_json:
             return requests.post(self.server_url + self.API_path + method,
-                                 json=reduced_args,
+                                 json=data,
                                  files=files,
                                  headers=self.headers,
                                  verify=self.ssl_verify,
@@ -67,7 +74,7 @@ class RocketChat:
                                  )
         else:
             return requests.post(self.server_url + self.API_path + method,
-                                 data=reduced_args,
+                                 data=data,
                                  files=files,
                                  headers=self.headers,
                                  verify=self.ssl_verify,
