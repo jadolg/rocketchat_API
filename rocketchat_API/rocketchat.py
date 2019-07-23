@@ -17,13 +17,14 @@ class RocketChat:
 
     def __init__(self, user=None, password=None, auth_token=None, user_id=None,
                  server_url='http://127.0.0.1:3000', ssl_verify=True, proxies=None,
-                 timeout=30):
+                 timeout=30, session=None):
         """Creates a RocketChat object and does login on the specified server"""
         self.headers = {}
         self.server_url = server_url
         self.proxies = proxies
         self.ssl_verify = ssl_verify
         self.timeout = timeout
+        self.req = session or requests
         if user and password:
             self.login(user, password)
         if auth_token and user_id:
@@ -41,7 +42,7 @@ class RocketChat:
 
     def __call_api_get(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
-        return requests.get(self.server_url + self.API_path + method + '?' +
+        return self.req.get(self.server_url + self.API_path + method + '?' +
                             '&'.join([i + '=' + str(args[i])
                                       for i in args.keys()]),
                             headers=self.headers,
@@ -57,7 +58,7 @@ class RocketChat:
         if 'password' in reduced_args and method != 'users.create':
             reduced_args['pass'] = reduced_args['password']
         if use_json:
-            return requests.post(self.server_url + self.API_path + method,
+            return self.req.post(self.server_url + self.API_path + method,
                                  json=reduced_args,
                                  files=files,
                                  headers=self.headers,
@@ -66,7 +67,7 @@ class RocketChat:
                                  timeout=self.timeout
                                  )
         else:
-            return requests.post(self.server_url + self.API_path + method,
+            return self.req.post(self.server_url + self.API_path + method,
                                  data=reduced_args,
                                  files=files,
                                  headers=self.headers,
