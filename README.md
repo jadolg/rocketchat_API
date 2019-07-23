@@ -32,6 +32,23 @@ pprint(rocket.channels_history('GENERAL', count=5).json())
 
 *note*: every method returns a [requests](https://github.com/kennethreitz/requests) Response object.
 
+#### Connection pooling
+If you are going to make a couple of request, you can user connection pooling provided by `requests`. This will save significant time by avoiding re-negotiation of TLS (SSL) with the chat server on each call.
+
+```
+from requests import sessions
+from pprint import pprint
+from rocketchat_API.rocketchat import RocketChat
+
+with sessions.Session() as session:
+    rocket = RocketChat('user', 'pass', server_url='https://demo.rocket.chat', session=session)
+    pprint(rocket.me().json())
+    pprint(rocket.channels_list().json())
+    pprint(rocket.chat_post_message('good news everyone!', channel='GENERAL', alias='Farnsworth').json())
+    pprint(rocket.channels_history('GENERAL', count=5).json())
+```
+ 
+
 ### Method parameters
 Only required parameters are explicit on the RocketChat class but you can still use all other parameters. For a detailed parameters list check the [Rocket chat API](https://rocket.chat/docs/developer-guides/rest-api/)
 
