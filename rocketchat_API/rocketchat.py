@@ -82,7 +82,7 @@ class RocketChat:
         request_data = {
             'password': password
         }
-        if re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', user):
+        if re.match(r'^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', user):
             request_data['user'] = user
         else:
             request_data['username'] = user
