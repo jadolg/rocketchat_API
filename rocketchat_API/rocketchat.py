@@ -44,7 +44,7 @@ class RocketChat:
         args = self.__reduce_kwargs(kwargs)
         return self.req.get(self.server_url + self.API_path + method + '?' +
                             '&'.join([i + '=' + str(args[i])
-                                      for i in args.keys()]),
+                                      for i in args]),
                             headers=self.headers,
                             verify=self.ssl_verify,
                             proxies=self.proxies,
