@@ -422,11 +422,20 @@ class RocketChat:
         elif room_name:
             return self.__call_api_get('channels.files', roomName=room_name, kwargs=kwargs)
         else:
-            raise RocketMissingParamException('roomId or room_name required')
+            raise RocketMissingParamException('room_id or room_name required')
 
     def channels_get_all_user_mentions_by_channel(self, room_id, **kwargs):
         """Gets all the mentions of a channel."""
         return self.__call_api_get('channels.getAllUserMentionsByChannel', roomId=room_id, kwargs=kwargs)
+
+    def channels_counters(self, room_id=None, room_name=None, **kwargs):
+        """Gets counters for a channel."""
+        if room_id:
+            return self.__call_api_get('channels.counters', roomId=room_id, kwargs=kwargs)
+        elif room_name:
+            return self.__call_api_get('channels.counters', roomName=room_name, kwargs=kwargs)
+        else:
+            raise RocketMissingParamException('room_id or room_name required')
 
     # Groups
 

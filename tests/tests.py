@@ -1,5 +1,6 @@
 import unittest
 import uuid
+from pprint import pprint
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketAuthenticationException, RocketMissingParamException
 from rocketchat_API.rocketchat import RocketChat
@@ -548,6 +549,14 @@ class TestChannels(unittest.TestCase):
             room_id='GENERAL').json()
         self.assertTrue(
             channels_get_all_user_mentions_by_channel.get('success'))
+
+    def test_channels_counters(self):
+        channels_counters = self.rocket.channels_counters(room_id="GENERAL").json()
+        self.assertTrue(channels_counters.get('success'))
+        channels_counters_by_name = self.rocket.channels_counters(room_name="general").json()
+        self.assertTrue(channels_counters_by_name.get('success'))
+        with self.assertRaises(RocketMissingParamException):
+            self.rocket.channels_counters()
 
 
 class TestGroups(unittest.TestCase):
