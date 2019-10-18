@@ -1,6 +1,5 @@
 import unittest
 import uuid
-from pprint import pprint
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketAuthenticationException, RocketMissingParamException
 from rocketchat_API.rocketchat import RocketChat
