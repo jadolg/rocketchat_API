@@ -1070,5 +1070,30 @@ class TestPermissions(unittest.TestCase):
         self.assertIn('remove', permissions_list_all)
 
 
+class TestLiveChat(unittest.TestCase):
+    def setUp(self):
+        self.rocket = RocketChat()
+        self.user = 'user1'
+        self.password = 'password'
+        self.email = 'email@domain.com'
+        self.rocket.users_register(
+            email=self.email, name=self.user, password=self.password, username=self.user)
+        self.rocket = RocketChat(self.user, self.password)
+        # add user2
+        self.user = 'user2'
+        self.password = 'password'
+        self.email = 'email2@domain.com'
+        self.rocket.users_register(
+            email=self.email, name=self.user, password=self.password, username=self.user)
+        # enable livechat
+        self.rocket.settings_update('Livechat_enabled', True)
+        # add user1 as agent
+        self.rocket.livechat_add_user("user1", "agent").content
+        self.rocket.livechat_add_user("user2", "manager").content
+
+    def tearDown(self):
+        pass
+
+
 if __name__ == '__main__':
     unittest.main(warnings='ignore')

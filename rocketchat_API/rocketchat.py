@@ -76,6 +76,17 @@ class RocketChat:
                                  timeout=self.timeout
                                  )
 
+    def __call_api_delete(self, method, **kwargs):
+        args = self.__reduce_kwargs(kwargs)
+        return self.req.delete(self.server_url + self.API_path + method + '?' +
+                               '&'.join([i + '=' + str(args[i])
+                                         for i in args]),
+                               headers=self.headers,
+                               verify=self.ssl_verify,
+                               proxies=self.proxies,
+                               timeout=self.timeout
+                               )
+
     # Authentication
 
     def login(self, user, password):
@@ -726,3 +737,33 @@ class RocketChat:
     def permissions_list_all(self, **kwargs):
         """Returns all permissions from the server."""
         return self.__call_api_get('permissions.listAll', kwargs=kwargs)
+
+    # LiveChat
+    def livechat_list_by_type(self, user_type):
+        """Returns list of livechat users. The type should be agent or manager"""
+        return self.__call_api_get('livechat/users/' + user_type)
+
+    def livechat_list_managers(self):
+        """Returns list of livechat managers"""
+        return self.__call_api_get('livechat/users/manager')
+
+    def livechat_list_agents(self):
+        """Returns list of livechat agents"""
+        return self.__call_api_get('livechat/users/agent')
+
+    def livechat_get_user_info(self, id, user_type):
+        """Returns info if livechat user is agent or manager"""
+        return self.__call_api_get('livechat/users/{0}/{1}'.format(
+            user_type, id
+        ))
+
+    def livechat_add_user(self, username, user_type):
+        """Add new user as agent or manager"""
+        return self.__call_api_post('livechat/users/' + user_type, username=username)
+
+    def livechat_remove_user(self, id, user_type):
+        """Remove user as agent or manager"""
+        return self.__call_api_delete('livechat/users/{0}/{1}'.format(
+            user_type, id
+        )
+        )
