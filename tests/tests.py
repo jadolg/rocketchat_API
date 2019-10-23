@@ -360,7 +360,8 @@ class TestChannels(unittest.TestCase):
         channels_list_moderator = self.rocket.channels_moderators(
             room_id='GENERAL').json()
         self.assertTrue(channels_list_moderator.get('success'))
-        channel_name = self.rocket.channels_info(room_id='GENERAL').json().get("channel").get("name")
+        channel_name = self.rocket.channels_info(
+            room_id='GENERAL').json().get("channel").get("name")
         channels_list_moderator_by_name = self.rocket.channels_moderators(
             channel=channel_name).json()
         self.assertTrue(channels_list_moderator_by_name.get('success'))
@@ -372,8 +373,10 @@ class TestChannels(unittest.TestCase):
                                                             user_id=self.testuser_id).json()
         self.assertTrue(channels_add_owner.get('success'),
                         channels_add_owner.get('error'))
-        another_owner_id = self.rocket.users_info(username='user1').json().get('user').get('_id')
-        self.rocket.channels_add_owner('GENERAL', user_id=another_owner_id).json()
+        another_owner_id = self.rocket.users_info(
+            username='user1').json().get('user').get('_id')
+        self.rocket.channels_add_owner(
+            'GENERAL', user_id=another_owner_id).json()
         channels_remove_owner = self.rocket.channels_remove_owner('GENERAL',
                                                                   user_id=self.testuser_id).json()
         self.assertTrue(channels_remove_owner.get('success'),
@@ -550,9 +553,11 @@ class TestChannels(unittest.TestCase):
             channels_get_all_user_mentions_by_channel.get('success'))
 
     def test_channels_counters(self):
-        channels_counters = self.rocket.channels_counters(room_id="GENERAL").json()
+        channels_counters = self.rocket.channels_counters(
+            room_id="GENERAL").json()
         self.assertTrue(channels_counters.get('success'))
-        channels_counters_by_name = self.rocket.channels_counters(room_name="general").json()
+        channels_counters_by_name = self.rocket.channels_counters(
+            room_name="general").json()
         self.assertTrue(channels_counters_by_name.get('success'))
         with self.assertRaises(RocketMissingParamException):
             self.rocket.channels_counters()
@@ -1014,12 +1019,14 @@ class TestSubscriptions(unittest.TestCase):
     def test_subscriptions_unread(self):
         subscriptions_unread = self.rocket.subscriptions_unread(
             room_id='GENERAL').json()
-        self.assertTrue(subscriptions_unread.get('success'), 'Call did not succeed')
+        self.assertTrue(subscriptions_unread.get(
+            'success'), 'Call did not succeed')
 
     def test_subscriptions_read(self):
         subscriptions_read = self.rocket.subscriptions_read(
             rid='GENERAL').json()
-        self.assertTrue(subscriptions_read.get('success'), 'Call did not succeed')
+        self.assertTrue(subscriptions_read.get(
+            'success'), 'Call did not succeed')
 
 
 class TestAssets(unittest.TestCase):
@@ -1036,11 +1043,13 @@ class TestAssets(unittest.TestCase):
         pass
 
     def test_assets_set_asset(self):
-        assets_set_asset = self.rocket.assets_set_asset(asset_name='logo', file='tests/logo.png').json()
+        assets_set_asset = self.rocket.assets_set_asset(
+            asset_name='logo', file='tests/logo.png').json()
         self.assertTrue(assets_set_asset.get('success'))
 
     def test_assets_unset_asset(self):
-        assets_unset_asset = self.rocket.assets_unset_asset(asset_name='logo').json()
+        assets_unset_asset = self.rocket.assets_unset_asset(
+            asset_name='logo').json()
         self.assertTrue(assets_unset_asset.get('success'))
 
 
@@ -1064,7 +1073,8 @@ class TestPermissions(unittest.TestCase):
         self.assertIn('remove', permissions_list_all)
 
     def test_permissions_list_all_with_updatedSince(self):
-        permissions_list_all = self.rocket.permissions_list_all(updatedSince='2017-11-25T15:08:17.248Z').json()
+        permissions_list_all = self.rocket.permissions_list_all(
+            updatedSince='2017-11-25T15:08:17.248Z').json()
         self.assertTrue(permissions_list_all.get('success'))
         self.assertIn('update', permissions_list_all)
         self.assertIn('remove', permissions_list_all)
@@ -1093,6 +1103,16 @@ class TestLiveChat(unittest.TestCase):
 
     def tearDown(self):
         pass
+
+    def test_livechat_register_and_get_visitor(self):
+        # register a new visitor
+        livechat_visitor = self.rocket.livechat_register_visitor(name='Akiel', email='akiel@aleph.engineering',
+                                                                 token='iNKE8a6k6cjbqWhWp', phone='556655447').json()
+        self.assertTrue(livechat_visitor.get('success'))
+        # get the visitor
+        livechat_visitor_by_token = self.rocket.livechat_get_visitor_by_token(
+            token='iNKE8a6k6cjbqWhWd').json()
+        self.assertTrue(livechat_visitor_by_token.get('success'))
 
 
 if __name__ == '__main__':
