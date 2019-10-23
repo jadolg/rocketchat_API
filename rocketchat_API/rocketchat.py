@@ -739,6 +739,18 @@ class RocketChat:
         return self.__call_api_get('permissions.listAll', kwargs=kwargs)
 
     # LiveChat
+
+    def livechat_get_visitor_by_token(self, token):
+        """Retrieve a visitor data"""
+        return self.__call_api_get('livechat/visitor/{}'.format(token))
+
+    def livechat_register_visitor(self, token, **kwargs):
+        """Register a new Livechat visitor"""
+        # TODO: test custom fields
+        visitor = self.__reduce_kwargs(kwargs)
+        visitor['token'] = token
+        return self.__call_api_post('livechat/visitor', visitor=visitor, use_json=True)
+
     def livechat_list_by_type(self, user_type):
         """Returns list of livechat users. The type should be agent or manager"""
         return self.__call_api_get('livechat/users/' + user_type)
@@ -767,3 +779,30 @@ class RocketChat:
             user_type, id
         )
         )
+
+    def livechat_room(self, token, **kwargs):
+        kwargs['token'] = token
+        return self.__call_api_get('livechat/room', kwargs=kwargs)
+
+    def livechat_message(self, token, rid, msg, **kwargs):
+        """Send a message via livechat"""
+        kwargs['token'] = token
+        kwargs['rid'] = rid
+        kwargs['msg'] = msg
+        return self.__call_api_post('livechat/message', kwargs=kwargs)
+
+
+    def livechat_delete_message(self, msg_id):
+        """Delete a message via livechat"""
+        # NOT WORKING
+        return self.__call_api_delete('livechat/message/' + msg_id, kwargs={'_id': msg_id})
+    
+
+    def livechat_room_history(self, rid, token, **kwargs):
+        """Show Room History"""
+        kwargs['token'] = token
+        return self.__call_api_get('livechat/messages.history/' + rid, kwargs=kwargs)
+
+    def livechat_custom_fields(self, token, key, value, overwrite=False):
+        """Add new user as agent or manager"""
+        return self.__call_api_post('livechat/custom.field', token=token, key=key, value=value, overwrite=overwrite)
