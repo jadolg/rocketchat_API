@@ -795,7 +795,7 @@ class RocketChat:
         """Delete a message via livechat"""
         # NOT WORKING
         return self.__call_api_delete('livechat/message/' + msg_id, kwargs={'_id': msg_id})
-    
+
     def livechat_room_history(self, rid, token, **kwargs):
         """Show Room History"""
         kwargs['token'] = token
@@ -804,4 +804,3 @@ class RocketChat:
     def livechat_custom_fields(self, token, key, value, overwrite=False):
         """Add new user as agent or manager"""
         return self.__call_api_post('livechat/custom.field', token=token, key=key, value=value, overwrite=overwrite)
-   
