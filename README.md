@@ -14,14 +14,14 @@ Clone our repository and `python3 setup.py install`
 - [requests](https://github.com/kennethreitz/requests)==2.20.1
 
 ### Usage
-```
+```python
 from pprint import pprint
 from rocketchat_API.rocketchat import RocketChat
 
 proxy_dict = {
-              "http"  : "http://127.0.0.1:3128",
-              "https" : "https://127.0.0.1:3128",
-            }
+    "http"  : "http://127.0.0.1:3128",
+    "https" : "https://127.0.0.1:3128",
+}
 
 rocket = RocketChat('user', 'pass', server_url='https://demo.rocket.chat', proxies=proxy_dict)
 pprint(rocket.me().json())
@@ -35,7 +35,7 @@ pprint(rocket.channels_history('GENERAL', count=5).json())
 #### Connection pooling
 If you are going to make a couple of request, you can user connection pooling provided by `requests`. This will save significant time by avoiding re-negotiation of TLS (SSL) with the chat server on each call.
 
-```
+```python
 from requests import sessions
 from pprint import pprint
 from rocketchat_API.rocketchat import RocketChat
