@@ -643,17 +643,17 @@ class RocketChat:
 
     # Settings
 
-    def settings_get(self, _id):
+    def settings_get(self, _id, **kwargs):
         """Gets the setting for the provided _id."""
-        return self.__call_api_get('settings/' + _id)
+        return self.__call_api_get('settings/' + _id, kwargs=kwargs)
 
-    def settings_update(self, _id, value):
+    def settings_update(self, _id, value, **kwargs):
         """Updates the setting for the provided _id."""
-        return self.__call_api_post('settings/' + _id, value=value)
+        return self.__call_api_post('settings/' + _id, value=value, kwargs=kwargs)
 
-    def settings(self):
+    def settings(self, **kwargs):
         """List all private settings."""
-        return self.__call_api_get('settings')
+        return self.__call_api_get('settings', kwargs=kwargs)
 
     # Rooms
 
