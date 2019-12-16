@@ -26,7 +26,7 @@ class RocketChat:
         self.timeout = timeout
         self.req = session or requests
         if user and password:
-            self.login(user, password)
+            self.login(user, password)  # skipcq: PTC-W1006
         if auth_token and user_id:
             self.headers['X-Auth-Token'] = auth_token
             self.headers['X-User-Id'] = user_id
