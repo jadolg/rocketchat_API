@@ -42,9 +42,9 @@ def test_rooms_favorite(logged_rocket):
 def test_rooms_info(logged_rocket):
     rooms_infoby_name = logged_rocket.rooms_info(room_name='general').json()
     assert rooms_infoby_name.get('success')
-    assert 'GENERAL' == rooms_infoby_name.get('room').get('_id')
+    assert rooms_infoby_name.get('room').get('_id') == "GENERAL"
     rooms_info_by_id = logged_rocket.rooms_info(room_id='GENERAL').json()
     assert rooms_info_by_id.get('success')
-    assert 'GENERAL' == rooms_info_by_id.get('room').get('_id')
+    assert rooms_info_by_id.get('room').get('_id') == "GENERAL"
     with pytest.raises(RocketMissingParamException):
         logged_rocket.rooms_info()
