@@ -1,4 +1,3 @@
-from unittest.mock import MagicMock
 import pytest
 from rocketchat_API.rocketchat import RocketChat
 
@@ -13,7 +12,8 @@ def rocket():
 @pytest.fixture(scope="session")
 def create_user(rocket):
     def _create_user(name="user1", password="password", email="email@domain.com"):
-        user = MagicMock()
+        # create empty object, because Mock not included to python2
+        user = type('test', (object,), {})()
 
         user.name = name
         user.password = password
