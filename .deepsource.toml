@@ -1,11 +1,11 @@
 version = 1
 
 test_patterns = [
-  
+  "test_*.py"
 ]
 
 exclude_patterns = [
-  
+
 ]
 
 [[analyzers]]
