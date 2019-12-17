@@ -1,6 +1,6 @@
 import pytest
 
-from rocketchat_API.APIExceptions.RocketExceptions import RocketAuthenticationException, RocketMissingParamException
+from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
 
 
 @pytest.fixture(scope="module")
@@ -18,8 +18,7 @@ def test_im_create(logged_rocket, recipient_user):
 def test_im_send(logged_rocket, recipient_user):
     im_create = logged_rocket.im_create(recipient_user).json()
     room_id = im_create.get('room').get('_id')
-    im_send = logged_rocket.chat_post_message(room_id=room_id,
-                                            text='test').json()
+    im_send = logged_rocket.chat_post_message(room_id=room_id, text='test').json()
     assert im_send.get('success')
 
 
@@ -64,7 +63,7 @@ def test_im_messages_others(logged_rocket, recipient_user):
     im_create = logged_rocket.im_create(recipient_user).json()
     room_id = im_create.get('room').get('_id')
     im_messages_others = logged_rocket.im_messages_others(room_id).json()
-    assert im_messages_others.get('success') == False
+    assert not im_messages_others.get('success')
 
 
 def test_im_files(logged_rocket, recipient_user):
@@ -96,4 +95,3 @@ def test_im_counters(logged_rocket, recipient_user):
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.im_counters()
-

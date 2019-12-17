@@ -9,6 +9,7 @@ def rocket():
 
     return _rocket
 
+
 @pytest.fixture(scope="session")
 def create_user(rocket):
     def _create_user(name="user1", password="password", email="email@domain.com"):
@@ -29,11 +30,13 @@ def create_user(rocket):
 
     return _create_user
 
+
 @pytest.fixture(scope="session")
 def user(create_user):
     _user = create_user()
 
     return _user
+
 
 @pytest.fixture(scope="session")
 def logged_rocket(user):

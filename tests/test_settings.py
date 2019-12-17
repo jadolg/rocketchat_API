@@ -8,4 +8,3 @@ def test_settings(logged_rocket):
     settings_update = logged_rocket.settings_update(
         _id='API_Allow_Infinite_Count', value=True).json()
     assert settings_update.get('success')
-

@@ -12,6 +12,7 @@ def delete_user2(logged_rocket):
             username='user2').json().get('user').get('_id')
         logged_rocket.users_delete(user_id)
 
+
 def test_login(logged_rocket, user):
     login = logged_rocket.login(user.name, user.password).json()
 
@@ -21,6 +22,7 @@ def test_login(logged_rocket, user):
     assert login.get('status') == 'success'
     assert 'authToken' in login.get('data')
     assert 'userId' in login.get('data')
+
 
 def test_login_email(logged_rocket, user):
     login = logged_rocket.login(user.email, user.password).json()
@@ -32,16 +34,19 @@ def test_login_email(logged_rocket, user):
     assert 'authToken' in login.get('data')
     assert 'userId' in login.get('data')
 
+
 def test_me(logged_rocket, user):
     me = logged_rocket.me().json()
     assert me.get('success')
     assert me.get('username') == user.name
     assert me.get('name') == user.name
 
+
 def test_logout(logged_rocket, user):
     logged_rocket.login(user.name, user.password).json()
     logout = logged_rocket.logout().json()
     assert logout.get('status') == 'success'
+
 
 def test_users_info(logged_rocket, user):
     login = logged_rocket.login(user.name, user.password).json()
@@ -58,6 +63,7 @@ def test_users_info(logged_rocket, user):
     with pytest.raises(RocketMissingParamException):
         logged_rocket.users_info()
 
+
 def test_users_get_presence(logged_rocket, user):
     login = logged_rocket.login(user.name, user.password).json()
     users_get_presence = logged_rocket.users_get_presence(
@@ -70,6 +76,7 @@ def test_users_get_presence(logged_rocket, user):
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.users_get_presence()
+
 
 def test_users_get_avatar(logged_rocket, user):
     login = logged_rocket.login(user.name, user.password).json()
@@ -87,6 +94,7 @@ def test_users_get_avatar(logged_rocket, user):
     with pytest.raises(RocketMissingParamException):
         logged_rocket.users_get_avatar()
 
+
 def test_users_reset_avatar(logged_rocket, user):
     login = logged_rocket.login(user.name, user.password).json()
     users_reset_avatar = logged_rocket.users_reset_avatar(
@@ -99,6 +107,7 @@ def test_users_reset_avatar(logged_rocket, user):
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.users_reset_avatar()
+
 
 def test_users_create_token(logged_rocket, user, delete_user2):
     login = logged_rocket.login(user.name, user.password).json()
@@ -116,6 +125,7 @@ def test_users_create_token(logged_rocket, user, delete_user2):
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.users_create_token()
+
 
 def test_users_create_update_delete(logged_rocket, user):
     users_create = logged_rocket.users_create(email='email2@domain.com', name='user2', password=user.password,
@@ -137,10 +147,12 @@ def test_users_create_update_delete(logged_rocket, user):
     users_delete = logged_rocket.users_delete(user_id).json()
     assert users_delete.get('success')
 
+
 def test_users_set_avatar_from_file(logged_rocket, user):
     users_set_avatar = logged_rocket.users_set_avatar(
         avatar_url='tests/assets/avatar.png').json()
     assert users_set_avatar.get('success'), users_set_avatar.get('error')
+
 
 def test_users_set_avatar_from_url(logged_rocket, user):
     # ToDo: Modify this test so it can run while offline
@@ -148,10 +160,12 @@ def test_users_set_avatar_from_url(logged_rocket, user):
         avatar_url='https://api.adorable.io/avatars/285/rocket.face.png').json()
     assert users_set_avatar.get('success'), users_set_avatar.get('error')
 
+
 def test_users_forgot_password(logged_rocket, user):
     users_forgot_password = logged_rocket.users_forgot_password(
         email='email@domain.com').json()
     assert users_forgot_password.get('success')
+
 
 def test_users_set_get_preferences(logged_rocket, user):
     users_set_preferences = logged_rocket.users_set_preferences(user_id=logged_rocket.me().json().get('_id'),
@@ -159,6 +173,7 @@ def test_users_set_get_preferences(logged_rocket, user):
     assert users_set_preferences.get('success')
     users_get_preferences = logged_rocket.users_get_preferences().json()
     assert users_get_preferences.get('success')
+
 
 def test_users_list(logged_rocket, user):
     users_list = logged_rocket.users_list().json()
