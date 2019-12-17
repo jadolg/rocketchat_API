@@ -86,10 +86,10 @@ def test_users_get_avatar(logged_rocket, user):
 
     users_get_avatar = logged_rocket.users_get_avatar(
         user_id=login.get('data').get('userId'))
-    assert len(users_get_avatar.text) > 0
+    assert users_get_avatar.text
 
     users_get_avatar = logged_rocket.users_get_avatar(username=user.name)
-    assert len(users_get_avatar.text) > 0
+    assert users_get_avatar.text
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.users_get_avatar()
@@ -148,26 +148,26 @@ def test_users_create_update_delete(logged_rocket, user):
     assert users_delete.get('success')
 
 
-def test_users_set_avatar_from_file(logged_rocket, user):
+def test_users_set_avatar_from_file(logged_rocket):
     users_set_avatar = logged_rocket.users_set_avatar(
         avatar_url='tests/assets/avatar.png').json()
     assert users_set_avatar.get('success'), users_set_avatar.get('error')
 
 
-def test_users_set_avatar_from_url(logged_rocket, user):
+def test_users_set_avatar_from_url(logged_rocket):
     # ToDo: Modify this test so it can run while offline
     users_set_avatar = logged_rocket.users_set_avatar(
         avatar_url='https://api.adorable.io/avatars/285/rocket.face.png').json()
     assert users_set_avatar.get('success'), users_set_avatar.get('error')
 
 
-def test_users_forgot_password(logged_rocket, user):
+def test_users_forgot_password(logged_rocket):
     users_forgot_password = logged_rocket.users_forgot_password(
         email='email@domain.com').json()
     assert users_forgot_password.get('success')
 
 
-def test_users_set_get_preferences(logged_rocket, user):
+def test_users_set_get_preferences(logged_rocket):
     users_set_preferences = logged_rocket.users_set_preferences(user_id=logged_rocket.me().json().get('_id'),
                                                                 data={'useEmojis': False}).json()
     assert users_set_preferences.get('success')
@@ -175,6 +175,6 @@ def test_users_set_get_preferences(logged_rocket, user):
     assert users_get_preferences.get('success')
 
 
-def test_users_list(logged_rocket, user):
+def test_users_list(logged_rocket):
     users_list = logged_rocket.users_list().json()
     assert users_list.get('success')
