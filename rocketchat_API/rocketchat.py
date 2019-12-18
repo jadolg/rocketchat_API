@@ -43,8 +43,8 @@ class RocketChat:
     def __call_api_get(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
         return self.req.get(self.server_url + self.API_path + method + '?' +
-                            '&'.join([i + '=' + str(args[i])
-                                      for i in args]),
+                            '&'.join(i + '=' + str(args[i])
+                                     for i in args),
                             headers=self.headers,
                             verify=self.ssl_verify,
                             proxies=self.proxies,
@@ -142,10 +142,10 @@ class RocketChat:
         """Gets a user’s information, limited to the caller’s permissions."""
         if user_id:
             return self.__call_api_get('users.info', userId=user_id, kwargs=kwargs)
-        elif username:
+        if username:
             return self.__call_api_get('users.info', username=username, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('userID or username required')
+
+        raise RocketMissingParamException('userID or username required')
 
     def users_list(self, **kwargs):
         """All of the users and their information, limited to permissions."""
@@ -155,10 +155,10 @@ class RocketChat:
         """Gets the online presence of the a user."""
         if user_id:
             return self.__call_api_get('users.getPresence', userId=user_id, kwargs=kwargs)
-        elif username:
+        if username:
             return self.__call_api_get('users.getPresence', username=username, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('userID or username required')
+
+        raise RocketMissingParamException('userID or username required')
 
     def users_create(self, email, name, password, username, **kwargs):
         """Creates a user"""
@@ -178,36 +178,36 @@ class RocketChat:
         """Gets the URL for a user’s avatar."""
         if user_id:
             return self.__call_api_get('users.getAvatar', userId=user_id, kwargs=kwargs)
-        elif username:
+        if username:
             return self.__call_api_get('users.getAvatar', username=username, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('userID or username required')
+
+        raise RocketMissingParamException('userID or username required')
 
     def users_set_avatar(self, avatar_url, **kwargs):
         """Set a user’s avatar"""
         if avatar_url.startswith('http://') or avatar_url.startswith('https://'):
             return self.__call_api_post('users.setAvatar', avatarUrl=avatar_url, kwargs=kwargs)
-        else:
-            avatar_file = {"image": open(avatar_url, "rb")}
-            return self.__call_api_post('users.setAvatar', files=avatar_file, kwargs=kwargs)
+
+        avatar_file = {"image": open(avatar_url, "rb")}
+        return self.__call_api_post('users.setAvatar', files=avatar_file, kwargs=kwargs)
 
     def users_reset_avatar(self, user_id=None, username=None, **kwargs):
         """Reset a user’s avatar"""
         if user_id:
             return self.__call_api_post('users.resetAvatar', userId=user_id, kwargs=kwargs)
-        elif username:
+        if username:
             return self.__call_api_post('users.resetAvatar', username=username, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('userID or username required')
+
+        raise RocketMissingParamException('userID or username required')
 
     def users_create_token(self, user_id=None, username=None, **kwargs):
         """Create a user authentication token."""
         if user_id:
             return self.__call_api_post('users.createToken', userId=user_id, kwargs=kwargs)
-        elif username:
+        if username:
             return self.__call_api_post('users.createToken', username=username, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('userID or username required')
+
+        raise RocketMissingParamException('userID or username required')
 
     def users_update(self, user_id, **kwargs):
         """Update an existing user."""
@@ -223,10 +223,10 @@ class RocketChat:
         """Posts a new chat message."""
         if room_id:
             return self.__call_api_post('chat.postMessage', roomId=room_id, text=text, kwargs=kwargs)
-        elif channel:
+        if channel:
             return self.__call_api_post('chat.postMessage', channel=channel, text=text, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or channel required')
+
+        raise RocketMissingParamException('roomId or channel required')
 
     def chat_get_message(self, msg_id, **kwargs):
         return self.__call_api_get('chat.getMessage', msgId=msg_id, kwargs=kwargs)
@@ -277,10 +277,10 @@ class RocketChat:
         """Gets a channel’s information."""
         if room_id:
             return self.__call_api_get('channels.info', roomId=room_id, kwargs=kwargs)
-        elif channel:
+        if channel:
             return self.__call_api_get('channels.info', roomName=channel, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or channel required')
+
+        raise RocketMissingParamException('roomId or channel required')
 
     def channels_history(self, room_id, **kwargs):
         """Retrieves the messages from a channel."""
@@ -302,19 +302,19 @@ class RocketChat:
         """Lists all moderators of a channel."""
         if room_id:
             return self.__call_api_get('channels.moderators', roomId=room_id, kwargs=kwargs)
-        elif channel:
+        if channel:
             return self.__call_api_get('channels.moderators', roomName=channel, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or channel required')
+
+        raise RocketMissingParamException('roomId or channel required')
 
     def channels_add_owner(self, room_id, user_id=None, username=None, **kwargs):
         """Gives the role of owner for a user in the current channel."""
         if user_id:
             return self.__call_api_post('channels.addOwner', roomId=room_id, userId=user_id, kwargs=kwargs)
-        elif username:
+        if username:
             return self.__call_api_post('channels.addOwner', roomId=room_id, username=username, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('userID or username required')
+
+        raise RocketMissingParamException('userID or username required')
 
     def channels_remove_owner(self, room_id, user_id, **kwargs):
         """Removes the role of owner from a user in the current channel."""
@@ -392,37 +392,37 @@ class RocketChat:
         """Delete a public channel."""
         if room_id:
             return self.__call_api_post('channels.delete', roomId=room_id, kwargs=kwargs)
-        elif channel:
+        if channel:
             return self.__call_api_post('channels.delete', roomName=channel, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or channel required')
+
+        raise RocketMissingParamException('roomId or channel required')
 
     def channels_members(self, room_id=None, channel=None, **kwargs):
         """Lists all channel users."""
         if room_id:
             return self.__call_api_get('channels.members', roomId=room_id, kwargs=kwargs)
-        elif channel:
+        if channel:
             return self.__call_api_get('channels.members', roomName=channel, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or channel required')
+
+        raise RocketMissingParamException('roomId or channel required')
 
     def channels_roles(self, room_id=None, room_name=None, **kwargs):
         """Lists all user’s roles in the channel."""
         if room_id:
             return self.__call_api_get('channels.roles', roomId=room_id, kwargs=kwargs)
-        elif room_name:
+        if room_name:
             return self.__call_api_get('channels.roles', roomName=room_name, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or room_name required')
+
+        raise RocketMissingParamException('roomId or room_name required')
 
     def channels_files(self, room_id=None, room_name=None, **kwargs):
         """Retrieves the files from a channel."""
         if room_id:
             return self.__call_api_get('channels.files', roomId=room_id, kwargs=kwargs)
-        elif room_name:
+        if room_name:
             return self.__call_api_get('channels.files', roomName=room_name, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('room_id or room_name required')
+
+        raise RocketMissingParamException('room_id or room_name required')
 
     def channels_get_all_user_mentions_by_channel(self, room_id, **kwargs):
         """Gets all the mentions of a channel."""
@@ -432,10 +432,10 @@ class RocketChat:
         """Gets counters for a channel."""
         if room_id:
             return self.__call_api_get('channels.counters', roomId=room_id, kwargs=kwargs)
-        elif room_name:
+        if room_name:
             return self.__call_api_get('channels.counters', roomName=room_name, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('room_id or room_name required')
+
+        raise RocketMissingParamException('room_id or room_name required')
 
     # Groups
 
@@ -466,10 +466,10 @@ class RocketChat:
         """Lists all moderators of a group."""
         if room_id:
             return self.__call_api_get('groups.moderators', roomId=room_id, kwargs=kwargs)
-        elif group:
+        if group:
             return self.__call_api_get('groups.moderators', roomName=group, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or group required')
+
+        raise RocketMissingParamException('roomId or group required')
 
     def groups_add_owner(self, room_id, user_id, **kwargs):
         """Gives the role of owner for a user in the current Group."""
@@ -503,10 +503,10 @@ class RocketChat:
         """GRetrieves the information about the private group, only if you’re part of the group."""
         if room_id:
             return self.__call_api_get('groups.info', roomId=room_id, kwargs=kwargs)
-        elif room_name:
+        if room_name:
             return self.__call_api_get('groups.info', roomName=room_name, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or roomName required')
+
+        raise RocketMissingParamException('roomId or roomName required')
 
     def groups_invite(self, room_id, user_id, **kwargs):
         """Adds a user to the private group."""
@@ -548,37 +548,37 @@ class RocketChat:
         """Delete a private group."""
         if room_id:
             return self.__call_api_post('groups.delete', roomId=room_id, kwargs=kwargs)
-        elif group:
+        if group:
             return self.__call_api_post('groups.delete', roomName=group, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or group required')
+
+        raise RocketMissingParamException('roomId or group required')
 
     def groups_members(self, room_id=None, group=None, **kwargs):
         """Lists all group users."""
         if room_id:
             return self.__call_api_get('groups.members', roomId=room_id, kwargs=kwargs)
-        elif group:
+        if group:
             return self.__call_api_get('groups.members', roomName=group, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or group required')
+
+        raise RocketMissingParamException('roomId or group required')
 
     def groups_roles(self, room_id=None, room_name=None, **kwargs):
         """Lists all user’s roles in the private group."""
         if room_id:
             return self.__call_api_get('groups.roles', roomId=room_id, kwargs=kwargs)
-        elif room_name:
+        if room_name:
             return self.__call_api_get('groups.roles', roomName=room_name, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or room_name required')
+
+        raise RocketMissingParamException('roomId or room_name required')
 
     def groups_files(self, room_id=None, room_name=None, **kwargs):
         """Retrieves the files from a private group."""
         if room_id:
             return self.__call_api_get('groups.files', roomId=room_id, kwargs=kwargs)
-        elif room_name:
+        if room_name:
             return self.__call_api_get('groups.files', roomName=room_name, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or room_name required')
+
+        raise RocketMissingParamException('roomId or room_name required')
 
     # IM
     def im_list(self, **kwargs):
@@ -617,19 +617,19 @@ class RocketChat:
         """Retrieves the files from a direct message."""
         if room_id:
             return self.__call_api_get('im.files', roomId=room_id, kwargs=kwargs)
-        elif user_name:
+        if user_name:
             return self.__call_api_get('im.files', username=user_name, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or username required')
+
+        raise RocketMissingParamException('roomId or username required')
 
     def im_counters(self, room_id=None, user_name=None, **kwargs):
         """Gets counters of direct messages."""
         if room_id:
             return self.__call_api_get('im.counters', roomId=room_id, kwargs=kwargs)
-        elif user_name:
+        if user_name:
             return self.__call_api_get('im.counters', username=user_name, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException('roomId or username required')
+
+        raise RocketMissingParamException('roomId or username required')
 
     # Statistics
 
@@ -676,19 +676,19 @@ class RocketChat:
         """Favorite or unfavorite room."""
         if room_id is not None:
             return self.__call_api_post('rooms.favorite', roomId=room_id, favorite=favorite)
-        elif room_name is not None:
+        if room_name is not None:
             return self.__call_api_post('rooms.favorite', roomName=room_name, favorite=favorite)
-        else:
-            raise RocketMissingParamException('roomId or roomName required')
+
+        raise RocketMissingParamException('roomId or roomName required')
 
     def rooms_info(self, room_id=None, room_name=None):
         """Retrieves the information about the room."""
         if room_id is not None:
             return self.__call_api_get('rooms.info', roomId=room_id)
-        elif room_name is not None:
+        if room_name is not None:
             return self.__call_api_get('rooms.info', roomName=room_name)
-        else:
-            raise RocketMissingParamException('roomId or roomName required')
+
+        raise RocketMissingParamException('roomId or roomName required')
 
     # Subscriptions
 
