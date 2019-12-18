@@ -3,7 +3,7 @@ import pytest
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
 
 
-def test_chat_post_update_delete_message(logged_rocket, user):
+def test_chat_post_update_delete_message(logged_rocket):
     chat_post_message = logged_rocket.chat_post_message(
         "hello", channel='GENERAL').json()
     assert chat_post_message.get('channel') == 'GENERAL'
@@ -30,14 +30,14 @@ def test_chat_post_update_delete_message(logged_rocket, user):
     assert chat_delete.get('success')
 
 
-def test_chat_post_react(logged_rocket, user):
+def test_chat_post_react(logged_rocket):
     message_id = logged_rocket.chat_post_message(
         "hello", channel='GENERAL').json().get('message').get('_id')
     chat_react = logged_rocket.chat_react(msg_id=message_id).json()
     assert chat_react.get('success')
 
 
-def test_post_pin_unpin(logged_rocket, user):
+def test_post_pin_unpin(logged_rocket):
     message_id = logged_rocket.chat_post_message(
         "hello", channel='GENERAL').json().get('message').get('_id')
     chat_pin_message = logged_rocket.chat_pin_message(message_id).json()
@@ -48,7 +48,7 @@ def test_post_pin_unpin(logged_rocket, user):
     assert chat_unpin_message.get('success')
 
 
-def test_post_star_unstar(logged_rocket, user):
+def test_post_star_unstar(logged_rocket):
     message_id = logged_rocket.chat_post_message(
         "hello", channel='GENERAL').json().get('message').get('_id')
     chat_star_message = logged_rocket.chat_star_message(message_id).json()
@@ -59,13 +59,13 @@ def test_post_star_unstar(logged_rocket, user):
     assert chat_unstar_message.get('success')
 
 
-def test_chat_search(logged_rocket, user):
+def test_chat_search(logged_rocket):
     chat_search = logged_rocket.chat_search(
         room_id='GENERAL', search_text='hello').json()
     assert chat_search.get('success')
 
 
-def test_chat_get_message_read_receipts(logged_rocket, user):
+def test_chat_get_message_read_receipts(logged_rocket):
     message_id = logged_rocket.chat_post_message(
         "hello", channel='GENERAL').json().get('message').get('_id')
     chat_get_message_read_receipts = logged_rocket.chat_get_message_read_receipts(

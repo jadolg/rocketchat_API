@@ -109,7 +109,7 @@ def test_users_reset_avatar(logged_rocket, user):
         logged_rocket.users_reset_avatar()
 
 
-def test_users_create_token(logged_rocket, user, delete_user2):
+def test_users_create_token(logged_rocket, user):
     login = logged_rocket.login(user.name, user.password).json()
     users_create_token = logged_rocket.users_create_token(
         user_id=login.get('data').get('userId')).json()

@@ -46,7 +46,7 @@ def test_im_set_topic(logged_rocket, recipient_user):
     assert im_set_topic.get('topic') == topic, 'Topic set does not match topic returned'
 
 
-def test_im_list_everyone(logged_rocket, recipient_user):
+def test_im_list_everyone(logged_rocket):
     im_list_everyone = logged_rocket.im_list_everyone().json()
     assert im_list_everyone.get('success')
 

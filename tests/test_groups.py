@@ -31,13 +31,13 @@ def test_group_id(test_group_name, logged_rocket):
     return _test_group_id
 
 
-def test_groups_list_all(logged_rocket, test_group_name, test_group_id):
+def test_groups_list_all(logged_rocket):
     groups_list = logged_rocket.groups_list_all().json()
     assert groups_list.get('success')
     assert 'groups' in groups_list
 
 
-def test_groups_list(logged_rocket, test_group_name, test_group_id):
+def test_groups_list(logged_rocket):
     groups_list = logged_rocket.groups_list().json()
     assert groups_list.get('success')
     assert 'groups' in groups_list
@@ -60,14 +60,14 @@ def test_groups_info(logged_rocket, test_group_name, test_group_id):
         logged_rocket.groups_info()
 
 
-def test_groups_history(logged_rocket, test_group_name, test_group_id):
+def test_groups_history(logged_rocket, test_group_id):
     groups_history = logged_rocket.groups_history(
         room_id=test_group_id).json()
     assert groups_history.get('success')
     assert 'messages' in groups_history
 
 
-def test_groups_add_and_remove_moderator(logged_rocket, test_group_name, test_group_id):
+def test_groups_add_and_remove_moderator(logged_rocket, test_group_id):
     me = logged_rocket.me().json()
     groups_add_moderator = logged_rocket.groups_add_moderator(
         test_group_id, me.get('_id')).json()
@@ -95,7 +95,7 @@ def test_groups_add_and_remove_owner(logged_rocket, testuser_id, test_group_id):
     assert groups_remove_owner.get('success'), groups_remove_owner.get('error')
 
 
-def test_groups_archive_unarchive(logged_rocket, test_group_name, test_group_id):
+def test_groups_archive_unarchive(logged_rocket, test_group_id):
     groups_archive = logged_rocket.groups_archive(test_group_id).json()
     assert groups_archive.get('success')
     groups_unarchive = logged_rocket.groups_unarchive(
@@ -103,14 +103,14 @@ def test_groups_archive_unarchive(logged_rocket, test_group_name, test_group_id)
     assert groups_unarchive.get('success')
 
 
-def test_groups_close_open(logged_rocket, test_group_name, test_group_id):
+def test_groups_close_open(logged_rocket, test_group_id):
     groups_close = logged_rocket.groups_close(test_group_id).json()
     assert groups_close.get('success')
     groups_open = logged_rocket.groups_open(test_group_id).json()
     assert groups_open.get('success')
 
 
-def test_groups_create_delete(logged_rocket, test_group_name, test_group_id):
+def test_groups_create_delete(logged_rocket):
     name = str(uuid.uuid1())
     groups_create = logged_rocket.groups_create(name).json()
     assert groups_create.get('success')
@@ -127,7 +127,7 @@ def test_groups_create_delete(logged_rocket, test_group_name, test_group_id):
         logged_rocket.groups_delete()
 
 
-def test_groups_get_integrations(logged_rocket, test_group_name, test_group_id):
+def test_groups_get_integrations(logged_rocket, test_group_id):
     groups_get_integrations = logged_rocket.groups_get_integrations(room_id=test_group_id).json()
     assert groups_get_integrations.get('success')
 
@@ -138,7 +138,7 @@ def test_groups_invite(logged_rocket, testuser_id, test_group_id):
     assert groups_invite.get('success')
 
 
-def test_groups_kick(logged_rocket, test_group_id, testuser_id):
+def test_groups_kick(logged_rocket, testuser_id):
     id_group_created = logged_rocket.groups_create(
         str(uuid.uuid1())).json().get('group').get('_id')
     groups_invite = logged_rocket.groups_invite(
@@ -165,7 +165,7 @@ def test_groups_leave(logged_rocket, test_group_id, testuser_id):
     assert groups_leave.get('success')
 
 
-def test_groups_rename(logged_rocket, test_group_id):
+def test_groups_rename(logged_rocket):
     name = str(uuid.uuid1())
     name2 = str(uuid.uuid1())
     groups_create = logged_rocket.groups_create(name).json()
@@ -175,7 +175,7 @@ def test_groups_rename(logged_rocket, test_group_id):
     assert groups_rename.get('group').get('name') == name2
 
 
-def test_groups_set_description(logged_rocket, test_group_name, test_group_id):
+def test_groups_set_description(logged_rocket, test_group_id):
     description = str(uuid.uuid1())
     groups_set_description = logged_rocket.groups_set_description(
         test_group_id, description).json()
@@ -183,7 +183,7 @@ def test_groups_set_description(logged_rocket, test_group_name, test_group_id):
     assert groups_set_description.get('description') == description, 'Description does not match'
 
 
-def test_groups_set_read_only(logged_rocket, test_group_name, test_group_id):
+def test_groups_set_read_only(logged_rocket, test_group_id):
     groups_set_read_only = logged_rocket.groups_set_read_only(
         test_group_id, True).json()
     assert groups_set_read_only.get('success')
@@ -192,7 +192,7 @@ def test_groups_set_read_only(logged_rocket, test_group_name, test_group_id):
     assert groups_set_read_only.get('success')
 
 
-def test_groups_set_topic(logged_rocket, test_group_name, test_group_id):
+def test_groups_set_topic(logged_rocket, test_group_id):
     topic = str(uuid.uuid1())
     groups_set_topic = logged_rocket.groups_set_topic(
         test_group_id, topic).json()
@@ -200,7 +200,7 @@ def test_groups_set_topic(logged_rocket, test_group_name, test_group_id):
     assert groups_set_topic.get('topic') == topic, 'Topic does not match'
 
 
-def test_groups_set_type(logged_rocket, test_group_name, test_group_id):
+def test_groups_set_type(logged_rocket):
     name = str(uuid.uuid1())
     groups_create = logged_rocket.groups_create(name).json()
     assert groups_create.get('success')
@@ -228,7 +228,7 @@ def test_groups_members(logged_rocket, test_group_name, test_group_id):
         logged_rocket.groups_members()
 
 
-def test_groups_roles(logged_rocket, test_group_name, test_group_id):
+def test_groups_roles(logged_rocket):
     name = str(uuid.uuid1())
     groups_create = logged_rocket.groups_create(name).json()
     assert groups_create.get('success')
@@ -246,7 +246,7 @@ def test_groups_roles(logged_rocket, test_group_name, test_group_id):
         logged_rocket.groups_roles()
 
 
-def test_groups_files(logged_rocket, test_group_name, test_group_id):
+def test_groups_files(logged_rocket):
     name = str(uuid.uuid1())
     groups_create = logged_rocket.groups_create(name).json()
     assert groups_create.get('success')

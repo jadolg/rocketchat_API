@@ -133,7 +133,7 @@ def test_channels_create_delete(logged_rocket):
         logged_rocket.channels_delete()
 
 
-def test_channels_get_integrations(logged_rocket, testuser_id):
+def test_channels_get_integrations(logged_rocket):
     channels_get_integrations = logged_rocket.channels_get_integrations(
         room_id='GENERAL').json()
     assert channels_get_integrations.get('success')
