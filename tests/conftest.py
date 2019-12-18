@@ -11,7 +11,7 @@ def rocket():
 
 @pytest.fixture(scope="session")
 def create_user(rocket):
-    def _create_user(name="user1", password="password", email="email@domain.com"):
+    def _create_user(name="user1", password="password", email="email@domain.com"):  # noqa: B107
         # create empty object, because Mock not included to python2
         user = type('test', (object,), {})()
 
