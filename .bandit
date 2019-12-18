@@ -1,0 +1,2 @@
+[bandit]
+tests: B101,B102,B107,B301
