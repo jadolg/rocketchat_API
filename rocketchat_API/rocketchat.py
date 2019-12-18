@@ -66,15 +66,16 @@ class RocketChat:
                                  proxies=self.proxies,
                                  timeout=self.timeout
                                  )
-        else:
-            return self.req.post(self.server_url + self.API_path + method,
-                                 data=reduced_args,
-                                 files=files,
-                                 headers=self.headers,
-                                 verify=self.ssl_verify,
-                                 proxies=self.proxies,
-                                 timeout=self.timeout
-                                 )
+
+        return self.req.post(
+            self.server_url + self.API_path + method,
+            data=reduced_args,
+            files=files,
+            headers=self.headers,
+            verify=self.ssl_verify,
+            proxies=self.proxies,
+            timeout=self.timeout
+        )
 
     # Authentication
 
