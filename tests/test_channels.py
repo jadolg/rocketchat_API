@@ -158,14 +158,15 @@ def test_channels_leave(logged_rocket, testuser_id):
 
     name = str(uuid.uuid1())
     channels_create = logged_rocket.channels_create(name).json()
-    logged_rocket.channels_invite(
+    assert logged_rocket.channels_invite(
         room_id=channels_create.get('channel').get('_id'),
         user_id=testuser_id
-    )
-    logged_rocket.channels_add_owner(
+    ).json().get('success')
+
+    assert logged_rocket.channels_add_owner(
         channels_create.get('channel').get('_id'),
         user_id=testuser_id
-    ).json()
+    ).json().get('success')
     channels_leave = logged_rocket.channels_leave(
         channels_create.get('channel').get('_id')).json()
     assert channels_leave.get('success')
