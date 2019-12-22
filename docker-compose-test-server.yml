@@ -1,23 +1,36 @@
-version: "3"
+version: '2'
 
 services:
   rocketchat:
-    image: rocketchat/rocket.chat:0.73.1
-    ports:
-      - 127.0.0.1:3000:3000
-    restart: always
+    image: rocket.chat:latest
+    command: bash -c 'for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo "Tried $$i times. Waiting 5 secs..."; sleep 5; done; (exit $$s)'
+    restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
     environment:
       - PORT=3000
       - ROOT_URL=http://localhost:3000
       - MONGO_URL=mongodb://mongo:27017/rocketchat
-
+      - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+      - OVERWRITE_SETTING_API_Enable_Rate_Limiter=false
+      - CREATE_TOKENS_FOR_USERS=true
     depends_on:
       - mongo
-    links:
-      - mongo:mongo
-      - mongo:secure.gravatar.com
+    ports:
+      - 3000:3000
 
   mongo:
-    image: mongo:3.3
-    restart: always
-    command: mongod --smallfiles
+    image: mongo:4.0
+    restart: unless-stopped
+    volumes:
+     - ./data/db:/data/db
+     - ./data/dump:/dump
+    command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
+
+  # this container's job is just run the command to initialize the replica set.
+  # it will run the command and remove himself (it will not stay running)
+  mongo-init-replica:
+    image: mongo
+    command: 'bash -c "for i in `seq 1 30`; do mongo mongo/rocketchat --eval \"rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})\" && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"'
+    depends_on:
+      - mongo
