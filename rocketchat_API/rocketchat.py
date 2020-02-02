@@ -690,6 +690,10 @@ class RocketChat:
         else:
             raise RocketMissingParamException('roomId or roomName required')
 
+    def rooms_admin_rooms(self, **kwargs):
+        """ Retrieves all rooms (requires the view-room-administration permission)."""
+        return self.__call_api_get('rooms.adminRooms', kwargs=kwargs)
+
     # Subscriptions
 
     def subscriptions_get(self, **kwargs):
