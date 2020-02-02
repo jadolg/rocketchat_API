@@ -69,6 +69,6 @@ def test_rooms_admin_rooms(logged_rocket):
     #     actual_count += len(filter(lambda x: 'c' in x['t'], res.get('rooms')))
     # assert res.get('total') == actual_count
 
-    rooms_with_filter = logged_rocket.rooms_admin_rooms(**{'filter':'general'}).json()
+    rooms_with_filter = logged_rocket.rooms_admin_rooms(**{'filter': 'general'}).json()
     assert rooms_with_filter.get('success')
     assert rooms_with_filter.get('rooms')[0].get('_id') == "GENERAL"
