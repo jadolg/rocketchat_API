@@ -42,12 +42,14 @@ class RocketChat:
 
     def __call_api_get(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
-        types = args.pop('types', None)
         url = self.server_url + self.API_path + method
-        params = '&'.join(i + '=' + str(args[i]) for i in args)
-        if types:
-            params += '&' if params else ''
-            params += '&'.join('types[]=%s' % rtype for rtype in types)
+        # convert to key[]=val1&key[]=val2 for args like key=[val1, val2], else key=val
+        params = '&'.join(
+            '&'.join(i + '[]=' + j for j in args[i])
+            if isinstance(args[i], list)
+            else i + '=' + str(args[i])
+            for i in args
+        )
         return self.req.get(
             '%s?%s' % (url, params),
             headers=self.headers,
