@@ -54,20 +54,20 @@ def test_rooms_admin_rooms(logged_rocket):
     rooms_simple = logged_rocket.rooms_admin_rooms().json()
     assert rooms_simple.get('success')
 
-    # # Using a room type filter does not seem to work
-    # offset = actual_count = 0
-    # res = {}
-    # while res.get('total') is None or res.get('total') > offset:
-    #     res = logged_rocket.rooms_admin_rooms(
-    #         **{
-    #             'types': ['c',],
-    #             'offset': offset
-    #         }
-    #     ).json()
-    #     assert res.get('success')
-    #     offset += res.get('count')
-    #     actual_count += len(filter(lambda x: 'c' in x['t'], res.get('rooms')))
-    # assert res.get('total') == actual_count
+    # Using a room type filter does not seem to work
+    offset = actual_count = 0
+    res = {}
+    while res.get('total') is None or res.get('total') > offset:
+        res = logged_rocket.rooms_admin_rooms(
+            **{
+                'types': ['c', ],
+                'offset': offset
+            }
+        ).json()
+        assert res.get('success')
+        offset += res.get('count')
+        actual_count += len(list(filter(lambda x: 'c' in x['t'], res.get('rooms'))))
+    assert res.get('total') == actual_count
 
     rooms_with_filter = logged_rocket.rooms_admin_rooms(**{'filter': 'general'}).json()
     assert rooms_with_filter.get('success')

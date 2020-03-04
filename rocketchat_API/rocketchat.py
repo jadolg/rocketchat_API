@@ -42,14 +42,19 @@ class RocketChat:
 
     def __call_api_get(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
-        return self.req.get(self.server_url + self.API_path + method + '?' +
-                            '&'.join([i + '=' + str(args[i])
-                                      for i in args]),
-                            headers=self.headers,
-                            verify=self.ssl_verify,
-                            proxies=self.proxies,
-                            timeout=self.timeout
-                            )
+        types = args.pop('types', None)
+        url = self.server_url + self.API_path + method
+        params = '&'.join(i + '=' + str(args[i]) for i in args)
+        if types:
+            params += '&' if params else ''
+            params += '&'.join('types[]=%s' % rtype for rtype in types)
+        return self.req.get(
+            '%s?%s' % (url, params),
+            headers=self.headers,
+            verify=self.ssl_verify,
+            proxies=self.proxies,
+            timeout=self.timeout
+        )
 
     def __call_api_post(self, method, files=None, use_json=True, **kwargs):
         reduced_args = self.__reduce_kwargs(kwargs)
