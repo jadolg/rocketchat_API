@@ -10,7 +10,7 @@ Python API wrapper for [Rocket.Chat](https://rocket.chat/docs/developer-guides/r
 Clone our repository and `python3 setup.py install`
 
 ### Requirements
-- [requests](https://github.com/kennethreitz/requests)==2.20.1
+- [requests](https://github.com/kennethreitz/requests)
 
 ### Usage
 ```python
