@@ -58,6 +58,11 @@ def test_im_history(logged_rocket, recipient_user):
     assert im_history.get('success')
 
 
+def test_im_message(logged_rocket, recipient_user):
+    im_message = logged_rocket.im_message(username=recipient_user).json()
+    assert im_message.get('success')
+
+
 def test_im_messages_others(logged_rocket, recipient_user):
     # ToDo: Try changing the access configuration so endpoint can be successfully tested
     im_create = logged_rocket.im_create(recipient_user).json()
