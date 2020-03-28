@@ -3,6 +3,8 @@ sudo: required
 language: python
 
 python:
+- '3.8'
+- '3.7'
 - '3.6'
 - '2.7'
 
@@ -17,8 +19,7 @@ before_install:
 
 script:
 - docker ps
-- until curl http://localhost:3000/api/v1/info; do sleep 5; echo "waiting for Rocket.Chat
-  server to start"; done
+- until curl http://localhost:3000/api/v1/info; do sleep 5; echo "waiting for Rocket.Chat server to start"; done
 - pytest tests rocketchat_API -x --cov=./ --pep8 --flakes
 - codecov
 
@@ -30,3 +31,4 @@ deploy:
   on:
     tags: true
   distributions: "bdist_wheel"
+  skip_existing: true

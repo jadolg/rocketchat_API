@@ -1,15 +1,12 @@
 # -*-coding:utf-8-*-
-import logging
 import mimetypes
 import os
 import re
+
 import requests
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketConnectionException, RocketAuthenticationException, \
     RocketMissingParamException
-
-logging.basicConfig(level=logging.WARNING,
-                    format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
 
 class RocketChat:
@@ -26,7 +23,7 @@ class RocketChat:
         self.timeout = timeout
         self.req = session or requests
         if user and password:
-            self.login(user, password)
+            self.login(user, password)  # skipcq: PTC-W1006
         if auth_token and user_id:
             self.headers['X-Auth-Token'] = auth_token
             self.headers['X-User-Id'] = user_id
@@ -42,14 +39,21 @@ class RocketChat:
 
     def __call_api_get(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
-        return self.req.get(self.server_url + self.API_path + method + '?' +
-                            '&'.join([i + '=' + str(args[i])
-                                      for i in args]),
-                            headers=self.headers,
-                            verify=self.ssl_verify,
-                            proxies=self.proxies,
-                            timeout=self.timeout
-                            )
+        url = self.server_url + self.API_path + method
+        # convert to key[]=val1&key[]=val2 for args like key=[val1, val2], else key=val
+        params = '&'.join(
+            '&'.join(i + '[]=' + j for j in args[i])
+            if isinstance(args[i], list)
+            else i + '=' + str(args[i])
+            for i in args
+        )
+        return self.req.get(
+            '%s?%s' % (url, params),
+            headers=self.headers,
+            verify=self.ssl_verify,
+            proxies=self.proxies,
+            timeout=self.timeout
+        )
 
     def __call_api_post(self, method, files=None, use_json=True, **kwargs):
         reduced_args = self.__reduce_kwargs(kwargs)
@@ -654,17 +658,17 @@ class RocketChat:
 
     # Settings
 
-    def settings_get(self, _id):
+    def settings_get(self, _id, **kwargs):
         """Gets the setting for the provided _id."""
-        return self.__call_api_get('settings/' + _id)
+        return self.__call_api_get('settings/' + _id, kwargs=kwargs)
 
-    def settings_update(self, _id, value):
+    def settings_update(self, _id, value, **kwargs):
         """Updates the setting for the provided _id."""
-        return self.__call_api_post('settings/' + _id, value=value)
+        return self.__call_api_post('settings/' + _id, value=value, kwargs=kwargs)
 
-    def settings(self):
+    def settings(self, **kwargs):
         """List all private settings."""
-        return self.__call_api_get('settings')
+        return self.__call_api_get('settings', kwargs=kwargs)
 
     # Rooms
 
@@ -700,6 +704,10 @@ class RocketChat:
             return self.__call_api_get('rooms.info', roomName=room_name)
         else:
             raise RocketMissingParamException('roomId or roomName required')
+
+    def rooms_admin_rooms(self, **kwargs):
+        """ Retrieves all rooms (requires the view-room-administration permission)."""
+        return self.__call_api_get('rooms.adminRooms', kwargs=kwargs)
 
     # Subscriptions
 
