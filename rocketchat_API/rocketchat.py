@@ -609,6 +609,10 @@ class RocketChat:
         """Removes the direct message from the user’s list of direct messages."""
         return self.__call_api_post('im.close', roomId=room_id, kwargs=kwargs)
 
+    def im_messages(self, username, **kwargs):
+        """Retrieves direct messages from the server by username"""
+        return self.__call_api_get('im.messages', username=username, args=kwargs)
+
     def im_messages_others(self, room_id, **kwargs):
         """Retrieves the messages from any direct message in the server"""
         return self.__call_api_get('im.messages.others', roomId=room_id, kwargs=kwargs)
