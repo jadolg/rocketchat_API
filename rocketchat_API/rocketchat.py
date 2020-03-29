@@ -352,6 +352,10 @@ class RocketChat:
         """Adds a user to the channel."""
         return self.__call_api_post('channels.invite', roomId=room_id, userId=user_id, kwargs=kwargs)
 
+    def channels_join(self, room_id, join_code, **kwargs):
+        """Joins yourself to the channel."""
+        return self.__call_api_post('channels.join', roomId=room_id, joinCode=join_code, kwargs=kwargs)
+
     def channels_kick(self, room_id, user_id, **kwargs):
         """Removes a user from the channel."""
         return self.__call_api_post('channels.kick', roomId=room_id, userId=user_id, kwargs=kwargs)
