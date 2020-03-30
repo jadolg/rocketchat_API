@@ -787,6 +787,8 @@ class RocketChat:
             user_type, id
         )
         )
+    def livechat_list_rooms(self, **kwargs):
+        return self.__call_api_get('livechat/rooms', kwargs=kwargs)
 
     def livechat_room(self, token, **kwargs):
         kwargs['token'] = token
@@ -812,3 +814,4 @@ class RocketChat:
     def livechat_custom_fields(self, token, key, value, overwrite=False):
         """Add new user as agent or manager"""
         return self.__call_api_post('livechat/custom.field', token=token, key=key, value=value, overwrite=overwrite)
+    
