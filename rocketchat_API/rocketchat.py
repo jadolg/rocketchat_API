@@ -187,6 +187,7 @@ class RocketChat:
         else:
             raise RocketMissingParamException('userID or username required')
 
+        # If the Accounts_AvatarBlockUnauthorizedAccess is set, we need to provide the Token as cookies
         if response.status_code == 403:
             return self.req.get(response.url, cookies={'rc_uid': self.headers.get('X-User-Id'),
                                                        'rc_token': self.headers.get('X-Auth-Token')})
