@@ -245,7 +245,7 @@ class RocketChat:
                 return self.__call_api_post('chat.postMessage', channel=channel, kwargs=kwargs)
             else:
                 raise RocketMissingParamException('roomId or channel required')
-            
+
 
     def chat_get_message(self, msg_id, **kwargs):
         return self.__call_api_get('chat.getMessage', msgId=msg_id, kwargs=kwargs)
