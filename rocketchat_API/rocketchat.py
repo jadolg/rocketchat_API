@@ -236,7 +236,7 @@ class RocketChat:
                 return self.__call_api_post('chat.postMessage', roomId=room_id,
                                             text=text, kwargs=kwargs)
             return self.__call_api_post('chat.postMessage', roomId=room_id,
-                                            kwargs=kwargs)                
+                                            kwargs=kwargs)
         elif channel:
             if text:
                 return self.__call_api_post('chat.postMessage',
