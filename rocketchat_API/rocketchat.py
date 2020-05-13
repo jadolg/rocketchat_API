@@ -235,17 +235,15 @@ class RocketChat:
             if text:
                 return self.__call_api_post('chat.postMessage', roomId=room_id,
                                             text=text, kwargs=kwargs)
-            else:
-                return self.__call_api_post('chat.postMessage', roomId=room_id,
+            return self.__call_api_post('chat.postMessage', roomId=room_id,
                                             kwargs=kwargs)                
         elif channel:
             if text:
                 return self.__call_api_post('chat.postMessage',
                                             channel=channel, text=text,
                                             kwargs=kwargs)
-            else:
-                return self.__call_api_post('chat.postMessage',
-                                            channel=channel, kwargs=kwargs)                
+            return self.__call_api_post('chat.postMessage',
+                                            channel=channel, kwargs=kwargs)
         else:
             raise RocketMissingParamException('roomId or channel required')
 
