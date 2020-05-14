@@ -3,6 +3,14 @@ import pytest
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
 
 
+def test_chat_post_notext_message(logged_rocket):
+    chat_post_message = logged_rocket.chat_post_message(
+        None, channel='GENERAL').json()
+    assert chat_post_message.get('channel') == 'GENERAL'
+    assert chat_post_message.get('message').get('msg') == ''
+    assert chat_post_message.get('success')
+
+
 def test_chat_post_update_delete_message(logged_rocket):
     chat_post_message = logged_rocket.chat_post_message(
         "hello", channel='GENERAL').json()
