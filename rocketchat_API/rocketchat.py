@@ -181,11 +181,17 @@ class RocketChat:
     def users_get_avatar(self, user_id=None, username=None, **kwargs):
         """Gets the URL for a user’s avatar."""
         if user_id:
-            return self.__call_api_get('users.getAvatar', userId=user_id, kwargs=kwargs)
+            response = self.__call_api_get('users.getAvatar', userId=user_id, kwargs=kwargs)
         elif username:
-            return self.__call_api_get('users.getAvatar', username=username, kwargs=kwargs)
+            response = self.__call_api_get('users.getAvatar', username=username, kwargs=kwargs)
         else:
             raise RocketMissingParamException('userID or username required')
+
+        # If Accounts_AvatarBlockUnauthorizedAccess is set, we need to provide the Token as cookies
+        if response.status_code == 403:
+            return self.req.get(response.url, cookies={'rc_uid': self.headers.get('X-User-Id'),
+                                                       'rc_token': self.headers.get('X-Auth-Token')})
+        return response
 
     def users_set_avatar(self, avatar_url, **kwargs):
         """Set a user’s avatar"""
@@ -226,9 +232,18 @@ class RocketChat:
     def chat_post_message(self, text, room_id=None, channel=None, **kwargs):
         """Posts a new chat message."""
         if room_id:
-            return self.__call_api_post('chat.postMessage', roomId=room_id, text=text, kwargs=kwargs)
+            if text:
+                return self.__call_api_post('chat.postMessage', roomId=room_id,
+                                            text=text, kwargs=kwargs)
+            return self.__call_api_post('chat.postMessage', roomId=room_id,
+                                        kwargs=kwargs)
         elif channel:
-            return self.__call_api_post('chat.postMessage', channel=channel, text=text, kwargs=kwargs)
+            if text:
+                return self.__call_api_post('chat.postMessage',
+                                            channel=channel, text=text,
+                                            kwargs=kwargs)
+            return self.__call_api_post('chat.postMessage',
+                                        channel=channel, kwargs=kwargs)
         else:
             raise RocketMissingParamException('roomId or channel required')
 
@@ -351,6 +366,10 @@ class RocketChat:
     def channels_invite(self, room_id, user_id, **kwargs):
         """Adds a user to the channel."""
         return self.__call_api_post('channels.invite', roomId=room_id, userId=user_id, kwargs=kwargs)
+
+    def channels_join(self, room_id, join_code, **kwargs):
+        """Joins yourself to the channel."""
+        return self.__call_api_post('channels.join', roomId=room_id, joinCode=join_code, kwargs=kwargs)
 
     def channels_kick(self, room_id, user_id, **kwargs):
         """Removes a user from the channel."""
@@ -609,9 +628,14 @@ class RocketChat:
         """Removes the direct message from the user’s list of direct messages."""
         return self.__call_api_post('im.close', roomId=room_id, kwargs=kwargs)
 
-    def im_messages(self, username, **kwargs):
+    def im_messages(self, room_id=None, username=None, **kwargs):
         """Retrieves direct messages from the server by username"""
-        return self.__call_api_get('im.messages', username=username, args=kwargs)
+        if room_id:
+          return self.__call_api_get('im.messages', roomId=room_id, args=kwargs)
+        elif username:
+          return self.__call_api_get('im.messages', username=username, args=kwargs)
+        else:
+          raise RocketMissingParamException('roomId or username required')
 
     def im_messages_others(self, room_id, **kwargs):
         """Retrieves the messages from any direct message in the server"""
