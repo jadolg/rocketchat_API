@@ -757,3 +757,24 @@ class RocketChat:
     def permissions_list_all(self, **kwargs):
         """Returns all permissions from the server."""
         return self.__call_api_get('permissions.listAll', kwargs=kwargs)
+
+    # Integrations
+    def integrations_create(self, _type, name, event, usr, urls, enbl=True, script_enbl=False, **kwargs):
+        """Creates an integration."""
+        return self.__call_api_post('integrations.create', type=_type, name=name, enabled=enbl, event=event, username=usr, urls=urls, scriptEnabled=script_enbl, kwargs=kwargs)
+
+    def integrations_get(self, _id, **kwargs):
+        """Gets an integration."""
+        return self.__call_api_get('integrations.get', integrationId=_id, kwargs=kwargs)
+
+    def integrations_history(self, _id, **kwargs):
+        """Lists all history of the specified integration."""    
+        return self.__call_api_get('integrations.history', id=_id, kwargs=kwargs)
+
+    def integrations_list(self, **kwargs):
+        """Lists all of the integrations."""
+        return self.__call_api_get('integrations.list', kwargs=kwargs)
+
+    def integrations_remove(self, _type, _id, **kwargs):
+        """Removes an integration."""
+        return self.__call_api_post('integrations.remove', type=_type, integrationId=_id, kwargs=kwargs)
