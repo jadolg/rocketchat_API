@@ -768,7 +768,7 @@ class RocketChat:
         return self.__call_api_get('integrations.get', integrationId=_id, kwargs=kwargs)
 
     def integrations_history(self, _id, **kwargs):
-        """Lists all history of the specified integration."""    
+        """Lists all history of the specified integration."""
         return self.__call_api_get('integrations.history', id=_id, kwargs=kwargs)
 
     def integrations_list(self, **kwargs):
