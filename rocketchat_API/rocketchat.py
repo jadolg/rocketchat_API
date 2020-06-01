@@ -761,7 +761,11 @@ class RocketChat:
     # Integrations
     def integrations_create(self, _type, name, event, usr, urls, enbl=True, script_enbl=False, **kwargs):
         """Creates an integration."""
-        return self.__call_api_post('integrations.create', type=_type, name=name, enabled=enbl, event=event, username=usr, urls=urls, scriptEnabled=script_enbl, kwargs=kwargs)
+        return self.__call_api_post(
+            'integrations.create', type=_type, name=name,
+            enabled=enbl, event=event, username=usr,
+            urls=urls, scriptEnabled=script_enbl, kwargs=kwargs
+        )
 
     def integrations_get(self, _id, **kwargs):
         """Gets an integration."""
