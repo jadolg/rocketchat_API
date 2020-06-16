@@ -631,11 +631,11 @@ class RocketChat:
     def im_messages(self, room_id=None, username=None, **kwargs):
         """Retrieves direct messages from the server by username"""
         if room_id:
-          return self.__call_api_get('im.messages', roomId=room_id, args=kwargs)
+            return self.__call_api_get('im.messages', roomId=room_id, args=kwargs)
         elif username:
-          return self.__call_api_get('im.messages', username=username, args=kwargs)
+            return self.__call_api_get('im.messages', username=username, args=kwargs)
         else:
-          raise RocketMissingParamException('roomId or username required')
+            raise RocketMissingParamException('roomId or username required')
 
     def im_messages_others(self, room_id, **kwargs):
         """Retrieves the messages from any direct message in the server"""
