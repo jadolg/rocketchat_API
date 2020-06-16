@@ -628,14 +628,9 @@ class RocketChat:
         """Removes the direct message from the user’s list of direct messages."""
         return self.__call_api_post('im.close', roomId=room_id, kwargs=kwargs)
 
-    def im_messages(self, room_id=None, username=None, **kwargs):
+    def im_messages(self, username, **kwargs):
         """Retrieves direct messages from the server by username"""
-        if room_id:
-          return self.__call_api_get('im.messages', roomId=room_id, args=kwargs)
-        elif username:
-          return self.__call_api_get('im.messages', username=username, args=kwargs)
-        else:
-          raise RocketMissingParamException('roomId or username required')
+        return self.__call_api_get('im.messages', username=username, args=kwargs)
 
     def im_messages_others(self, room_id, **kwargs):
         """Retrieves the messages from any direct message in the server"""
