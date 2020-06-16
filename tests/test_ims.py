@@ -70,7 +70,7 @@ def test_im_messages(logged_rocket, recipient_user):
     assert im_message.get('success')
     im_create = logged_rocket.im_create(recipient_user).json()
     room_id = im_create.get('room').get('_id')
-    im_message = logged_rocket.im_messages_others(room_id=room_id).json()
+    im_message = logged_rocket.im_messages(room_id=room_id).json()
     assert im_message.get('success')
 
 
