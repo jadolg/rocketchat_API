@@ -73,6 +73,9 @@ def test_im_messages(logged_rocket, recipient_user):
     im_message = logged_rocket.im_messages(room_id=room_id).json()
     assert im_message.get('success')
 
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.im_messages()
+
 
 def test_im_messages_others(logged_rocket, recipient_user):
     # ToDo: Try changing the access configuration so endpoint can be successfully tested
