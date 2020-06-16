@@ -22,6 +22,13 @@ def test_im_send(logged_rocket, recipient_user):
     assert im_send.get('success')
 
 
+def test_im_send_no_text(logged_rocket, recipient_user):
+    im_create = logged_rocket.im_create(recipient_user).json()
+    room_id = im_create.get('room').get('_id')
+    im_send = logged_rocket.chat_post_message(room_id=room_id, text=None).json()
+    assert im_send.get('success')
+
+
 def test_im_list(logged_rocket, recipient_user):
     logged_rocket.im_create(recipient_user)
     im_list = logged_rocket.im_list().json()
@@ -58,8 +65,8 @@ def test_im_history(logged_rocket, recipient_user):
     assert im_history.get('success')
 
 
-def test_im_message(logged_rocket, recipient_user):
-    im_message = logged_rocket.im_message(username=recipient_user).json()
+def test_im_messages(logged_rocket, recipient_user):
+    im_message = logged_rocket.im_messages(username=recipient_user).json()
     assert im_message.get('success')
 
 
