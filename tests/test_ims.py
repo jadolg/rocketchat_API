@@ -68,6 +68,13 @@ def test_im_history(logged_rocket, recipient_user):
 def test_im_messages(logged_rocket, recipient_user):
     im_message = logged_rocket.im_messages(username=recipient_user).json()
     assert im_message.get('success')
+    im_create = logged_rocket.im_create(recipient_user).json()
+    room_id = im_create.get('room').get('_id')
+    im_message = logged_rocket.im_messages(room_id=room_id).json()
+    assert im_message.get('success')
+
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.im_messages()
 
 
 def test_im_messages_others(logged_rocket, recipient_user):
