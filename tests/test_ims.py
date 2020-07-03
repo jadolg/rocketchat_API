@@ -68,7 +68,7 @@ def test_im_history(logged_rocket, recipient_user):
 def test_im_members(logged_rocket, recipient_user):
     im_create = logged_rocket.im_create(recipient_user).json()
     room_id = im_create.get('room').get('id')
-    im_members = logged_rocket.im_members(room_id=???).json()
+    im_members = logged_rocket.im_members(room_id=room_id).json()
     assert im_members.get('success')
     assert im_members.get('count') == 2
 
