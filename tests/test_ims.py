@@ -70,7 +70,7 @@ def test_im_members(logged_rocket, recipient_user):
     room_id = im_create.get('room').get('_id')
     im_members = logged_rocket.im_members(room_id=room_id).json()
     assert im_members.get('success')
-    assert im_members.get('count') == 2
+    assert im_members.get('members')[0].get('name') == 'user1'
 
 
 def test_im_messages(logged_rocket, recipient_user):
