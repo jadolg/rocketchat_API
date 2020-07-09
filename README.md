@@ -65,6 +65,3 @@ You can contribute by doing Pull Requests. (It may take a while to merge your co
 Reporting bugs and asking for features is also contributing ;) Feel free to help us grow by registering issues.
 
 We hang out [here](https://demo.rocket.chat/channel/python_rocketchat_api) if you want to talk. 
-
-### Sponsors
-[![aleph-logo](https://s3.amazonaws.com/aleph-engineering/Logo_AE_complete_normal%404x.png)](https://aleph.engineering/)
