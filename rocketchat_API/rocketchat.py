@@ -767,3 +767,11 @@ class RocketChat:
     def permissions_list_all(self, **kwargs):
         """Returns all permissions from the server."""
         return self.__call_api_get('permissions.listAll', kwargs=kwargs)
+
+    # Invites
+    def find_or_create_invite(self, rid, days, max_uses):
+        """
+        Creates or return an existing invite with the specified parameters. 
+        Requires the create-invite-links permission
+        """
+        return self.__call_api_post('findOrCreateInvite', rid=rid, days=days, maxUses=max_uses)
