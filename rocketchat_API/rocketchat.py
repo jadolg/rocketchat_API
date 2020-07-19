@@ -771,7 +771,7 @@ class RocketChat:
     # Invites
     def find_or_create_invite(self, rid, days, max_uses):
         """
-        Creates or return an existing invite with the specified parameters. 
+        Creates or return an existing invite with the specified parameters.
         Requires the create-invite-links permission
         """
         return self.__call_api_post('findOrCreateInvite', rid=rid, days=days, maxUses=max_uses)
