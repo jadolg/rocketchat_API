@@ -775,3 +775,7 @@ class RocketChat:
         Requires the create-invite-links permission
         """
         return self.__call_api_post('findOrCreateInvite', rid=rid, days=days, maxUses=max_uses)
+
+    def list_invites(self, **kwargs):
+        """Lists all of the invites on the server. Requires the create-invite-links permission."""
+        return self.__call_api_get('listInvites', kwargs=kwargs)
