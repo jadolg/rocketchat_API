@@ -15,5 +15,5 @@ jobs:
         message: Woop! Woop! A new Pull Request has being created at ${{ github.event.pull_request.html_url }}
         user: ${{ secrets.ROCKETCHAT_USER }}
         password: ${{ secrets.ROCKETCHAT_PASSWORD }}
-        channel: test-notifications-akiel
+        channel: python_rocketchat_api
         code: false
