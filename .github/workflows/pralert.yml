@@ -9,13 +9,14 @@ jobs:
 
     steps:
     - uses: kceb/pull-request-url-action@v1
+      id: prurl
       with:
         github-oauth-token: ${{ secrets.TOKEN }}
 
     - name: Push notification when a Pull Request is created
       uses: jadolg/rocketchat-notification-action@v1.0.1
       with:
-        message: Woop! Woop! A new Pull Request has being created. 
+        message: Woop! Woop! A new Pull Request has being created at ${{ steps.prurl.outputs.url }}"
         user: ${{ secrets.ROCKETCHAT_USER }}
         password: ${{ secrets.ROCKETCHAT_PASSWORD }}
         channel: test-notifications-akiel
