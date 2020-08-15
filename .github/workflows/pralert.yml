@@ -10,10 +10,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Push notification to rocket.chat if the job failed
+    - name: Push notification when a Pull Request is created
       uses: jadolg/rocketchat-notification-action@v1.0.0
       with:
         message: Woop! Woop! A new Pull Request has being created. 
         user: ${{ secrets.ROCKETCHAT_USER }}
         password: ${{ secrets.ROCKETCHAT_PASSWORD }}
         channel: test-notifications-akiel
+        code: false
