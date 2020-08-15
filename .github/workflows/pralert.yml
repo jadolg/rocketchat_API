@@ -8,7 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: kceb/pull-request-url-action@v1
+      with:
+        github-oauth-token: ${{ secrets.GITHUB_OAUTH_TOKEN }}
 
     - name: Push notification when a Pull Request is created
       uses: jadolg/rocketchat-notification-action@v1.0.1
