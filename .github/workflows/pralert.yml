@@ -1,6 +1,7 @@
 name: PR_alert
 on:
   pull_request:
+    types: [opened, reopened]
     branches: [ master ]
 
 jobs:
