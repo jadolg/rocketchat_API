@@ -11,7 +11,7 @@ jobs:
     - uses: kceb/pull-request-url-action@v1
       id: prurl
       with:
-        github-oauth-token: ${{ secrets.TOKEN }}
+        github-oauth-token: ${{ github.token }}
 
     - name: Push notification when a Pull Request is created
       uses: jadolg/rocketchat-notification-action@v1.0.1
