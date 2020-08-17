@@ -216,6 +216,18 @@ def test_groups_set_type(logged_rocket):
     assert not groups_set_type.get('success')
 
 
+def test_groups_set_custom_fields(logged_rocket, test_group_id):
+    field_name = str(uuid.uuid1())
+    field_value = str(uuid.uuid1())
+    custom_fields = {field_name: field_value}
+
+    groups_set_custom_fields = logged_rocket.groups_set_custom_fields(
+        custom_fields, room_id=test_group_id).json()
+    assert groups_set_custom_fields.get('success')
+    assert groups_set_custom_fields.get('group').get('customFields') == custom_fields, \
+        'Custom fields do not match'
+
+
 def test_groups_members(logged_rocket, test_group_name, test_group_id):
     groups_members = logged_rocket.groups_members(
         room_id=test_group_id).json()
