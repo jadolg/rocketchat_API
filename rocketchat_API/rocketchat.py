@@ -577,7 +577,7 @@ class RocketChat:
                                         kwargs=kwargs)
         else:
             raise RocketMissingParamException('room_id or room_name required')
-    
+
     def groups_delete(self, room_id=None, group=None, **kwargs):
         """Delete a private group."""
         if room_id:
