@@ -234,7 +234,7 @@ def test_groups_set_custom_fields(logged_rocket, test_group_id, test_group_name,
         'Custom fields do not match'
 
     with pytest.raises(RocketMissingParamException):
-        logged_rocket.logged_rocket.groups_set_custom_fields(custom_fields)
+        logged_rocket.groups_set_custom_fields(custom_fields)
 
 
 def test_groups_members(logged_rocket, test_group_name, test_group_id):
