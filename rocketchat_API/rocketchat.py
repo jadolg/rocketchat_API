@@ -567,6 +567,16 @@ class RocketChat:
         """Sets the type of room this group should be. The type of room this channel should be, either c or p."""
         return self.__call_api_post('groups.setType', roomId=room_id, type=a_type, kwargs=kwargs)
 
+    def groups_set_custom_fields(self, custom_fields, room_id=None, room_name=None,
+                                 **kwargs):
+        if room_id:
+            return self.__call_api_post('groups.setCustomFields', roomId=room_id,
+                                        customFields=custom_fields, kwargs=kwargs)
+        if room_name:
+            return self.__call_api_post('groups.setCustomFields', roomName=room_name,
+                                        customFields=custom_fields, kwargs=kwargs)
+        raise RocketMissingParamException('room_id or room_name required')
+
     def groups_delete(self, room_id=None, group=None, **kwargs):
         """Delete a private group."""
         if room_id:
