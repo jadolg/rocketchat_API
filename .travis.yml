@@ -12,7 +12,8 @@ services:
 - docker
 
 before_install:
-- docker version
+    - docker version
+- docker pull rocket.chat:latest
 - pip install docker-compose
 - pip install codecov pytest-cov pytest-flakes pytest-pep8
 - docker-compose -f docker-compose-test-server.yml up -d
