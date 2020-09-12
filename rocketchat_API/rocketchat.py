@@ -14,12 +14,13 @@ class RocketChat:
 
     def __init__(self, user=None, password=None, auth_token=None, user_id=None,
                  server_url='http://127.0.0.1:3000', ssl_verify=True, proxies=None,
-                 timeout=30, session=None):
+                 timeout=30, session=None, client_certs=None):
         """Creates a RocketChat object and does login on the specified server"""
         self.headers = {}
         self.server_url = server_url
         self.proxies = proxies
         self.ssl_verify = ssl_verify
+        self.cert = client_certs
         self.timeout = timeout
         self.req = session or requests
         if user and password:
@@ -51,6 +52,7 @@ class RocketChat:
             '%s?%s' % (url, params),
             headers=self.headers,
             verify=self.ssl_verify,
+            cert=self.cert,
             proxies=self.proxies,
             timeout=self.timeout
         )
@@ -67,6 +69,7 @@ class RocketChat:
                                  files=files,
                                  headers=self.headers,
                                  verify=self.ssl_verify,
+                                 cert=self.cert,
                                  proxies=self.proxies,
                                  timeout=self.timeout
                                  )
@@ -76,6 +79,7 @@ class RocketChat:
                                  files=files,
                                  headers=self.headers,
                                  verify=self.ssl_verify,
+                                 cert=self.cert,
                                  proxies=self.proxies,
                                  timeout=self.timeout
                                  )
@@ -93,7 +97,8 @@ class RocketChat:
         login_request = requests.post(self.server_url + self.API_path + 'login',
                                       data=request_data,
                                       verify=self.ssl_verify,
-                                      proxies=self.proxies)
+                                      proxies=self.proxies,
+                                      cert=self.cert)
         if login_request.status_code == 401:
             raise RocketAuthenticationException()
 
@@ -189,8 +194,9 @@ class RocketChat:
 
         # If Accounts_AvatarBlockUnauthorizedAccess is set, we need to provide the Token as cookies
         if response.status_code == 403:
-            return self.req.get(response.url, cookies={'rc_uid': self.headers.get('X-User-Id'),
-                                                       'rc_token': self.headers.get('X-Auth-Token')})
+            return self.req.get(response.url, cert=self.cert,
+                                cookies={'rc_uid': self.headers.get('X-User-Id'),
+                                         'rc_token': self.headers.get('X-Auth-Token')})
         return response
 
     def users_set_avatar(self, avatar_url, **kwargs):
