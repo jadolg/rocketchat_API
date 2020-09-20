@@ -14,13 +14,14 @@ before_install:
 - docker version
 - docker pull rocket.chat:latest
 - pip install docker-compose
-- pip install codecov pytest-cov pytest-flakes pytest-pep8
+- pip install codecov pytest-cov black
 - docker-compose -f docker-compose-test-server.yml up -d
 
 script:
 - docker ps
 - until curl http://localhost:3000/api/v1/info; do sleep 5; echo "waiting for Rocket.Chat server to start"; done
-- pytest tests rocketchat_API -x --cov=./ --pep8 --flakes
+- black --check
+- pytest tests rocketchat_API -x --cov=./
 - codecov
 
 deploy:
