@@ -1,4 +1,3 @@
-
 class RocketException(Exception):
     pass
 
