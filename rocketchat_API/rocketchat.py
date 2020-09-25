@@ -79,7 +79,7 @@ class RocketChat:
         if use_json:
             return self.req.post(
                 self.server_url + self.API_path + method,
-                json=reduced_args,
+                json=reduced_args['json'],
                 files=files,
                 headers=self.headers,
                 verify=self.ssl_verify,
@@ -296,7 +296,7 @@ class RocketChat:
 
     # Chat
 
-    def chat_post_message(self, text, room_id=None, channel=None, **kwargs):
+    def chat_post_message(self, text=None, room_id=None, channel=None, **kwargs):
         """Posts a new chat message."""
         if room_id:
             if text:
