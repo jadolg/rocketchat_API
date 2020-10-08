@@ -135,9 +135,6 @@ def test_users_create_token(logged_rocket, user):
         logged_rocket.users_create_token()
 
 
-@pytest.mark.skip(
-    reason="the server started requiring TOPT for this method. Skipping till this is fixed."
-)
 def test_users_create_update_delete(logged_rocket, user):
     users_create = logged_rocket.users_create(
         email="email2@domain.com",
