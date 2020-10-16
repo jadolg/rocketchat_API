@@ -57,6 +57,14 @@ def test_rooms_info(logged_rocket):
         logged_rocket.rooms_info()
 
 
+def test_rooms_create_discussion(logged_rocket):
+    discussion_name = "this is a discussion"
+    rooms_create_discussion = logged_rocket.rooms_create_discussion(prid="GENERAL", t_name=discussion_name, ).json()
+    assert rooms_create_discussion.get("success")
+    assert "discussion" in rooms_create_discussion
+    assert rooms_create_discussion.get("discussion").get("fname") == discussion_name
+
+
 def test_rooms_admin_rooms(logged_rocket):
     rooms_simple = logged_rocket.rooms_admin_rooms().json()
     assert rooms_simple.get("success")
