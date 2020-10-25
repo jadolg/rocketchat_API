@@ -255,7 +255,14 @@ class RocketChat:
                 "users.setAvatar", avatarUrl=avatar_url, kwargs=kwargs
             )
         else:
-            avatar_file = {"image": open(avatar_url, "rb")}
+            avatar_file = {
+                "image": (
+                    os.path.basename(avatar_url),
+                    open(avatar_url, "rb"),
+                    mimetypes.guess_type(avatar_url)[0],
+                ),
+            }
+
             return self.__call_api_post(
                 "users.setAvatar", files=avatar_file, kwargs=kwargs
             )

@@ -169,7 +169,7 @@ def test_users_create_update_delete(logged_rocket, user):
 
 def test_users_set_avatar_from_file(logged_rocket):
     users_set_avatar = logged_rocket.users_set_avatar(
-        avatar_url="tests/assets/avatar.png"
+        avatar_url="tests/assets/avatar.svg"
     ).json()
     assert users_set_avatar.get("success"), users_set_avatar.get("error")
 
