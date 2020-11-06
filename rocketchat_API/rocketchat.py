@@ -1026,3 +1026,10 @@ class RocketChat:
     def list_invites(self, **kwargs):
         """Lists all of the invites on the server. Requires the create-invite-links permission."""
         return self.__call_api_get("listInvites", kwargs=kwargs)
+
+    # Video conferences
+    def update_jitsi_timeout(self, room_id, **kwargs):
+        """Updates the timeout of Jitsi video conference in a channel."""
+        return self.__call_api_post(
+            'video-conference/jitsi.update-timeout', roomId=room_id, kwargs=kwargs
+        )
