@@ -14,5 +14,4 @@ jobs:
         with:
           compose-file: docker-compose-test-server.yml
       - name: Install dependencies
-          run: |
-            pip install codecov pytest-cov black
+          run: pip install codecov pytest-cov black
