@@ -1,7 +1,9 @@
 name: Test and publish
 
 on:
-  push
+  push:
+  schedule:
+    - cron: '0 20 * * 5'
 
 jobs:
   test:
