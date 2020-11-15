@@ -2,6 +2,7 @@ name: Test and publish
 
 on:
   push:
+  workflow_dispatch:
   schedule:
     - cron: '0 20 * * 5'
 
