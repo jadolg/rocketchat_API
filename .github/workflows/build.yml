@@ -1,0 +1,13 @@
+name: Test and build
+
+on:
+  push
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker Compose Action
+        uses: isbang/compose-action@v0.1.1
+        with:
+          compose-file: docker-compose-test-server.yml
