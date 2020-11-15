@@ -32,7 +32,7 @@ jobs:
   
   publish:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'add-github-action' }}
+    if: ${{ github.ref == 'refs/heads/add-github-action' }}
     needs: test
     steps:
       - name: Checkout
