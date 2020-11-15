@@ -33,7 +33,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'add-github-action' }}
-    needs: build
+    needs: test
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.4
