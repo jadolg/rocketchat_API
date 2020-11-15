@@ -13,3 +13,6 @@ jobs:
         uses: isbang/compose-action@v0.1.1
         with:
           compose-file: docker-compose-test-server.yml
+      - name: Install dependencies
+          run: |
+            pip install codecov pytest-cov black
