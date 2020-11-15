@@ -21,3 +21,11 @@ jobs:
         run: pip install codecov pytest-cov black
       - name: Wait for rocket.chat server to be online
         run: until curl http://localhost:3000/api/v1/info; do sleep 5; echo "waiting for Rocket.Chat server to start"; done
+      - name: Lint with black
+        run: black --check .
+      - name: Run tests
+        run: pytest tests rocketchat_API -x --cov=./
+      - name: Upload code coverage
+        run: codecov
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
