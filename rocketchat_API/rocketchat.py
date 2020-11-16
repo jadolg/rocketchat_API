@@ -301,7 +301,6 @@ class RocketChat:
         """Update user status"""
         return self.__call_api_post("users.setActiveStatus", userId=user_id, activeStatus=user_status, **kwargs)
 
-
     def users_forgot_password(self, email, **kwargs):
         """Send email to reset your password."""
         return self.__call_api_post("users.forgotPassword", email=email, data=kwargs)
