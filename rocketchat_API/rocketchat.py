@@ -297,9 +297,9 @@ class RocketChat:
         """Update an existing user."""
         return self.__call_api_post("users.update", userId=user_id, data=kwargs)
 
-    def users_set_active_status(self, user_id, user_status, **kwargs):
-        """Update user active status"""
-        return self.__call_api_post("users.setActiveStatus", userId=user_id, activeStatus=user_status, kwargs=kwargs)
+    def users_set_active_status(self, user_id, active_status, **kwargs):
+        """Update user active status."""
+        return self.__call_api_post("users.setActiveStatus", userId=user_id, activeStatus=active_status, kwargs=kwargs)
 
     def users_forgot_password(self, email, **kwargs):
         """Send email to reset your password."""
