@@ -167,6 +167,15 @@ def test_users_create_update_delete(logged_rocket, user):
     assert users_delete.get("success")
 
 
+def test_users_set_active_status(logged_rocket, user):
+    login = logged_rocket.login(user.name, user.password).json()
+    user_id = login.get("data").get("userId")
+    user_set_status = logged_rocket.users_set_active_status(
+        user_id, active_status=True
+    ).json()
+    assert user_set_status.get("success"), user_set_status.get("error")
+
+
 def test_users_set_avatar_from_file(logged_rocket):
     users_set_avatar = logged_rocket.users_set_avatar(
         avatar_url="tests/assets/avatar.svg"
