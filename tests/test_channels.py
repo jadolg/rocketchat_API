@@ -361,3 +361,9 @@ def test_channels_counters(logged_rocket):
     assert channels_counters_by_name.get("success")
     with pytest.raises(RocketMissingParamException):
         logged_rocket.channels_counters()
+
+
+def test_channels_online(logged_rocket):
+    channels_online = logged_rocket.channels_online(_id="GENERAL").json()
+    assert channels_online.get("success")
+    assert channels_online.get("online") == []
