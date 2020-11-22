@@ -8,3 +8,9 @@ def test_settings(logged_rocket):
         _id="API_Allow_Infinite_Count", value=True
     ).json()
     assert settings_update.get("success")
+
+
+def test_settings_public(rocket):
+    settings_public = rocket.settings_public().json()
+    assert settings_public.get("success")
+    assert "settings" in settings_public

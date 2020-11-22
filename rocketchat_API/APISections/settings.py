@@ -13,3 +13,7 @@ class RocketChatSettings(RocketChatBase):
     def settings(self, **kwargs):
         """List all private settings."""
         return self.call_api_get("settings", kwargs=kwargs)
+
+    def settings_public(self, **kwargs):
+        """List all private settings."""
+        return self.call_api_get("settings.public", kwargs=kwargs)
