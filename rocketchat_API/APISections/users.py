@@ -14,10 +14,9 @@ class RocketChatUsers(RocketChatBase):
         """Gets a user’s information, limited to the caller’s permissions."""
         if user_id:
             return self.call_api_get("users.info", userId=user_id, kwargs=kwargs)
-        elif username:
+        if username:
             return self.call_api_get("users.info", username=username, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException("userID or username required")
+        raise RocketMissingParamException("userID or username required")
 
     def users_list(self, **kwargs):
         """All of the users and their information, limited to permissions."""
@@ -27,12 +26,11 @@ class RocketChatUsers(RocketChatBase):
         """Gets the online presence of the a user."""
         if user_id:
             return self.call_api_get("users.getPresence", userId=user_id, kwargs=kwargs)
-        elif username:
+        if username:
             return self.call_api_get(
                 "users.getPresence", username=username, kwargs=kwargs
             )
-        else:
-            raise RocketMissingParamException("userID or username required")
+        raise RocketMissingParamException("userID or username required")
 
     def users_create(self, email, name, password, username, **kwargs):
         """Creates a user"""
@@ -91,18 +89,16 @@ class RocketChatUsers(RocketChatBase):
             return self.call_api_post(
                 "users.setAvatar", avatarUrl=avatar_url, kwargs=kwargs
             )
-        else:
-            avatar_file = {
-                "image": (
-                    os.path.basename(avatar_url),
-                    open(avatar_url, "rb"),
-                    mimetypes.guess_type(avatar_url)[0],
-                ),
-            }
 
-            return self.call_api_post(
-                "users.setAvatar", files=avatar_file, kwargs=kwargs
-            )
+        avatar_file = {
+            "image": (
+                os.path.basename(avatar_url),
+                open(avatar_url, "rb"),
+                mimetypes.guess_type(avatar_url)[0],
+            ),
+        }
+
+        return self.call_api_post("users.setAvatar", files=avatar_file, kwargs=kwargs)
 
     def users_reset_avatar(self, user_id=None, username=None, **kwargs):
         """Reset a user’s avatar"""
@@ -110,12 +106,11 @@ class RocketChatUsers(RocketChatBase):
             return self.call_api_post(
                 "users.resetAvatar", userId=user_id, kwargs=kwargs
             )
-        elif username:
+        if username:
             return self.call_api_post(
                 "users.resetAvatar", username=username, kwargs=kwargs
             )
-        else:
-            raise RocketMissingParamException("userID or username required")
+        raise RocketMissingParamException("userID or username required")
 
     def users_create_token(self, user_id=None, username=None, **kwargs):
         """Create a user authentication token."""
@@ -123,12 +118,11 @@ class RocketChatUsers(RocketChatBase):
             return self.call_api_post(
                 "users.createToken", userId=user_id, kwargs=kwargs
             )
-        elif username:
+        if username:
             return self.call_api_post(
                 "users.createToken", username=username, kwargs=kwargs
             )
-        else:
-            raise RocketMissingParamException("userID or username required")
+        raise RocketMissingParamException("userID or username required")
 
     def users_update(self, user_id, **kwargs):
         """Update an existing user."""

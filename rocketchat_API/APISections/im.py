@@ -55,16 +55,14 @@ class RocketChatIM(RocketChatBase):
         """Retrieves the files from a direct message."""
         if room_id:
             return self.call_api_get("im.files", roomId=room_id, kwargs=kwargs)
-        elif user_name:
+        if user_name:
             return self.call_api_get("im.files", username=user_name, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException("roomId or username required")
+        raise RocketMissingParamException("roomId or username required")
 
     def im_counters(self, room_id=None, user_name=None, **kwargs):
         """Gets counters of direct messages."""
         if room_id:
             return self.call_api_get("im.counters", roomId=room_id, kwargs=kwargs)
-        elif user_name:
+        if user_name:
             return self.call_api_get("im.counters", username=user_name, kwargs=kwargs)
-        else:
-            raise RocketMissingParamException("roomId or username required")
+        raise RocketMissingParamException("roomId or username required")

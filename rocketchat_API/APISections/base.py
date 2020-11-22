@@ -83,17 +83,16 @@ class RocketChatBase:
                 proxies=self.proxies,
                 timeout=self.timeout,
             )
-        else:
-            return self.req.post(
-                self.server_url + self.API_path + method,
-                data=reduced_args,
-                files=files,
-                headers=self.headers,
-                verify=self.ssl_verify,
-                cert=self.cert,
-                proxies=self.proxies,
-                timeout=self.timeout,
-            )
+        return self.req.post(
+            self.server_url + self.API_path + method,
+            data=reduced_args,
+            files=files,
+            headers=self.headers,
+            verify=self.ssl_verify,
+            cert=self.cert,
+            proxies=self.proxies,
+            timeout=self.timeout,
+        )
 
     # Authentication
 
@@ -116,19 +115,17 @@ class RocketChatBase:
         if login_request.status_code == 401:
             raise RocketAuthenticationException()
 
-        if login_request.status_code == 200:
-            if login_request.json().get("status") == "success":
-                self.headers["X-Auth-Token"] = (
-                    login_request.json().get("data").get("authToken")
-                )
-                self.headers["X-User-Id"] = (
-                    login_request.json().get("data").get("userId")
-                )
-                return login_request
-            else:
-                raise RocketAuthenticationException()
-        else:
-            raise RocketConnectionException()
+        if (
+            login_request.status_code == 200
+            and login_request.json().get("status") == "success"
+        ):
+            self.headers["X-Auth-Token"] = (
+                login_request.json().get("data").get("authToken")
+            )
+            self.headers["X-User-Id"] = login_request.json().get("data").get("userId")
+            return login_request
+
+        raise RocketConnectionException()
 
     def logout(self, **kwargs):
         """Invalidate your REST rocketchat_API authentication token."""

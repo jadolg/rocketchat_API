@@ -39,21 +39,19 @@ class RocketChatRooms(RocketChatBase):
             return self.call_api_post(
                 "rooms.favorite", roomId=room_id, favorite=favorite
             )
-        elif room_name is not None:
+        if room_name is not None:
             return self.call_api_post(
                 "rooms.favorite", roomName=room_name, favorite=favorite
             )
-        else:
-            raise RocketMissingParamException("roomId or roomName required")
+        raise RocketMissingParamException("roomId or roomName required")
 
     def rooms_info(self, room_id=None, room_name=None):
         """Retrieves the information about the room."""
         if room_id is not None:
             return self.call_api_get("rooms.info", roomId=room_id)
-        elif room_name is not None:
+        if room_name is not None:
             return self.call_api_get("rooms.info", roomName=room_name)
-        else:
-            raise RocketMissingParamException("roomId or roomName required")
+        raise RocketMissingParamException("roomId or roomName required")
 
     def rooms_admin_rooms(self, **kwargs):
         """ Retrieves all rooms (requires the view-room-administration permission)."""
