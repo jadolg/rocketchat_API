@@ -5,7 +5,11 @@ from setuptools import setup
 setup(
     name="rocketchat_API",
     version="1.12.1",
-    packages=["rocketchat_API", "rocketchat_API.APIExceptions", "rocketchat_API.APISections"],
+    packages=[
+        "rocketchat_API",
+        "rocketchat_API.APIExceptions",
+        "rocketchat_API.APISections",
+    ],
     url="https://github.com/jadolg/rocketchat_API",
     license="MIT",
     author="Jorge Alberto Díaz Orozco",
