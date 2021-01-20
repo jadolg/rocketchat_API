@@ -186,3 +186,15 @@ class RocketChatGroups(RocketChatBase):
         if room_name:
             return self.call_api_get("groups.files", roomName=room_name, kwargs=kwargs)
         raise RocketMissingParamException("roomId or room_name required")
+
+    def groups_add_leader(self, room_id, user_id, **kwargs):
+        """Gives the role of Leader for a user in the current group."""
+        return self.call_api_post(
+            "groups.addLeader", roomId=room_id, userId=user_id, kwargs=kwargs
+        )
+
+    def groups_remove_leader(self, room_id, user_id, **kwargs):
+        """Removes the role of Leader for a user in the current group."""
+        return self.call_api_post(
+            "groups.removeLeader", roomId=room_id, userId=user_id, kwargs=kwargs
+        )

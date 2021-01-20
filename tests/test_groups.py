@@ -79,6 +79,18 @@ def test_groups_add_and_remove_moderator(logged_rocket, test_group_id):
     assert groups_remove_moderator.get("success")
 
 
+def test_groups_add_and_remove_leader(logged_rocket, test_group_id):
+    me = logged_rocket.me().json()
+    groups_add_leader = logged_rocket.groups_add_leader(
+        test_group_id, me.get("_id")
+    ).json()
+    assert groups_add_leader.get("success")
+    groups_remove_leader = logged_rocket.groups_remove_leader(
+        test_group_id, me.get("_id")
+    ).json()
+    assert groups_remove_leader.get("success")
+
+
 def test_groups_list_moderator(logged_rocket, test_group_name, test_group_id):
     groups_list_moderator = logged_rocket.groups_moderators(
         room_id=test_group_id
