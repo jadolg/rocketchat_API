@@ -40,6 +40,20 @@ def test_chat_post_update_delete_message(logged_rocket):
     ).json()
     assert chat_delete.get("success")
 
+def test_chat_post_notext_message(logged_rocket):
+    message = {"rid": "GENERAL"}
+    chat_send_message = logged_rocket.chat_send_message(message).json()
+    assert chat_send_message.get("message").get("rid") == "GENERAL"
+    assert chat_send_message.get("message").get("msg") == ""
+    assert chat_send_message.get("success")
+
+def test_chat_send_custom_id_message(logged_rocket):
+    message = {"rid": "GENERAL", "msg": "Hallo Welt", "_id": "CUSTOM"}
+    chat_send_message = logged_rocket.chat_send_message(message).json()
+    assert chat_send_message.get("message").get("rid") == "GENERAL"
+    assert chat_send_message.get("message").get("msg") == "Hallo Welt"
+    assert chat_send_message.get("message").get("_id") == "CUSTOM"
+    assert chat_send_message.get("success")
 
 def test_chat_post_react(logged_rocket):
     message_id = (
