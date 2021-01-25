@@ -41,6 +41,54 @@ def test_chat_post_update_delete_message(logged_rocket):
     assert chat_delete.get("success")
 
 
+def test_chat_send_notext_message(logged_rocket):
+    chat_send_message = logged_rocket.chat_send_message({"rid": "GENERAL"}).json()
+    assert chat_send_message.get("message").get("rid") == "GENERAL"
+    assert chat_send_message.get("message").get("msg") == ""
+    assert chat_send_message.get("success")
+
+
+def test_chat_send_custom_id_message(logged_rocket):
+    chat_send_message = logged_rocket.chat_send_message(
+        {"rid": "GENERAL", "msg": "Hello There", "_id": "1337"}
+    ).json()
+    assert chat_send_message.get("message").get("rid") == "GENERAL"
+    assert chat_send_message.get("message").get("msg") == "Hello There"
+    assert chat_send_message.get("message").get("_id") == "1337"
+    assert chat_send_message.get("success")
+
+
+def test_chat_send_update_delete_message(logged_rocket):
+    chat_send_message = logged_rocket.chat_send_message(
+        {"msg": "General Kenobi", "rid": "GENERAL"}
+    ).json()
+    assert chat_send_message.get("message").get("rid") == "GENERAL"
+    assert chat_send_message.get("message").get("msg") == "General Kenobi"
+    assert chat_send_message.get("success")
+
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.chat_send_message({"msg": "text"})
+
+    msg_id = chat_send_message.get("message").get("_id")
+    chat_get_message = logged_rocket.chat_get_message(msg_id=msg_id).json()
+    assert chat_get_message.get("message").get("_id") == msg_id
+
+    chat_update = logged_rocket.chat_update(
+        room_id=chat_send_message.get("message").get("rid"),
+        msg_id=chat_send_message.get("message").get("_id"),
+        text="hello again",
+    ).json()
+
+    assert chat_update.get("message").get("msg") == "hello again"
+    assert chat_update.get("success")
+
+    chat_delete = logged_rocket.chat_delete(
+        room_id=chat_send_message.get("message").get("rid"),
+        msg_id=chat_send_message.get("message").get("_id"),
+    ).json()
+    assert chat_delete.get("success")
+
+
 def test_chat_post_react(logged_rocket):
     message_id = (
         logged_rocket.chat_post_message("hello", channel="GENERAL")
