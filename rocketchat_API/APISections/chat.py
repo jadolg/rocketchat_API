@@ -30,7 +30,7 @@ class RocketChatChat(RocketChatBase):
                 return self.call_api_post(
                     "chat.sendMessage",message=message
                 )
-            return api.call_api_post("chat.sendMessage",message=message)
+            return self.call_api_post("chat.sendMessage",message=message)
         raise RocketMissingParamException("roomId required")
 
     def chat_get_message(self, msg_id, **kwargs):
