@@ -46,15 +46,16 @@ def test_chat_send_notext_message(logged_rocket):
     assert chat_send_message.get("message").get("rid") == "GENERAL"
     assert chat_send_message.get("message").get("msg") == ""
     assert chat_send_message.get("success")
-
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.chat_send_message({"msg":"General Kenobi"})
 
 def test_chat_send_custom_id_delete_message(logged_rocket):
     chat_send_message = logged_rocket.chat_send_message(
-        {"rid": "GENERAL", "msg": "Hello There", "_id": "1337"}
+        {"rid": "GENERAL", "msg": "Hello There", "_id": "42"}
     ).json()
     assert chat_send_message.get("message").get("rid") == "GENERAL"
     assert chat_send_message.get("message").get("msg") == "Hello There"
-    assert chat_send_message.get("message").get("_id") == "1337"
+    assert chat_send_message.get("message").get("_id") == "42"
     assert chat_send_message.get("success")
     chat_delete = logged_rocket.chat_delete(
         room_id=chat_send_message.get("message").get("rid"),
