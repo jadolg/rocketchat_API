@@ -47,7 +47,8 @@ def test_chat_send_notext_message(logged_rocket):
     assert chat_send_message.get("message").get("msg") == ""
     assert chat_send_message.get("success")
     with pytest.raises(RocketMissingParamException):
-        logged_rocket.chat_send_message({"msg":"General Kenobi"})
+        logged_rocket.chat_send_message({"msg": "General Kenobi"})
+
 
 def test_chat_send_custom_id_delete_message(logged_rocket):
     chat_send_message = logged_rocket.chat_send_message(
