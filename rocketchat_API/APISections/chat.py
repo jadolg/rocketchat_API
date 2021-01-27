@@ -21,6 +21,11 @@ class RocketChatChat(RocketChatBase):
             )
         raise RocketMissingParamException("roomId or channel required")
 
+    def chat_send_message(self, message):
+        if "rid" in message:
+            return self.call_api_post("chat.sendMessage", message=message)
+        raise RocketMissingParamException("message.rid required")
+
     def chat_get_message(self, msg_id, **kwargs):
         return self.call_api_get("chat.getMessage", msgId=msg_id, kwargs=kwargs)
 
