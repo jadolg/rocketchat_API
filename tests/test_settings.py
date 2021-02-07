@@ -14,3 +14,9 @@ def test_settings_public(rocket):
     settings_public = rocket.settings_public().json()
     assert settings_public.get("success")
     assert "settings" in settings_public
+
+
+def test_service_configurations(rocket):
+    service_configurations = rocket.service_configurations().json()
+    assert service_configurations.get("success")
+    assert "configurations" in service_configurations

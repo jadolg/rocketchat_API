@@ -17,3 +17,7 @@ class RocketChatSettings(RocketChatBase):
     def settings_public(self, **kwargs):
         """List all private settings."""
         return self.call_api_get("settings.public", kwargs=kwargs)
+
+    def service_configurations(self, **kwargs):
+        """List all service configurations."""
+        return self.call_api_get("service.configurations", kwargs=kwargs)
