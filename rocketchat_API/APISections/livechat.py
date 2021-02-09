@@ -40,15 +40,15 @@ class RocketChatLivechat(RocketChatBase):
         return self.call_api_post("livechat/visitor", kwargs=kwargs)
 
     def livechat_get_visitor(self, token):
-        """Retrieve a visitor data"""
+        """Retrieve a visitor data."""
         return self.call_api_get(f"livechat/visitor/{token}")
 
     def livechat_room(self, token, **kwargs):
         """Get the Livechat room data or open a new room."""
-        return self.call_api_get(f"livechat/room/", token=token, kwargs=kwargs)
+        return self.call_api_get("livechat/room/", token=token, kwargs=kwargs)
 
     def livechat_message(self, token, rid, msg, **kwargs):
-        """Send a new Livechat message"""
+        """Send a new Livechat message."""
         return self.call_api_post(
             "livechat/message", token=token, rid=rid, msg=msg, kwargs=kwargs
         )
