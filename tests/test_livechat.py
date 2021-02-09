@@ -66,3 +66,22 @@ def test_livechat_visitors(logged_rocket):
     get_visitor = logged_rocket.livechat_get_visitor(token=token).json()
     assert get_visitor.get("success")
     assert name == get_visitor.get("visitor").get("username")
+
+    # We need to create a livechat agent and set the user online in order to be able to get a room
+    username = logged_rocket.me().json().get("username")
+    new_user = logged_rocket.livechat_create_user(
+        user_type="agent", username=username
+    ).json()
+    assert new_user.get("success")
+    users_set_status = logged_rocket.users_set_status(
+        message="working on it", status="online"
+    ).json()
+    assert users_set_status.get("success")
+
+    livechat_room = logged_rocket.livechat_room(token=token).json()
+    assert livechat_room.get("success")
+
+    livechat_delete_user = logged_rocket.livechat_delete_user(
+        user_type="agent", user_id=new_user.get("user").get("_id")
+    ).json()
+    assert livechat_delete_user.get("success")

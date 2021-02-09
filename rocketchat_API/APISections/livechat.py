@@ -42,3 +42,7 @@ class RocketChatLivechat(RocketChatBase):
     def livechat_get_visitor(self, token):
         """Retrieve a visitor data"""
         return self.call_api_get(f"livechat/visitor/{token}")
+
+    def livechat_room(self, token, **kwargs):
+        """Get the Livechat room data or open a new room."""
+        return self.call_api_get(f"livechat/room/", token=token, kwargs=kwargs)
