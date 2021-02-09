@@ -99,6 +99,12 @@ def test_livechat_visitor_room_and_message(logged_rocket):
     assert "message" in livechat_message
     assert livechat_message.get("message").get("msg") == "may the 4th be with you"
 
+    livechat_messages_history = logged_rocket.livechat_messages_history(
+        rid=livechat_room.get("room").get("_id"), token=token
+    ).json()
+    assert livechat_messages_history.get("success")
+    assert "messages" in livechat_messages_history
+
     livechat_delete_user = logged_rocket.livechat_delete_user(
         user_type="agent", user_id=new_user.get("user").get("_id")
     ).json()

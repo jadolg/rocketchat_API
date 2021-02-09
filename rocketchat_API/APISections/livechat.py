@@ -52,3 +52,9 @@ class RocketChatLivechat(RocketChatBase):
         return self.call_api_post(
             "livechat/message", token=token, rid=rid, msg=msg, kwargs=kwargs
         )
+
+    def livechat_messages_history(self, rid, token, **kwargs):
+        """Load Livechat messages history."""
+        return self.call_api_get(
+            f"livechat/messages.history/{rid}", token=token, kwargs=kwargs
+        )
