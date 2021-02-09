@@ -15,3 +15,19 @@ class RocketChatLivechat(RocketChatBase):
         return self.call_api_post(
             "livechat/inquiries.take", inquiryId=inquiry_id, kwargs=kwargs
         )
+
+    def livechat_get_users(self, type, **kwargs):
+        """Get a list of agents or managers."""
+        return self.call_api_get(f"livechat/users/{type}", kwargs=kwargs)
+
+    def livechat_create_user(self, type, **kwargs):
+        """Register a new agent or manager."""
+        return self.call_api_post(f"livechat/users/{type}", kwargs=kwargs)
+
+    def livechat_get_user(self, type, id, **kwargs):
+        """Get info about an agent or manager."""
+        return self.call_api_get(f"livechat/users/{type}/{id}", kwargs=kwargs)
+
+    def livechat_delete_user(self, type, id):
+        """GRemoves an agent or manager."""
+        return self.call_api_delete(f"livechat/users/{type}/{id}")

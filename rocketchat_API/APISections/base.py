@@ -47,6 +47,18 @@ class RocketChatBase:
             del kwargs["kwargs"]
         return kwargs
 
+    def call_api_delete(self, method):
+        url = self.server_url + self.API_path + method
+
+        return self.req.delete(
+            url,
+            headers=self.headers,
+            verify=self.ssl_verify,
+            cert=self.cert,
+            proxies=self.proxies,
+            timeout=self.timeout,
+        )
+
     def call_api_get(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
         url = self.server_url + self.API_path + method
