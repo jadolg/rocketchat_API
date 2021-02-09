@@ -54,7 +54,7 @@ def test_livechat_users(logged_rocket):
     assert len(livechat_users.get("users")) == 0
 
 
-def test_livechat_visitors(logged_rocket):
+def test_livechat_visitor_room_and_message(logged_rocket):
     token = str(uuid.uuid1())
     name = str(uuid.uuid1())
     new_visitor = logged_rocket.livechat_register_visitor(
@@ -80,6 +80,17 @@ def test_livechat_visitors(logged_rocket):
 
     livechat_room = logged_rocket.livechat_room(token=token).json()
     assert livechat_room.get("success")
+    assert "room" in livechat_room
+
+    livechat_message = logged_rocket.livechat_message(
+        token=token,
+        rid=livechat_room.get("room").get("_id"),
+        msg="may the 4th be with you",
+    ).json()
+
+    assert livechat_message.get("success")
+    assert "message" in livechat_message
+    assert livechat_message.get("message").get("msg") == "may the 4th be with you"
 
     livechat_delete_user = logged_rocket.livechat_delete_user(
         user_type="agent", user_id=new_user.get("user").get("_id")

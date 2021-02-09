@@ -46,3 +46,9 @@ class RocketChatLivechat(RocketChatBase):
     def livechat_room(self, token, **kwargs):
         """Get the Livechat room data or open a new room."""
         return self.call_api_get(f"livechat/room/", token=token, kwargs=kwargs)
+
+    def livechat_message(self, token, rid, msg, **kwargs):
+        """Send a new Livechat message"""
+        return self.call_api_post(
+            "livechat/message", token=token, rid=rid, msg=msg, kwargs=kwargs
+        )
