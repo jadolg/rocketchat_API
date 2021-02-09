@@ -54,6 +54,13 @@ def test_livechat_users(logged_rocket):
     assert len(livechat_users.get("users")) == 0
 
 
+def test_livechat_visitor_minimal(logged_rocket):
+    token = str(uuid.uuid1())
+    new_visitor = logged_rocket.livechat_register_visitor(token=token).json()
+    assert new_visitor.get("success")
+    assert "visitor" in new_visitor
+
+
 def test_livechat_visitor_room_and_message(logged_rocket):
     token = str(uuid.uuid1())
     name = str(uuid.uuid1())
