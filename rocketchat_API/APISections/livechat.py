@@ -29,5 +29,16 @@ class RocketChatLivechat(RocketChatBase):
         return self.call_api_get(f"livechat/users/{user_type}/{user_id}", kwargs=kwargs)
 
     def livechat_delete_user(self, user_type, user_id):
-        """GRemoves an agent or manager."""
+        """Removes an agent or manager."""
         return self.call_api_delete(f"livechat/users/{user_type}/{user_id}")
+
+    def livechat_register_visitor(self, token, **kwargs):
+        """Register a new Livechat visitor."""
+        if "visitor" not in kwargs:
+            kwargs["visitor"] = {}
+        kwargs["visitor"]["token"] = token
+        return self.call_api_post("livechat/visitor", kwargs=kwargs)
+
+    def livechat_get_visitor(self, token):
+        """Retrieve a visitor data"""
+        return self.call_api_get(f"livechat/visitor/{token}")

@@ -1,3 +1,6 @@
+import uuid
+
+
 def test_livechat_rooms(logged_rocket):
     livechat_rooms = logged_rocket.livechat_rooms().json()
     assert livechat_rooms.get("success")
@@ -49,3 +52,17 @@ def test_livechat_users(logged_rocket):
 
     livechat_users = logged_rocket.livechat_get_users(user_type="agent").json()
     assert len(livechat_users.get("users")) == 0
+
+
+def test_livechat_visitors(logged_rocket):
+    token = str(uuid.uuid1())
+    name = str(uuid.uuid1())
+    new_visitor = logged_rocket.livechat_register_visitor(
+        token=token, visitor={"username": name}
+    ).json()
+    assert new_visitor.get("success")
+    assert "visitor" in new_visitor
+
+    get_visitor = logged_rocket.livechat_get_visitor(token=token).json()
+    assert get_visitor.get("success")
+    assert name == get_visitor.get("visitor").get("username")
