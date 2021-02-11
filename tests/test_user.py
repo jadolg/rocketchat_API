@@ -210,3 +210,10 @@ def test_users_set_get_preferences(logged_rocket):
 def test_users_list(logged_rocket):
     users_list = logged_rocket.users_list().json()
     assert users_list.get("success")
+
+
+def test_users_set_status(logged_rocket):
+    users_set_status = logged_rocket.users_set_status(
+        message="working on it", status="online"
+    ).json()
+    assert users_set_status.get("success")

@@ -150,3 +150,7 @@ class RocketChatUsers(RocketChatBase):
         return self.call_api_post(
             "users.setPreferences", userId=user_id, data=data, kwargs=kwargs
         )
+
+    def users_set_status(self, message, **kwargs):
+        """Sets a user Status when the status message and state is given."""
+        return self.call_api_post("users.setStatus", message=message, kwargs=kwargs)
