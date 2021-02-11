@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name="rocketchat_API",
-    version="1.14.0",
+    version="1.15.0",
     packages=[
         "rocketchat_API",
         "rocketchat_API.APIExceptions",
