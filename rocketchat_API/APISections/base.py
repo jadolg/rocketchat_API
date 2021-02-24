@@ -78,12 +78,17 @@ class RocketChatBase:
             timeout=self.timeout,
         )
 
-    def call_api_post(self, method, files=None, use_json=True, **kwargs):
+    def call_api_post(self, method, files=None, use_json=None, **kwargs):
         reduced_args = self.__reduce_kwargs(kwargs)
         # Since pass is a reserved word in Python it has to be injected on the request dict
         # Some methods use pass (users.register) and others password (users.create)
         if "password" in reduced_args and method != "users.create":
             reduced_args["pass"] = reduced_args["password"]
+        if use_json is None:
+            # see https://requests.readthedocs.io/en/master/user/quickstart/#more-complicated-post-requests
+            # > The json parameter is ignored if either data or files is passed.
+            # If files are sent, json should not be used 
+            use_json = files is None
         if use_json:
             return self.req.post(
                 self.server_url + self.API_path + method,
