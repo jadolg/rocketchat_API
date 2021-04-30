@@ -87,7 +87,7 @@ class RocketChatBase:
         if use_json is None:
             # see https://requests.readthedocs.io/en/master/user/quickstart/#more-complicated-post-requests
             # > The json parameter is ignored if either data or files is passed.
-            # If files are sent, json should not be used 
+            # If files are sent, json should not be used
             use_json = files is None
         if use_json:
             return self.req.post(
