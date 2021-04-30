@@ -7,7 +7,7 @@ from rocketchat_API.APISections.base import RocketChatBase
 
 class RocketChatUsers(RocketChatBase):
     def me(self, **kwargs):
-        """	Displays information about the authenticated user."""
+        """Displays information about the authenticated user."""
         return self.call_api_get("me", kwargs=kwargs)
 
     def users_info(self, user_id=None, username=None, **kwargs):

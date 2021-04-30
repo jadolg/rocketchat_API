@@ -54,7 +54,7 @@ class RocketChatRooms(RocketChatBase):
         raise RocketMissingParamException("roomId or roomName required")
 
     def rooms_admin_rooms(self, **kwargs):
-        """ Retrieves all rooms (requires the view-room-administration permission)."""
+        """Retrieves all rooms (requires the view-room-administration permission)."""
         return self.call_api_get("rooms.adminRooms", kwargs=kwargs)
 
     def rooms_create_discussion(self, prid, t_name, **kwargs):
