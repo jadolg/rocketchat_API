@@ -69,6 +69,18 @@ class RocketChatChannels(RocketChatBase):
             "channels.removeOwner", roomId=room_id, userId=user_id, kwargs=kwargs
         )
 
+    def channels_add_leader(self, room_id, user_id, **kwargs):
+        """Gives the role of Leader for a user in the current channel."""
+        return self.call_api_post(
+            "channels.addLeader", roomId=room_id, userId=user_id, kwargs=kwargs
+        )
+
+    def channels_remove_leader(self, room_id, user_id, **kwargs):
+        """Removes the role of Leader for a user in the current channel."""
+        return self.call_api_post(
+            "channels.removeLeader", roomId=room_id, userId=user_id, kwargs=kwargs
+        )
+
     def channels_archive(self, room_id, **kwargs):
         """Archives a channel."""
         return self.call_api_post("channels.archive", roomId=room_id, kwargs=kwargs)
