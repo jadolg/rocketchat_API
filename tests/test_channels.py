@@ -7,7 +7,7 @@ from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamExce
 
 @pytest.fixture(autouse=True)
 def add_owner(logged_rocket, user):
-    "Add test user as owner in GENERAL channel in every test in this module"
+    """Add test user as owner in GENERAL channel in every test in this module"""
     logged_rocket.channels_add_owner("GENERAL", username=user.name)
 
 
@@ -110,6 +110,19 @@ def test_channels_add_and_remove_owner(logged_rocket, testuser_id):
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.channels_add_owner(room_id="GENERAL")
+
+
+def test_channels_add_and_remove_leader(logged_rocket, testuser_id):
+    channels_invite = logged_rocket.channels_invite("GENERAL", testuser_id).json()
+    assert channels_invite.get("success")
+    channels_add_leader = logged_rocket.channels_add_leader(
+        "GENERAL", user_id=testuser_id
+    ).json()
+    assert channels_add_leader.get("success"), channels_add_leader.get("error")
+    channels_remove_leader = logged_rocket.channels_remove_leader(
+        "GENERAL", user_id=testuser_id
+    ).json()
+    assert channels_remove_leader.get("success"), channels_remove_leader.get("error")
 
 
 def test_channels_archive_unarchive(logged_rocket):
