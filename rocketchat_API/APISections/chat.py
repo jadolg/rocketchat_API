@@ -70,3 +70,9 @@ class RocketChatChat(RocketChatBase):
         return self.call_api_get(
             "chat.getMessageReadReceipts", messageId=message_id, kwargs=kwargs
         )
+
+    def chat_get_starred_messages(self, room_id, **kwargs):
+        """Retrieve starred messages."""
+        return self.call_api_get(
+            "chat.getStarredMessages", roomId=room_id, kwargs=kwargs
+        )

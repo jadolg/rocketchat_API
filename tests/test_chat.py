@@ -91,15 +91,30 @@ def test_post_pin_unpin(logged_rocket):
     assert chat_unpin_message.get("success")
 
 
-def test_post_star_unstar(logged_rocket):
+def test_post_star_unstar_get_starred_messages(logged_rocket):
     message_id = (
         logged_rocket.chat_post_message("hello", channel="GENERAL")
         .json()
         .get("message")
         .get("_id")
     )
+
+    chat_get_starred_messages = logged_rocket.chat_get_starred_messages(
+        room_id="GENERAL"
+    ).json()
+    assert chat_get_starred_messages.get("success")
+    assert chat_get_starred_messages.get("count") == 0
+    assert chat_get_starred_messages.get("messages") == []
+
     chat_star_message = logged_rocket.chat_star_message(message_id).json()
     assert chat_star_message.get("success")
+
+    chat_get_starred_messages = logged_rocket.chat_get_starred_messages(
+        room_id="GENERAL"
+    ).json()
+    assert chat_get_starred_messages.get("success")
+    assert chat_get_starred_messages.get("count") == 1
+    assert chat_get_starred_messages.get("messages") != []
 
     chat_unstar_message = logged_rocket.chat_unstar_message(message_id).json()
     assert chat_unstar_message.get("success")
