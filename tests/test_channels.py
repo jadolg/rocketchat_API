@@ -377,6 +377,6 @@ def test_channels_counters(logged_rocket):
 
 
 def test_channels_online(logged_rocket):
-    channels_online = logged_rocket.channels_online(_id="GENERAL").json()
+    channels_online = logged_rocket.channels_online(query={"_id": "GENERAL"}).json()
     assert channels_online.get("success")
-    assert channels_online.get("online") == []
+    assert len(channels_online.get("online")) >= 1
