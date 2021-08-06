@@ -1,3 +1,5 @@
+import json
+
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
 from rocketchat_API.APISections.base import RocketChatBase
 
@@ -242,7 +244,7 @@ class RocketChatChannels(RocketChatBase):
             )
         raise RocketMissingParamException("room_id or room_name required")
 
-    def channels_online(self, _id):
+    def channels_online(self, query):
         """Lists all online users of a channel if the channel's id is provided, otherwise it gets all online users of
         all channels."""
-        return self.call_api_get("channels.online", _id=_id)
+        return self.call_api_get("channels.online", query=json.dumps(query))
