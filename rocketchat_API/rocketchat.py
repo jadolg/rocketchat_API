@@ -13,6 +13,7 @@ from rocketchat_API.APISections.rooms import RocketChatRooms
 from rocketchat_API.APISections.settings import RocketChatSettings
 from rocketchat_API.APISections.statistics import RocketChatStatistics
 from rocketchat_API.APISections.subscriptions import RocketChatSubscriptions
+from rocketchat_API.APISections.teams import RocketChatTeams
 from rocketchat_API.APISections.users import RocketChatUsers
 from rocketchat_API.APISections.video_conferences import RocketChatVideConferences
 
@@ -33,5 +34,6 @@ class RocketChat(
     RocketChatInvites,
     RocketChatVideConferences,
     RocketChatLivechat,
+    RocketChatTeams,
 ):
     pass
