@@ -1,3 +1,5 @@
+import uuid
+
 import pytest
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
@@ -136,11 +138,12 @@ def test_users_create_token(logged_rocket, user):
 
 
 def test_users_create_update_delete(logged_rocket, user):
+    name = str(uuid.uuid1())
     users_create = logged_rocket.users_create(
-        email="email2@domain.com",
-        name="user2",
+        email=f"{name}@domain.com",
+        name=name,
         password=user.password,
-        username="user2",
+        username=name,
     ).json()
     assert users_create.get("success"), users_create.get("error")
 
@@ -158,10 +161,7 @@ def test_users_create_update_delete(logged_rocket, user):
         == "anewemailhere@domain.com"
     )
     assert users_update.get("user").get("name") == "newname"
-
-    # ToDo: For some reason update is not updating the username
-    # self.assertEqual(users_update.get(
-    #     'user').get('username'), 'newusername')
+    assert users_update.get('user').get('username') == 'newusername'
 
     users_delete = logged_rocket.users_delete(user_id).json()
     assert users_delete.get("success")
