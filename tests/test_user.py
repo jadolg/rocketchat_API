@@ -161,7 +161,7 @@ def test_users_create_update_delete(logged_rocket, user):
         == "anewemailhere@domain.com"
     )
     assert users_update.get("user").get("name") == "newname"
-    assert users_update.get('user').get('username') == 'newusername'
+    assert users_update.get("user").get("username") == "newusername"
 
     users_delete = logged_rocket.users_delete(user_id).json()
     assert users_delete.get("success")
