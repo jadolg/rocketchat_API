@@ -152,3 +152,16 @@ def test_chat_report_message(logged_rocket):
         message_id=message_id, description="this makes me angry"
     ).json()
     assert chat_get_message_report_message.get("success")
+
+
+def test_chat_follow_message(logged_rocket):
+    message_id = (
+        logged_rocket.chat_post_message("hello", channel="GENERAL")
+        .json()
+        .get("message")
+        .get("_id")
+    )
+    chat_get_message_follow_message = logged_rocket.chat_follow_message(
+        mid=message_id
+    ).json()
+    assert chat_get_message_follow_message.get("success")
