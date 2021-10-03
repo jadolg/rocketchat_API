@@ -139,3 +139,16 @@ def test_chat_get_message_read_receipts(logged_rocket):
     ).json()
     assert chat_get_message_read_receipts.get("success")
     assert "receipts" in chat_get_message_read_receipts
+
+
+def test_chat_report_message(logged_rocket):
+    message_id = (
+        logged_rocket.chat_post_message("hello", channel="GENERAL")
+        .json()
+        .get("message")
+        .get("_id")
+    )
+    chat_get_message_report_message = logged_rocket.chat_report_message(
+        message_id=message_id, description="this makes me angry"
+    ).json()
+    assert chat_get_message_report_message.get("success")
