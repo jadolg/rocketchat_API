@@ -76,3 +76,12 @@ class RocketChatChat(RocketChatBase):
         return self.call_api_get(
             "chat.getStarredMessages", roomId=room_id, kwargs=kwargs
         )
+
+    def chat_report_message(self, message_id, description, **kwargs):
+        """Reports a message."""
+        return self.call_api_post(
+            "chat.reportMessage",
+            messageId=message_id,
+            description=description,
+            kwargs=kwargs,
+        )
