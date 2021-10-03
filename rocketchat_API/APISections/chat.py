@@ -85,3 +85,7 @@ class RocketChatChat(RocketChatBase):
             description=description,
             kwargs=kwargs,
         )
+
+    def chat_follow_message(self, mid, **kwargs):
+        """Follows a chat message to the message's channel."""
+        return self.call_api_post("chat.followMessage", mid=mid, kwargs=kwargs)
