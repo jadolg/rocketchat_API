@@ -6,7 +6,7 @@ class RocketChatMiscellaneous(RocketChatBase):
     def info(self, **kwargs):
         """Information about the Rocket.Chat server."""
         # override the API path. since Rocket.Chat, 4.0.0. /api/v1/info no longer exists
-        kwargs['API_path'] = '/api/'
+        kwargs["API_path"] = "/api/"
         return self.call_api_get("info", kwargs=kwargs)
 
     def directory(self, query, **kwargs):

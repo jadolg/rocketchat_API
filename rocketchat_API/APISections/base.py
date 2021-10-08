@@ -61,8 +61,8 @@ class RocketChatBase:
 
     def call_api_get(self, method, **kwargs):
         args = self.__reduce_kwargs(kwargs)
-        if 'API_path' in kwargs:
-            path = kwargs['API_path']
+        if "API_path" in kwargs:
+            path = kwargs["API_path"]
         else:
             path = self.API_path
         url = self.server_url + path + method
