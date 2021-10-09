@@ -59,13 +59,11 @@ class RocketChatBase:
             timeout=self.timeout,
         )
 
-    def call_api_get(self, method, **kwargs):
+    def call_api_get(self, method, api_path=None, **kwargs):
         args = self.__reduce_kwargs(kwargs)
-        if "API_path" in kwargs:
-            path = kwargs["API_path"]
-        else:
-            path = self.API_path
-        url = self.server_url + path + method
+        if not api_path:
+            api_path = self.API_path
+        url = self.server_url + api_path + method
         # convert to key[]=val1&key[]=val2 for args like key=[val1, val2], else key=val
         params = "&".join(
             "&".join(i + "[]=" + j for j in args[i])
