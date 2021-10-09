@@ -49,7 +49,7 @@ with sessions.Session() as session:
  
 
 ### Method parameters
-Only required parameters are explicit on the RocketChat class but you can still use all other parameters. For a detailed parameters list check the [Rocket chat API](https://rocket.chat/docs/developer-guides/rest-api/)
+Only required parameters are explicit on the RocketChat class but you can still use all other parameters. For a detailed parameters list check the [Rocket chat API](https://developer.rocket.chat/reference/api/rest-api)
 
 ### API coverage
 Most of the API methods are already implemented. If you are interested in a specific call just open an issue or open a pull request.
