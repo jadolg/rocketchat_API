@@ -5,7 +5,7 @@ class RocketChatMiscellaneous(RocketChatBase):
     # Miscellaneous information
     def info(self, **kwargs):
         """Information about the Rocket.Chat server."""
-        return self.call_api_get("info", kwargs=kwargs)
+        return self.call_api_get("info", api_path="/api/", kwargs=kwargs)
 
     def directory(self, query, **kwargs):
         """Search by users or channels on all server."""
