@@ -27,18 +27,21 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: pip install codecov pytest-cov black
+        run: pip install pytest-cov black requests
       - name: Lint with black
         run: black --check .
       - name: Wait for rocket.chat server to be online
         run: until curl --silent http://localhost:3000/api/info/; do sleep 5; echo "waiting for Rocket.Chat server to start"; done
       - name: Run tests
         run: pytest tests rocketchat_API -x --cov=./
-      - name: Upload code coverage
-        run: codecov
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-  
+      - name: Upload code coverage  
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} 
+          verbose: true
+          files: .coverage
+          fail_ci_if_error: true
+
   publish:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/master' }}
