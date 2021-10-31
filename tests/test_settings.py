@@ -1,3 +1,6 @@
+import time
+
+
 def test_settings(logged_rocket):
     settings = logged_rocket.settings().json()
     assert settings.get("success")
@@ -14,6 +17,20 @@ def test_settings_public(rocket):
     settings_public = rocket.settings_public().json()
     assert settings_public.get("success")
     assert "settings" in settings_public
+
+
+def test_settings_oauth(logged_rocket):
+    oauth_get = logged_rocket.settings_oauth().json()
+    assert oauth_get.get("success")
+    assert not oauth_get.get("services")
+    oauth_set = logged_rocket.settings_addcustomoauth("Test").json()
+    assert oauth_set.get("success")
+    oauth_set = logged_rocket.settings_update("Accounts_OAuth_Custom-Test", True).json()
+    time.sleep(3)
+    assert oauth_set.get("success")
+    oauth_get = logged_rocket.settings_oauth().json()
+    assert oauth_get.get("success")
+    assert oauth_get.get("services")[0].get("service") == "test"
 
 
 def test_service_configurations(rocket):
