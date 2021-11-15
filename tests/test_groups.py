@@ -200,6 +200,17 @@ def test_groups_rename(logged_rocket):
     assert groups_rename.get("group").get("name") == name2
 
 
+def test_groups_set_announcement(logged_rocket, test_group_id):
+    announcement = str(uuid.uuid1())
+    groups_set_announcement = logged_rocket.groups_set_announcement(
+        test_group_id, announcement
+    ).json()
+    assert groups_set_announcement.get("success")
+    assert (
+        groups_set_announcement.get("announcement") == announcement
+    ), "Announcement does not match"
+
+
 def test_groups_set_description(logged_rocket, test_group_id):
     description = str(uuid.uuid1())
     groups_set_description = logged_rocket.groups_set_description(
