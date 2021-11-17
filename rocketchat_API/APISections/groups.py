@@ -106,7 +106,7 @@ class RocketChatGroups(RocketChatBase):
             "groups.rename", roomId=room_id, name=name, kwargs=kwargs
         )
 
-    def groups_set_announcement(self, room_id, announce, **kwargs):
+    def groups_set_announcement(self, room_id, announcement, **kwargs):
         """Sets the announcement for the private group."""
         return self.call_api_post(
             "groups.setAnnouncement",
