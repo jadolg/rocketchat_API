@@ -111,7 +111,7 @@ class RocketChatGroups(RocketChatBase):
         return self.call_api_post(
             "groups.setAnnouncement",
             roomId=room_id,
-            announcement=announce,
+            announcement=announcement,
             kwargs=kwargs,
         )
 
