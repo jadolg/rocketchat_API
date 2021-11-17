@@ -173,12 +173,12 @@ class RocketChatChannels(RocketChatBase):
             "channels.setType", roomId=room_id, type=a_type, kwargs=kwargs
         )
 
-    def channels_set_announcement(self, room_id, announce, **kwargs):
+    def channels_set_announcement(self, room_id, announcement, **kwargs):
         """Sets the announcement for the channel."""
         return self.call_api_post(
             "channels.setAnnouncement",
             roomId=room_id,
-            announcement=announce,
+            announcement=announcement,
             kwargs=kwargs,
         )
 
