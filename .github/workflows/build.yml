@@ -33,13 +33,13 @@ jobs:
       - name: Wait for rocket.chat server to be online
         run: until curl --silent http://localhost:3000/api/info/; do sleep 5; echo "waiting for Rocket.Chat server to start"; done
       - name: Run tests
-        run: pytest tests rocketchat_API -x --cov=./
+        run: pytest tests rocketchat_API -x --cov-report xml --cov=./
       - name: Upload code coverage  
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }} 
           verbose: true
-          files: .coverage
+          files: coverage.xml
           fail_ci_if_error: true
 
   publish:
