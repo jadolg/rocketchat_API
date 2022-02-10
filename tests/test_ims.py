@@ -1,4 +1,3 @@
-import email
 import pytest
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
