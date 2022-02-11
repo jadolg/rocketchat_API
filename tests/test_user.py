@@ -137,7 +137,7 @@ def test_users_create_token(logged_rocket, user):
         logged_rocket.users_create_token()
 
 
-#def test_users_create_update_delete(logged_rocket, user):
+# def test_users_create_update_delete(logged_rocket, user):
 #    name = str(uuid.uuid1())
 #    users_create = logged_rocket.users_create(
 #        email=f"{name}@domain.com",
@@ -166,6 +166,7 @@ def test_users_create_token(logged_rocket, user):
 #    users_delete = logged_rocket.users_delete(user_id).json()
 #    assert users_delete.get("success")
 #
+
 
 def test_users_set_active_status(logged_rocket, user):
     login = logged_rocket.login(user.name, user.password).json()
