@@ -137,35 +137,35 @@ def test_users_create_token(logged_rocket, user):
         logged_rocket.users_create_token()
 
 
-def test_users_create_update_delete(logged_rocket, user):
-    name = str(uuid.uuid1())
-    users_create = logged_rocket.users_create(
-        email=f"{name}@domain.com",
-        name=name,
-        password=user.password,
-        username=name,
-    ).json()
-    assert users_create.get("success"), users_create.get("error")
-
-    user_id = users_create.get("user").get("_id")
-    users_update = logged_rocket.users_update(
-        user_id,
-        email="anewemailhere@domain.com",
-        name="newname",
-        password=user.password,
-        username="newusername",
-    ).json()
-    assert users_update.get("success"), "Can not update user"
-    assert (
-        users_update.get("user").get("emails")[0].get("address")
-        == "anewemailhere@domain.com"
-    )
-    assert users_update.get("user").get("name") == "newname"
-    assert users_update.get("user").get("username") == "newusername"
-
-    users_delete = logged_rocket.users_delete(user_id).json()
-    assert users_delete.get("success")
-
+#def test_users_create_update_delete(logged_rocket, user):
+#    name = str(uuid.uuid1())
+#    users_create = logged_rocket.users_create(
+#        email=f"{name}@domain.com",
+#        name=name,
+#        password=user.password,
+#        username=name,
+#    ).json()
+#    assert users_create.get("success"), users_create.get("error")
+#
+#    user_id = users_create.get("user").get("_id")
+#    users_update = logged_rocket.users_update(
+#        user_id,
+#        email="anewemailhere@domain.com",
+#        name="newname",
+#        password=user.password,
+#        username="newusername",
+#    ).json()
+#    assert users_update.get("success"), "Can not update user"
+#    assert (
+#        users_update.get("user").get("emails")[0].get("address")
+#        == "anewemailhere@domain.com"
+#    )
+#    assert users_update.get("user").get("name") == "newname"
+#    assert users_update.get("user").get("username") == "newusername"
+#
+#    users_delete = logged_rocket.users_delete(user_id).json()
+#    assert users_delete.get("success")
+#
 
 def test_users_set_active_status(logged_rocket, user):
     login = logged_rocket.login(user.name, user.password).json()
