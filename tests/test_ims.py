@@ -9,11 +9,13 @@ def recipient_user(create_user):
 
     return _recipient.name
 
+
 @pytest.fixture(scope="module")
 def recipient_user3(create_user):
     _recipient = create_user(name="user3", email="anotherone@domain.com")
 
     return _recipient.name
+
 
 @pytest.fixture(scope="module")
 def recipient_user2(create_user):
@@ -21,12 +23,18 @@ def recipient_user2(create_user):
 
     return _recipient.name
 
+
 def test_im_create_multiple(logged_rocket, recipient_user3, recipient_user2):
-    im_create = logged_rocket.im_create_multiple(recipient_user3 + "," + recipient_user2).json()
+    im_create = logged_rocket.im_create_multiple(
+        recipient_user3 + "," + recipient_user2
+    ).json()
     assert im_create.get("success")
     room_id = im_create.get("room").get("_id")
-    im_send = logged_rocket.chat_post_message(room_id=room_id, text="Das ist eine Testnachricht").json()
+    im_send = logged_rocket.chat_post_message(
+        room_id=room_id, text="Das ist eine Testnachricht"
+    ).json()
     assert im_send.get("success")
+
 
 def test_im_create(logged_rocket, recipient_user):
     im_create = logged_rocket.im_create(recipient_user).json()
