@@ -130,6 +130,7 @@ class RocketChatBase:
             verify=self.ssl_verify,
             proxies=self.proxies,
             cert=self.cert,
+            timeout=self.timeout,
         )
         if login_request.status_code == 401:
             raise RocketAuthenticationException()
