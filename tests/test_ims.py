@@ -26,7 +26,7 @@ def recipient_user2(create_user):
 
 def test_im_create_multiple(logged_rocket, recipient_user3, recipient_user2):
     im_create = logged_rocket.im_create_multiple(
-        recipient_user3 + "," + recipient_user2
+        [recipient_user3, recipient_user2]
     ).json()
     assert im_create.get("success")
     room_id = im_create.get("room").get("_id")
