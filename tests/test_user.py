@@ -150,16 +150,11 @@ def test_users_create_update_delete(logged_rocket, user):
     user_id = users_create.get("user").get("_id")
     users_update = logged_rocket.users_update(
         user_id,
-        email="anewemailhere@domain.com",
         name="newname",
         password=user.password,
         username="newusername",
     ).json()
     assert users_update.get("success"), "Can not update user"
-    assert (
-        users_update.get("user").get("emails")[0].get("address")
-        == "anewemailhere@domain.com"
-    )
     assert users_update.get("user").get("name") == "newname"
     assert users_update.get("user").get("username") == "newusername"
 
