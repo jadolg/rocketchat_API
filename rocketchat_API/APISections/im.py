@@ -19,6 +19,12 @@ class RocketChatIM(RocketChatBase):
         """Create a direct message session with another user."""
         return self.call_api_post("im.create", username=username, kwargs=kwargs)
 
+    def im_create_multiple(self, usernames, **kwargs):
+        """Create a direct message session with one or more users."""
+        return self.call_api_post(
+            "im.create", usernames=",".join(usernames), kwargs=kwargs
+        )
+
     def im_open(self, room_id, **kwargs):
         """Adds the direct message back to the user’s list of direct messages."""
         return self.call_api_post("im.open", roomId=room_id, kwargs=kwargs)
