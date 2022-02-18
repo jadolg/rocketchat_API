@@ -124,7 +124,7 @@ class RocketChatBase:
             request_data["user"] = user
         else:
             request_data["username"] = user
-        login_request = requests.post(
+        login_request = self.req.post(
             self.server_url + self.API_path + "login",
             data=request_data,
             verify=self.ssl_verify,
