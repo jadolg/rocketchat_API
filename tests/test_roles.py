@@ -31,4 +31,10 @@ def test_roles_add_remove_user_to_from_role(logged_rocket):
     ).json()
 
     assert roles_remove_user_from_role.get("success")
-    
+
+
+def test_roles_get_users_in_role(logged_rocket):
+    roles_get_users_in_role = logged_rocket.roles_get_users_in_role(role="owner", roomId="GENERAL").json()
+
+    assert roles_get_users_in_role.get("success")
+    assert roles_get_users_in_role.get("users")[0].get("name") == "user1"

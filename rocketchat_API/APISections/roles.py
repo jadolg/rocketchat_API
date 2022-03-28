@@ -17,3 +17,7 @@ class RocketChatRoles(RocketChatBase):
     def roles_remove_user_from_role(self, role_name, username, **kwargs):
         """Remove a role from a user. Optionally, you can unset this role for a specified scope."""
         return self.call_api_post("roles.removeUserFromRole", roleName=role_name, username=username, kwargs=kwargs)
+
+    def roles_get_users_in_role(self, role, **kwargs):
+        """Gets the users that belongs to a role. It supports the Offset and Count Only."""
+        return self.call_api_get("roles.getUsersInRole", role=role, kwargs=kwargs)
