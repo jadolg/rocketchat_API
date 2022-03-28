@@ -6,4 +6,6 @@ class RocketChatRoles(RocketChatBase):
         """Gets all the roles in the system."""
         return self.call_api_get("roles.list", kwargs=kwargs)
 
-    
+    def roles_create(self, name, **kwargs):
+        """Create a new role in the system."""
+        return self.call_api_post("roles.create", name=name, kwargs=kwargs)
