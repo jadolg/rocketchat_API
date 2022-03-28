@@ -34,7 +34,17 @@ def test_roles_add_remove_user_to_from_role(logged_rocket):
 
 
 def test_roles_get_users_in_role(logged_rocket):
-    roles_get_users_in_role = logged_rocket.roles_get_users_in_role(role="owner", roomId="GENERAL").json()
+    roles_get_users_in_role = logged_rocket.roles_get_users_in_role(
+        role="owner", roomId="GENERAL"
+    ).json()
 
     assert roles_get_users_in_role.get("success")
     assert roles_get_users_in_role.get("users")[0].get("name") == "user1"
+
+
+def test_roles_sync(logged_rocket):
+    roles_sync = logged_rocket.roles_sync(
+        updated_since="2017-11-25T15:08:17.248Z"
+    ).json()
+    assert roles_sync.get("success")
+    assert len(roles_sync.get("roles")) > 0
