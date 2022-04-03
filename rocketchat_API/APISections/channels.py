@@ -137,6 +137,15 @@ class RocketChatChannels(RocketChatBase):
             "channels.rename", roomId=room_id, name=name, kwargs=kwargs
         )
 
+    def channels_set_default(self, room_id, default, **kwargs):
+        """Sets the description for the channel."""
+        return self.call_api_post(
+            "channels.setDefault",
+            roomId=room_id,
+            default=default,
+            kwargs=kwargs,
+        )
+
     def channels_set_description(self, room_id, description, **kwargs):
         """Sets the description for the channel."""
         return self.call_api_post(

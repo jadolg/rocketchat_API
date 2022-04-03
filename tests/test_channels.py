@@ -380,3 +380,10 @@ def test_channels_online(logged_rocket):
     channels_online = logged_rocket.channels_online(query={"_id": "GENERAL"}).json()
     assert channels_online.get("success")
     assert len(channels_online.get("online")) >= 1
+
+
+def test_channels_set_default(logged_rocket):
+    results = logged_rocket.channels_set_default(room_id="GENERAL", default=False).json()
+    assert results.get("channel").get("default") is False
+    results = logged_rocket.channels_set_default(room_id="GENERAL", default=True).json()
+    assert results.get("channel").get("default")
