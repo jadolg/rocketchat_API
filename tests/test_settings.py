@@ -20,9 +20,18 @@ def test_settings_public(rocket):
 
 
 def test_settings_oauth(logged_rocket):
+    # refresh is not done with any API call ever, so we need to call it manually here
+    logged_rocket.call_api_post("method.call/refreshOAuthService",
+                                message='{"method": "refreshOAuthService", "params": []}')
     oauth_get = logged_rocket.settings_oauth().json()
     assert oauth_get.get("success")
-    assert not oauth_get.get("services")
+    if oauth_get.get("services"):
+        # remove the OAuth app Test beforehand, when this is not the first test run (for reproducibility)
+        logged_rocket.call_api_post("method.call/removeOAuthService",
+                                    message='{"method": "removeOAuthService", "params": ["Test"]}')
+        oauth_get = logged_rocket.settings_oauth().json()
+        assert not oauth_get.get("services")
+    
     oauth_set = logged_rocket.settings_addcustomoauth("Test").json()
     assert oauth_set.get("success")
     oauth_set = logged_rocket.settings_update("Accounts_OAuth_Custom-Test", True).json()
