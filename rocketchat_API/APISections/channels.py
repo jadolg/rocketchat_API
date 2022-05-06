@@ -138,7 +138,7 @@ class RocketChatChannels(RocketChatBase):
         )
 
     def channels_set_default(self, room_id, default, **kwargs):
-        """Sets the description for the channel."""
+        """Sets whether the channel is a default channel or not."""
         return self.call_api_post(
             "channels.setDefault",
             roomId=room_id,
