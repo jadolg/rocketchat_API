@@ -64,3 +64,9 @@ class RocketChatRooms(RocketChatBase):
         return self.call_api_post(
             "rooms.createDiscussion", prid=prid, t_name=t_name, kwargs=kwargs
         )
+
+    def rooms_export(self, rid, type, **kwargs):
+        """Export room to a file or email."""
+        return self.call_api_post(
+            "rooms.export", rid=rid, type=type, kwargs=kwargs
+        )
