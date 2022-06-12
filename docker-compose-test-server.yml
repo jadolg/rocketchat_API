@@ -22,8 +22,6 @@ services:
 
   mongo:
     image: mongo
-    ports:
-      - "27017:27017"
     restart: unless-stopped
     command: mongod --oplogSize 128 --replSet rs0
 
