@@ -4,8 +4,6 @@ from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamExce
 
 
 def test_rooms_upload(logged_rocket):
-    # ToDo: Find a better way to test that this endpoint actually works fine (when using json and not data fails
-    # silently)
     rooms_upload = logged_rocket.rooms_upload(
         "GENERAL", file="tests/assets/avatar.png", description="hey there"
     ).json()
