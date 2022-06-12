@@ -58,9 +58,9 @@ class RocketChatRooms(RocketChatBase):
         return self.call_api_get("rooms.adminRooms", kwargs=kwargs)
 
     def rooms_create_discussion(self, prid, t_name, **kwargs):
-        """Creates a new discussion for room. It requires at least one of the following permissions:
-        start-discussion OR start-discussion-other-user, AND must be with the following setting enabled:
-        Discussion_enabled."""
+        """Creates a new discussion for room. It requires at least one of the
+        following permissions: start-discussion OR start-discussion-other-user,
+        AND must be with the following setting enabled: Discussion_enabled."""
         return self.call_api_post(
             "rooms.createDiscussion", prid=prid, t_name=t_name, kwargs=kwargs
         )
