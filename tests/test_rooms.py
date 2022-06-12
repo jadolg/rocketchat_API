@@ -93,5 +93,5 @@ def test_rooms_admin_rooms(logged_rocket):
 
 
 def test_rooms_export(logged_rocket):
-    rooms_export = logged_rocket.rooms_export(rid="GENERAL", type="file").json()
+    rooms_export = logged_rocket.rooms_export(rid="GENERAL", atype="file").json()
     assert rooms_export.get("success")
