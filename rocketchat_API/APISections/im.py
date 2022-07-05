@@ -26,11 +26,11 @@ class RocketChatIM(RocketChatBase):
         )
 
     def im_open(self, room_id, **kwargs):
-        """Adds the direct message back to the user’s list of direct messages."""
+        """Adds the direct message back to the user's list of direct messages."""
         return self.call_api_post("im.open", roomId=room_id, kwargs=kwargs)
 
     def im_close(self, room_id, **kwargs):
-        """Removes the direct message from the user’s list of direct messages."""
+        """Removes the direct message from the user's list of direct messages."""
         return self.call_api_post("im.close", roomId=room_id, kwargs=kwargs)
 
     def im_members(self, room_id, **kwargs):
