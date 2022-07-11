@@ -140,7 +140,7 @@ def test_users_create_token(logged_rocket, user):
 def test_users_create_update_delete(logged_rocket, user):
     name = str(uuid.uuid1())
     users_create = logged_rocket.users_create(
-        email=f"{name}@domain.com",
+        email="{}@domain.com".format(name),
         name=name,
         password=user.password,
         username=name,
