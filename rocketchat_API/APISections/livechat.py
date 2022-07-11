@@ -26,7 +26,9 @@ class RocketChatLivechat(RocketChatBase):
 
     def livechat_get_user(self, user_type, user_id, **kwargs):
         """Get info about an agent or manager."""
-        return self.call_api_get("livechat/users/{}/{}".format(user_type, user_id), kwargs=kwargs)
+        return self.call_api_get(
+            "livechat/users/{}/{}".format(user_type, user_id), kwargs=kwargs
+        )
 
     def livechat_delete_user(self, user_type, user_id):
         """Removes an agent or manager."""
