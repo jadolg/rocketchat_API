@@ -144,6 +144,6 @@ def test_im_counters(logged_rocket, recipient_user):
 
     im_counters = logged_rocket.im_counters(
         room_id=im_create.get("room").get("_id"),
-        user_name=logged_rocket.me().json().get("_id")
+        user_name=logged_rocket.me().json().get("_id"),
     ).json()
     assert im_counters.get("success")
