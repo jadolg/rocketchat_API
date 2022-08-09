@@ -90,8 +90,3 @@ def test_rooms_admin_rooms(logged_rocket):
     rooms_with_filter = logged_rocket.rooms_admin_rooms(**{"filter": "general"}).json()
     assert rooms_with_filter.get("success")
     assert rooms_with_filter.get("rooms")[0].get("_id") == "GENERAL"
-
-
-def test_rooms_export(logged_rocket):
-    rooms_export = logged_rocket.rooms_export(rid="GENERAL", atype="file").json()
-    assert rooms_export.get("success")
