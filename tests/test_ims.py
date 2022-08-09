@@ -143,9 +143,7 @@ def test_im_counters(logged_rocket, recipient_user):
     assert im_counters.get("success")
 
     im_counters = logged_rocket.im_counters(
-        user_name=logged_rocket.me().json().get("_id")
+        room_id=im_create.get("room").get("_id"),
+        user_name=logged_rocket.me().json().get("_id"),
     ).json()
     assert im_counters.get("success")
-
-    with pytest.raises(RocketMissingParamException):
-        logged_rocket.im_counters()

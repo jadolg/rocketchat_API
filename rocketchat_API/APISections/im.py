@@ -33,17 +33,17 @@ class RocketChatIM(RocketChatBase):
         """Removes the direct message from the user's list of direct messages."""
         return self.call_api_post("im.close", roomId=room_id, kwargs=kwargs)
 
-    def im_members(self, room_id, **kwargs):
+    def im_members(self, room_id):
         """Retrieves members of a direct message."""
-        return self.call_api_get("im.members", roomId=room_id, args=kwargs)
+        return self.call_api_get("im.members", roomId=room_id)
 
-    def im_messages(self, room_id=None, username=None, **kwargs):
+    def im_messages(self, room_id=None, username=None):
         """Retrieves direct messages from the server by username"""
         if room_id:
-            return self.call_api_get("im.messages", roomId=room_id, args=kwargs)
+            return self.call_api_get("im.messages", roomId=room_id)
 
         if username:
-            return self.call_api_get("im.messages", username=username, args=kwargs)
+            return self.call_api_get("im.messages", username=username)
 
         raise RocketMissingParamException("roomId or username required")
 
@@ -65,10 +65,8 @@ class RocketChatIM(RocketChatBase):
             return self.call_api_get("im.files", username=user_name, kwargs=kwargs)
         raise RocketMissingParamException("roomId or username required")
 
-    def im_counters(self, room_id=None, user_name=None, **kwargs):
+    def im_counters(self, room_id, user_name=None):
         """Gets counters of direct messages."""
-        if room_id:
-            return self.call_api_get("im.counters", roomId=room_id, kwargs=kwargs)
         if user_name:
-            return self.call_api_get("im.counters", username=user_name, kwargs=kwargs)
-        raise RocketMissingParamException("roomId or username required")
+            return self.call_api_get("im.counters", roomId=room_id, username=user_name)
+        return self.call_api_get("im.counters", roomId=room_id)

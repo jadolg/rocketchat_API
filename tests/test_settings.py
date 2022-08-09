@@ -1,5 +1,7 @@
 import time
 
+import pytest
+
 
 def test_settings(logged_rocket):
     settings = logged_rocket.settings().json()
@@ -19,6 +21,9 @@ def test_settings_public(rocket):
     assert "settings" in settings_public
 
 
+@pytest.mark.skip(
+    reason="Broken in 5.0 https://github.com/jadolg/rocketchat_API/issues/168"
+)
 def test_settings_oauth(logged_rocket):
     # refresh is not done with any API call ever, so we need to call it manually here
     response = logged_rocket.call_api_post(

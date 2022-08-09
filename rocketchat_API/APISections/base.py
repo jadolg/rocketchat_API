@@ -86,6 +86,7 @@ class RocketChatBase:
         # Some methods use pass (users.register) and others password (users.create)
         if "password" in reduced_args and method != "users.create":
             reduced_args["pass"] = reduced_args["password"]
+            del reduced_args["password"]
         if use_json is None:
             # see https://requests.readthedocs.io/en/master/user/quickstart/#more-complicated-post-requests
             # > The json parameter is ignored if either data or files is passed.
