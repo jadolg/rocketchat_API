@@ -21,7 +21,7 @@ jobs:
       - name: Start rocket.chat server
         uses: isbang/compose-action@v0.1.1
         with:
-          compose-file: docker-compose-test-server.yml
+          compose-file: docker-compose.yml
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
