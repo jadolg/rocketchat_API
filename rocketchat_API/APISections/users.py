@@ -11,7 +11,7 @@ class RocketChatUsers(RocketChatBase):
         return self.call_api_get("me", kwargs=kwargs)
 
     def users_info(self, user_id=None, username=None, **kwargs):
-        """Gets a user’s information, limited to the caller’s permissions."""
+        """Gets a user's information, limited to the caller's permissions."""
         if user_id:
             return self.call_api_get("users.info", userId=user_id, kwargs=kwargs)
         if username:
@@ -59,7 +59,7 @@ class RocketChatUsers(RocketChatBase):
         )
 
     def users_get_avatar(self, user_id=None, username=None, **kwargs):
-        """Gets the URL for a user’s avatar."""
+        """Gets the URL for a user's avatar."""
         if user_id:
             response = self.call_api_get(
                 "users.getAvatar", userId=user_id, kwargs=kwargs
@@ -84,7 +84,7 @@ class RocketChatUsers(RocketChatBase):
         return response
 
     def users_set_avatar(self, avatar_url, **kwargs):
-        """Set a user’s avatar"""
+        """Set a user's avatar"""
         if avatar_url.startswith("http://") or avatar_url.startswith("https://"):
             return self.call_api_post(
                 "users.setAvatar", avatarUrl=avatar_url, kwargs=kwargs
@@ -101,7 +101,7 @@ class RocketChatUsers(RocketChatBase):
         return self.call_api_post("users.setAvatar", files=avatar_file, kwargs=kwargs)
 
     def users_reset_avatar(self, user_id=None, username=None, **kwargs):
-        """Reset a user’s avatar"""
+        """Reset a user's avatar"""
         if user_id:
             return self.call_api_post(
                 "users.resetAvatar", userId=user_id, kwargs=kwargs
@@ -146,7 +146,7 @@ class RocketChatUsers(RocketChatBase):
         return self.call_api_get("users.getPreferences", kwargs=kwargs)
 
     def users_set_preferences(self, user_id, data, **kwargs):
-        """Set user’s preferences."""
+        """Set user's preferences."""
         return self.call_api_post(
             "users.setPreferences", userId=user_id, data=data, kwargs=kwargs
         )

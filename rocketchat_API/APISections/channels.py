@@ -14,7 +14,7 @@ class RocketChatChannels(RocketChatBase):
         return self.call_api_get("channels.list.joined", kwargs=kwargs)
 
     def channels_info(self, room_id=None, channel=None, **kwargs):
-        """Gets a channel’s information."""
+        """Gets a channel's information."""
         if room_id:
             return self.call_api_get("channels.info", roomId=room_id, kwargs=kwargs)
         if channel:
@@ -92,11 +92,11 @@ class RocketChatChannels(RocketChatBase):
         return self.call_api_post("channels.unarchive", roomId=room_id, kwargs=kwargs)
 
     def channels_close(self, room_id, **kwargs):
-        """Removes the channel from the user’s list of channels."""
+        """Removes the channel from the user's list of channels."""
         return self.call_api_post("channels.close", roomId=room_id, kwargs=kwargs)
 
     def channels_open(self, room_id, **kwargs):
-        """Adds the channel back to the user’s list of channels."""
+        """Adds the channel back to the user's list of channels."""
         return self.call_api_post("channels.open", roomId=room_id, kwargs=kwargs)
 
     def channels_create(self, name, **kwargs):
@@ -218,7 +218,7 @@ class RocketChatChannels(RocketChatBase):
         raise RocketMissingParamException("room_id or channel required")
 
     def channels_roles(self, room_id=None, room_name=None, **kwargs):
-        """Lists all user’s roles in the channel."""
+        """Lists all user's roles in the channel."""
         if room_id:
             return self.call_api_get("channels.roles", roomId=room_id, kwargs=kwargs)
         if room_name:

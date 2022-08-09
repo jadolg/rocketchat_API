@@ -51,7 +51,7 @@ class RocketChatGroups(RocketChatBase):
         )
 
     def groups_archive(self, room_id, **kwargs):
-        """Archives a private group, only if you’re part of the group."""
+        """Archives a private group, only if you're part of the group."""
         return self.call_api_post("groups.archive", roomId=room_id, kwargs=kwargs)
 
     def groups_unarchive(self, room_id, **kwargs):
@@ -59,11 +59,11 @@ class RocketChatGroups(RocketChatBase):
         return self.call_api_post("groups.unarchive", roomId=room_id, kwargs=kwargs)
 
     def groups_close(self, room_id, **kwargs):
-        """Removes the private group from the user’s list of groups, only if you’re part of the group."""
+        """Removes the private group from the user's list of groups, only if you're part of the group."""
         return self.call_api_post("groups.close", roomId=room_id, kwargs=kwargs)
 
     def groups_create(self, name, **kwargs):
-        """Creates a new private group, optionally including users, only if you’re part of the group."""
+        """Creates a new private group, optionally including users, only if you're part of the group."""
         return self.call_api_post("groups.create", name=name, kwargs=kwargs)
 
     def groups_get_integrations(self, room_id, **kwargs):
@@ -73,7 +73,7 @@ class RocketChatGroups(RocketChatBase):
         )
 
     def groups_info(self, room_id=None, room_name=None, **kwargs):
-        """GRetrieves the information about the private group, only if you’re part of the group."""
+        """GRetrieves the information about the private group, only if you're part of the group."""
         if room_id:
             return self.call_api_get("groups.info", roomId=room_id, kwargs=kwargs)
         if room_name:
@@ -93,11 +93,11 @@ class RocketChatGroups(RocketChatBase):
         )
 
     def groups_leave(self, room_id, **kwargs):
-        """Causes the callee to be removed from the private group, if they’re part of it and are not the last owner."""
+        """Causes the callee to be removed from the private group, if they're part of it and are not the last owner."""
         return self.call_api_post("groups.leave", roomId=room_id, kwargs=kwargs)
 
     def groups_open(self, room_id, **kwargs):
-        """Adds the private group back to the user’s list of private groups."""
+        """Adds the private group back to the user's list of private groups."""
         return self.call_api_post("groups.open", roomId=room_id, kwargs=kwargs)
 
     def groups_rename(self, room_id, name, **kwargs):
@@ -181,7 +181,7 @@ class RocketChatGroups(RocketChatBase):
         raise RocketMissingParamException("room_id or group required")
 
     def groups_roles(self, room_id=None, room_name=None, **kwargs):
-        """Lists all user’s roles in the private group."""
+        """Lists all user's roles in the private group."""
         if room_id:
             return self.call_api_get("groups.roles", roomId=room_id, kwargs=kwargs)
         if room_name:
