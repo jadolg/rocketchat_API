@@ -23,7 +23,7 @@ jobs:
         with:
           compose-file: docker-compose.yml
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -54,7 +54,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.0.2
       - name: Set up Python 3.10
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
       - name: Install dependencies
