@@ -5,6 +5,7 @@ from rocketchat_API.APISections.channels import RocketChatChannels
 from rocketchat_API.APISections.chat import RocketChatChat
 from rocketchat_API.APISections.groups import RocketChatGroups
 from rocketchat_API.APISections.im import RocketChatIM
+from rocketchat_API.APISections.integrations import RocketChatIntegrations
 from rocketchat_API.APISections.invites import RocketChatInvites
 from rocketchat_API.APISections.livechat import RocketChatLivechat
 from rocketchat_API.APISections.miscellaneous import RocketChatMiscellaneous
@@ -25,6 +26,7 @@ class RocketChat(
     RocketChatChannels,
     RocketChatGroups,
     RocketChatIM,
+    RocketChatIntegrations,
     RocketChatStatistics,
     RocketChatMiscellaneous,
     RocketChatSettings,
