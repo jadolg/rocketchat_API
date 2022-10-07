@@ -1,3 +1,6 @@
+from rocketchat_API.rocketchat import RocketChat
+
+
 def test_info(logged_rocket):
     info = logged_rocket.info().json()
     assert "info" in info
@@ -26,3 +29,13 @@ def test_spotlight(logged_rocket):
     assert spotlight.get("success")
     assert spotlight.get("users") is not None, "No users list found"
     assert spotlight.get("rooms") is not None, "No rooms list found"
+
+
+def test_login_token(logged_rocket):
+    user_id = logged_rocket.headers["X-User-Id"]
+    auth_token = logged_rocket.headers["X-Auth-Token"]
+
+    another_rocket = RocketChat(user_id=user_id, auth_token=auth_token)
+    logged_user = another_rocket.me().json()
+
+    assert logged_user.get("_id") == user_id
