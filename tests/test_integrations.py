@@ -20,7 +20,7 @@ def test_integrations_create(integrations_create_webhook_incoming, logged_rocket
     assert integration_webhook_incoming.get("success")
 
     integration_webhook_outgoing = logged_rocket.integrations_create(
-        integrations_type="webhook-incoming",
+        integrations_type="webhook-outgoing",
         name=str(uuid1()),
         enabled=True,
         event="sendMessage",
