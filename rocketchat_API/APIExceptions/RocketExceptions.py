@@ -12,3 +12,7 @@ class RocketAuthenticationException(Exception):
 
 class RocketMissingParamException(Exception):
     pass
+
+
+class RocketUnsuportedIntegrationType(Exception):
+    pass
