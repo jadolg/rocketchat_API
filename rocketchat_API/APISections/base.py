@@ -114,6 +114,35 @@ class RocketChatBase:
             timeout=self.timeout,
         )
 
+    def call_api_put(self, method, files=None, use_json=None, **kwargs):
+        reduced_args = self.__reduce_kwargs(kwargs)
+        if use_json is None:
+            # see https://requests.readthedocs.io/en/master/user/quickstart/#more-complicated-post-requests
+            # > The json parameter is ignored if either data or files is passed.
+            # If files are sent, json should not be used
+            use_json = files is None
+        if use_json:
+            return self.req.put(
+                self.server_url + self.API_path + method,
+                json=reduced_args,
+                files=files,
+                headers=self.headers,
+                verify=self.ssl_verify,
+                cert=self.cert,
+                proxies=self.proxies,
+                timeout=self.timeout,
+            )
+        return self.req.put(
+            self.server_url + self.API_path + method,
+            data=reduced_args,
+            files=files,
+            headers=self.headers,
+            verify=self.ssl_verify,
+            cert=self.cert,
+            proxies=self.proxies,
+            timeout=self.timeout,
+        )
+
     # Authentication
 
     def login(self, user, password):
