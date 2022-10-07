@@ -1,3 +1,6 @@
+from rocketchat_API.APIExceptions.RocketExceptions import (
+    RocketUnsuportedIntegrationType,
+)
 from rocketchat_API.APISections.base import RocketChatBase
 
 
@@ -29,17 +32,19 @@ class RocketChatIntegrations(RocketChatBase):
                 scriptEnabled=script_enabled,
                 kwargs=kwargs,
             )
-
-        return self.call_api_post(
-            "integrations.create",
-            type=integrations_type,
-            name=name,
-            enabled=enabled,
-            username=username,
-            channel=channel,
-            scriptEnabled=script_enabled,
-            kwargs=kwargs,
-        )
+        elif integrations_type == "webhook-incoming":
+            return self.call_api_post(
+                "integrations.create",
+                type=integrations_type,
+                name=name,
+                enabled=enabled,
+                username=username,
+                channel=channel,
+                scriptEnabled=script_enabled,
+                kwargs=kwargs,
+            )
+        else:
+            raise RocketUnsuportedIntegrationType()
 
     def integrations_get(self, integration_id, **kwargs):
         """Retrieves an integration by id."""
