@@ -47,6 +47,15 @@ with sessions.Session() as session:
     pprint(rocket.channels_history('GENERAL', count=5).json())
 ```
  
+#### Using a token for authentication instead of user and password
+
+```python
+from pprint import pprint
+from rocketchat_API.rocketchat import RocketChat
+
+rocket = RocketChat(user_id='WPXGmQ64S3BXdCRb6', auth_token='jvNyOYw2f0YKwtiFS06Fk21HBRBBuV7zI43HmkNzI_s', server_url='https://demo.rocket.chat')
+pprint(rocket.me().json())
+```
 
 ### Method parameters
 Only required parameters are explicit on the RocketChat class but you can still use all other parameters. For a detailed parameters list check the [Rocket chat API](https://developer.rocket.chat/reference/api/rest-api)
