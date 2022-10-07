@@ -25,7 +25,7 @@ def test_integrations_create(integrations_create_webhook_incoming, logged_rocket
         enabled=True,
         event="sendMessage",
         username=logged_rocket.me().json().get("username"),
-        urls=["http://example.com/fake"],
+        urls=["https://example.com/fake"],
         channel="#general",
         script_enabled=False,
     ).json()
