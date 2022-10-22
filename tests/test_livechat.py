@@ -19,7 +19,7 @@ def test_livechat_inquiries_take(logged_rocket):
         inquiry_id="NotARealThing"
     ).json()
     assert not livechat_inquiries_take.get("success")
-    assert "Inquiry already taken" == livechat_inquiries_take.get("reason")
+    assert "Inquiry not found [error-not-found]" == livechat_inquiries_take.get("error")
 
 
 def test_livechat_users(logged_rocket):
