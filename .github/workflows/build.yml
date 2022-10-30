@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.1.0
       - name: Start rocket.chat server
-        uses: isbang/compose-action@v1.3.2
+        uses: isbang/compose-action@v1.4.0
         with:
           compose-file: docker-compose.yml
       - name: Set up Python
@@ -39,10 +39,10 @@ jobs:
         timeout-minutes: 5
       - name: Run tests
         run: pytest tests rocketchat_API -x --cov-report xml --cov=./
-      - name: Upload code coverage  
+      - name: Upload code coverage
         uses: codecov/codecov-action@v3
         with:
-          token: ${{ secrets.CODECOV_TOKEN }} 
+          token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
           files: coverage.xml
           fail_ci_if_error: true
