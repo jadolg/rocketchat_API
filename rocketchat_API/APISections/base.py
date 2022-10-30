@@ -180,3 +180,7 @@ class RocketChatBase:
     def logout(self, **kwargs):
         """Invalidate your REST rocketchat_API authentication token."""
         return self.call_api_post("logout", kwargs=kwargs)
+
+    def info(self, **kwargs):
+        """Information about the Rocket.Chat server."""
+        return self.call_api_get("info", api_path="/api/", kwargs=kwargs)
