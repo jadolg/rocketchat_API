@@ -12,17 +12,17 @@ def test_chat_post_notext_message(logged_rocket):
 
 def test_chat_post_update_delete_message(logged_rocket):
     chat_post_message = logged_rocket.chat_post_message(
-        "hello", channel="GENERAL",
+        "hello",
+        channel="GENERAL",
         attachments=[
-            {
-                "color": "#ff0000",
-                "text": "there"
-            },
-        ]
+            {"color": "#ff0000", "text": "there"},
+        ],
     ).json()
     assert chat_post_message.get("channel") == "GENERAL"
     assert chat_post_message.get("message").get("msg") == "hello"
-    assert chat_post_message.get("message").get("attachments")[0].get("color") == "#ff0000"
+    assert (
+        chat_post_message.get("message").get("attachments")[0].get("color") == "#ff0000"
+    )
     assert chat_post_message.get("message").get("attachments")[0].get("text") == "there"
     assert chat_post_message.get("success")
 

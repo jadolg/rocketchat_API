@@ -12,7 +12,9 @@ class RocketChatAssets(RocketChatBase):
         content_type = mimetypes.MimeTypes().guess_type(file)
 
         file_name = asset_name
-        if version.parse(server_info.get("info").get("version")) >= version.parse("5.1"):
+        if version.parse(server_info.get("info").get("version")) >= version.parse(
+            "5.1"
+        ):
             file_name = "asset"
 
         files = {
@@ -20,7 +22,11 @@ class RocketChatAssets(RocketChatBase):
         }
 
         return self.call_api_post(
-            "assets.setAsset", kwargs=kwargs, assetName=asset_name, use_json=False, files=files
+            "assets.setAsset",
+            kwargs=kwargs,
+            assetName=asset_name,
+            use_json=False,
+            files=files,
         )
 
     def assets_unset_asset(self, asset_name):
