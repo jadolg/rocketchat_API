@@ -3,10 +3,6 @@ from rocketchat_API.APISections.base import RocketChatBase
 
 class RocketChatMiscellaneous(RocketChatBase):
     # Miscellaneous information
-    def info(self, **kwargs):
-        """Information about the Rocket.Chat server."""
-        return self.call_api_get("info", api_path="/api/", kwargs=kwargs)
-
     def directory(self, query, **kwargs):
         """Search by users or channels on all server."""
         if isinstance(query, dict):
