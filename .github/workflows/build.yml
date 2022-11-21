@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.1.0
       - name: Start rocket.chat server
-        uses: isbang/compose-action@v1.4.0
+        uses: isbang/compose-action@v1.4.1
         with:
           compose-file: docker-compose.yml
       - name: Set up Python
