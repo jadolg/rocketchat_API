@@ -1,3 +1,4 @@
+from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
 from rocketchat_API.APISections.base import RocketChatBase
 
 
