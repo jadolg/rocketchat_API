@@ -10,6 +10,22 @@ on:
     - cron: '0 20 * * 5'
 
 jobs:
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.3.0
+        with:
+          fetch-depth: 0
+      - name: Install black
+        run: pip install black
+      - name: Lint with black
+        run: black --check .
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@main
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+      
   test:
     runs-on: ubuntu-20.04
     strategy:
@@ -28,12 +44,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: pip install pytest-cov requests
-      - name: Install black
-        run: pip install black
-        if: matrix.python-version != '2.7'  # Black does not run on python 2.7
-      - name: Lint with black
-        run: black --check .
-        if: matrix.python-version != '2.7'  # Black does not run on python 2.7
       - name: Wait for rocket.chat server to be online
         run: until curl --silent http://localhost:3000/api/info/; do sleep 15; echo "waiting for Rocket.Chat server to start"; done;
         timeout-minutes: 5
