@@ -181,7 +181,7 @@ def test_users_set_avatar_from_file(logged_rocket):
 def test_users_set_avatar_from_url(logged_rocket):
     # ToDo: Modify this test so it can run while offline
     users_set_avatar = logged_rocket.users_set_avatar(
-        avatar_url="https://avatars.dicebear.com/api/bottts/rocket.svg"
+        avatar_url="https://upload.wikimedia.org/wikipedia/commons/7/77/Wikipedia_svg_logo.svg"
     ).json()
     assert users_set_avatar.get("success"), users_set_avatar.get("error")
 
