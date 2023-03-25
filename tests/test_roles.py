@@ -1,5 +1,7 @@
 import uuid
 
+import pytest
+
 
 def test_roles_list(logged_rocket):
     roles_list = logged_rocket.roles_list().json()
@@ -7,6 +9,8 @@ def test_roles_list(logged_rocket):
     assert len(roles_list.get("roles")) > 0
 
 
+# ToDo: Remove skip once we have a key to test with.
+@pytest.mark.skip(reason="This endpoint is now part of the enterprise version.")
 def test_roles_create(logged_rocket):
     name = str(uuid.uuid1())
     roles_create = logged_rocket.roles_create(
