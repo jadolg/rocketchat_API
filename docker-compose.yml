@@ -15,20 +15,22 @@ services:
       - OVERWRITE_SETTING_API_Enable_Rate_Limiter=false
       - OVERWRITE_SETTING_Accounts_TwoFactorAuthentication_Enforce_Password_Fallback=false
       - CREATE_TOKENS_FOR_USERS=true
+      - ROCKETCHAT_LICENSE=${ROCKETCHAT_LICENSE}
+      - LICENSE_DEBUG=true
     depends_on:
       - mongo
     ports:
       - "3000:3000"
 
   mongo:
-    image: mongo:4
+    image: mongo:5
     restart: unless-stopped
     command: mongod --oplogSize 128 --replSet rs0
 
   # this container's job is just run the command to initialize the replica set.
   # it will run the command and remove himself (it will not stay running)
   mongo-init-replica:
-    image: mongo:4
+    image: mongo:5
     command: 'bash -c "for i in `seq 1 30`; do mongo mongo/rocketchat --eval \"rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})\" && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"'
     depends_on:
       - mongo

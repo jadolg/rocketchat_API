@@ -99,3 +99,4 @@ ENV/
 rocketchat_API.egg-info/
 .vscode/
 data/
+/.envrc

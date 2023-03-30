@@ -135,8 +135,6 @@ def test_chat_search(logged_rocket):
     assert chat_search.get("success")
 
 
-# ToDo: Remove skip once we have a key to test with.
-@pytest.mark.skip(reason="This endpoint is now part of the enterprise version.")
 def test_chat_get_message_read_receipts(logged_rocket):
     message_id = (
         logged_rocket.chat_post_message("hello", channel="GENERAL")

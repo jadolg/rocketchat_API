@@ -25,7 +25,7 @@ jobs:
         uses: JetBrains/qodana-action@main
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
-      
+
   test:
     runs-on: ubuntu-20.04
     strategy:
@@ -38,6 +38,8 @@ jobs:
         uses: isbang/compose-action@v1.4.1
         with:
           compose-file: docker-compose.yml
+        env:
+          ROCKETCHAT_LICENSE: ${{ secrets.ROCKETCHAT_LICENSE }}
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
