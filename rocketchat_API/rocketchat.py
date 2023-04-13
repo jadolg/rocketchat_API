@@ -1,6 +1,7 @@
 # -*-coding:utf-8-*-
 
 from rocketchat_API.APISections.assets import RocketChatAssets
+from rocketchat_API.APISections.banners import RocketChatBanners
 from rocketchat_API.APISections.channels import RocketChatChannels
 from rocketchat_API.APISections.chat import RocketChatChat
 from rocketchat_API.APISections.groups import RocketChatGroups
@@ -39,5 +40,6 @@ class RocketChat(
     RocketChatLivechat,
     RocketChatTeams,
     RocketChatRoles,
+    RocketChatBanners,
 ):
     pass
