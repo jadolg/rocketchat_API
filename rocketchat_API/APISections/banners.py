@@ -1,7 +1,3 @@
-import mimetypes
-
-from packaging import version
-
 from rocketchat_API.APISections.base import RocketChatBase
 
 
