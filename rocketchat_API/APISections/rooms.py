@@ -6,6 +6,10 @@ from rocketchat_API.APISections.base import RocketChatBase
 
 
 class RocketChatRooms(RocketChatBase):
+    def rooms_leave(self, room_id):
+        """Leave room"""
+        return self.call_api_post("rooms.leave", roomId=room_id)
+        
     def rooms_upload(self, rid, file, **kwargs):
         """Post a message with attached file to a dedicated room."""
         files = {
