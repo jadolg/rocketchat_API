@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.0
         with:
           fetch-depth: 0
       - name: Install black
@@ -29,7 +29,7 @@ jobs:
         python-version: [ '3.8', '3.9', '3.10', '3.11' ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.0
       - name: Start rocket.chat server
         uses: isbang/compose-action@v1.5.1
         with:
@@ -61,7 +61,7 @@ jobs:
     needs: test
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.0
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
