@@ -173,3 +173,40 @@ def test_chat_follow_message(logged_rocket):
         mid=message_id
     ).json()
     assert chat_get_message_follow_message.get("success")
+
+
+def test_chat_get_thread_messages(logged_rocket):
+    chat_post_message1 = logged_rocket.chat_post_message(
+        "text1",
+        channel="GENERAL",
+    ).json()
+    msg1_id = chat_post_message1.get("message").get("_id")
+
+    chat_post_message2 = logged_rocket.chat_post_message(
+        "text2",
+        channel="GENERAL",
+        tmid=msg1_id,
+    ).json()
+
+    chat_post_message3 = logged_rocket.chat_post_message(
+        "text3",
+        channel="GENERAL",
+        tmid=msg1_id,
+        tshow="False",
+    ).json()
+
+    chat_get_thread_messages = logged_rocket.chat_get_thread_messages(
+        thread_msg_id=msg1_id,
+    ).json()
+
+    # check that correct number of messages is returned
+    assert chat_get_thread_messages.get("count") == 2
+
+    # check that text of messages are correct and messages are returned in order
+    assert chat_get_thread_messages.get("messages")[0].get(
+        "msg"
+    ) == chat_post_message2.get("message").get("msg")
+    assert chat_get_thread_messages.get("messages")[1].get(
+        "msg"
+    ) == chat_post_message3.get("message").get("msg")
+    assert chat_get_thread_messages.get("success")

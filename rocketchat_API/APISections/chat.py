@@ -89,3 +89,11 @@ class RocketChatChat(RocketChatBase):
     def chat_follow_message(self, mid, **kwargs):
         """Follows a chat message to the message's channel."""
         return self.call_api_post("chat.followMessage", mid=mid, kwargs=kwargs)
+
+    def chat_get_thread_messages(self, thread_msg_id, **kwargs):
+        """Get thread messages."""
+        return self.call_api_get(
+            "chat.getThreadMessages",
+            tmid=thread_msg_id,
+            kwargs=kwargs,
+        )
