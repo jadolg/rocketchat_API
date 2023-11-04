@@ -382,7 +382,6 @@ def test_channels_online(logged_rocket):
     assert len(channels_online.get("online")) >= 1
 
 
-@pytest.mark.skip(reason="Broken in 6.3")
 def test_channels_set_default(logged_rocket):
     channels_set_default = logged_rocket.channels_set_default(
         room_id="GENERAL", default=False
