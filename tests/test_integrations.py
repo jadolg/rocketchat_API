@@ -21,7 +21,6 @@ def integrations_create_webhook_incoming(logged_rocket):
     ).json()
 
 
-@pytest.mark.skip(reason="Broken in 6.3")
 def test_integrations_create(integrations_create_webhook_incoming, logged_rocket):
     integration_webhook_incoming = integrations_create_webhook_incoming
     assert integration_webhook_incoming.get("success")
@@ -39,13 +38,11 @@ def test_integrations_create(integrations_create_webhook_incoming, logged_rocket
     assert integration_webhook_outgoing.get("success")
 
 
-@pytest.mark.skip(reason="Broken in 6.3")
 def test_integrations_get(integrations_create_webhook_incoming, logged_rocket):
     integration_id = integrations_create_webhook_incoming.get("integration").get("_id")
     assert logged_rocket.integrations_get(integration_id).json().get("success")
 
 
-@pytest.mark.skip(reason="Broken in 6.3")
 def test_integrations_history(integrations_create_webhook_incoming, logged_rocket):
     integration_id = integrations_create_webhook_incoming.get("integration").get("_id")
     assert logged_rocket.integrations_history(integration_id).json().get("success")
@@ -55,7 +52,6 @@ def test_integrations_list(logged_rocket):
     assert logged_rocket.integrations_list().json().get("success")
 
 
-@pytest.mark.skip(reason="Broken in 6.3")
 def test_integrations_remove(integrations_create_webhook_incoming, logged_rocket):
     integration = integrations_create_webhook_incoming.get("integration")
     assert (
@@ -67,7 +63,6 @@ def test_integrations_remove(integrations_create_webhook_incoming, logged_rocket
     )
 
 
-@pytest.mark.skip(reason="Broken in 6.3")
 def test_integrations_update(integrations_create_webhook_incoming, logged_rocket):
     integration_id = integrations_create_webhook_incoming.get("integration").get("_id")
     assert (
