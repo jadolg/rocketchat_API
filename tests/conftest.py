@@ -11,8 +11,8 @@ def rocket():
 
 
 @pytest.fixture(scope="session")
-def create_user(rocket):
-    def _create_user(name="user1", password="password", email="email@domain.com"):
+def create_user(rocket, name="user1", email="email@domain.com"):
+    def _create_user(name=name, password="password", email=email):
         # create empty object, because Mock not included to python2
         user = type("test", (object,), {})()
 
@@ -41,3 +41,18 @@ def logged_rocket(user):
     _rocket = RocketChat(user.name, user.password)
 
     return _rocket
+
+
+@pytest.fixture
+def secondary_user(logged_rocket):
+    testuser = logged_rocket.users_info(username="secondary").json()
+    if not testuser.get("success"):
+        testuser = logged_rocket.users_create(
+            "secondary@domain.com", "secondary", "password", "secondary"
+        ).json()
+
+    _testuser_id = testuser.get("user").get("_id")
+
+    yield _testuser_id
+
+    logged_rocket.users_delete(_testuser_id)
