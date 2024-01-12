@@ -66,3 +66,7 @@ class RocketChatRooms(RocketChatBase):
         return self.call_api_post(
             "rooms.createDiscussion", prid=prid, t_name=t_name, kwargs=kwargs
         )
+
+    def rooms_leave(self, room_id):
+        """Causes the request sender to be removed from the room."""
+        return self.call_api_post("rooms.leave", roomId=room_id)

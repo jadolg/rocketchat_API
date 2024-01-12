@@ -1,3 +1,5 @@
+import uuid
+
 import pytest
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
@@ -90,3 +92,31 @@ def test_rooms_admin_rooms(logged_rocket):
     rooms_with_filter = logged_rocket.rooms_admin_rooms(**{"filter": "general"}).json()
     assert rooms_with_filter.get("success")
     assert rooms_with_filter.get("rooms")[0].get("_id") == "GENERAL"
+
+
+def test_rooms_leave(logged_rocket, secondary_user):
+    rooms_leave = logged_rocket.rooms_leave("GENERAL").json()
+    assert not rooms_leave.get("success")
+    assert rooms_leave.get("errorType") == "error-you-are-last-owner"
+
+    name = str(uuid.uuid1())
+    channels_create = logged_rocket.channels_create(name).json()
+    assert (
+        logged_rocket.channels_invite(
+            room_id=channels_create.get("channel").get("_id"), user_id=secondary_user
+        )
+        .json()
+        .get("success")
+    )
+
+    assert (
+        logged_rocket.channels_add_owner(
+            channels_create.get("channel").get("_id"), user_id=secondary_user
+        )
+        .json()
+        .get("success")
+    )
+    rooms_leave = logged_rocket.rooms_leave(
+        channels_create.get("channel").get("_id")
+    ).json()
+    assert rooms_leave.get("success")
