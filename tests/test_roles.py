@@ -7,7 +7,7 @@ def test_roles_list(logged_rocket):
     assert len(roles_list.get("roles")) > 0
 
 
-def test_roles_create(logged_rocket):
+def test_roles_create(logged_rocket, skip_if_no_license):
     name = str(uuid.uuid1())
     roles_create = logged_rocket.roles_create(
         name=name, scope="Subscriptions", description="a test role"

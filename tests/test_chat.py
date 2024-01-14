@@ -1,6 +1,7 @@
 import pytest
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
+from tests.conftest import skip_if_no_license
 
 
 def test_chat_post_notext_message(logged_rocket):
@@ -135,7 +136,7 @@ def test_chat_search(logged_rocket):
     assert chat_search.get("success")
 
 
-def test_chat_get_message_read_receipts(logged_rocket):
+def test_chat_get_message_read_receipts(logged_rocket, skip_if_no_license):
     message_id = (
         logged_rocket.chat_post_message("hello", channel="GENERAL")
         .json()
