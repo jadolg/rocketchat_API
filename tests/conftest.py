@@ -56,3 +56,13 @@ def secondary_user(logged_rocket):
     yield _testuser_id
 
     logged_rocket.users_delete(_testuser_id)
+
+
+@pytest.fixture
+def skip_if_no_license(logged_rocket):
+    licenses_get = logged_rocket.licenses_get().json()
+    if not licenses_get.get("success"):
+        pytest.fail("License endpoint not available")
+    if "licenses" in licenses_get and len(licenses_get.get("licenses")) > 0:
+        return
+    pytest.skip("No license available")
