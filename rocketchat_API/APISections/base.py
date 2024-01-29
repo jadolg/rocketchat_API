@@ -66,9 +66,11 @@ class RocketChatBase:
         url = self.server_url + api_path + method
         # convert to key[]=val1&key[]=val2 for args like key=[val1, val2], else key=val
         params = "&".join(
-            "&".join(i + "[]=" + j for j in args[i])
-            if isinstance(args[i], list)
-            else i + "=" + str(args[i])
+            (
+                "&".join(i + "[]=" + j for j in args[i])
+                if isinstance(args[i], list)
+                else i + "=" + str(args[i])
+            )
             for i in args
         )
         return self.req.get(
