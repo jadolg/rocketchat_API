@@ -35,7 +35,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.2
       - name: Start rocket.chat server
-        uses: isbang/compose-action@v1.5.1
+        uses: isbang/compose-action@v2.0.0
         with:
           compose-file: docker-compose.yml
         env:
