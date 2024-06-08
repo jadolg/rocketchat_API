@@ -78,4 +78,4 @@ Reporting bugs and asking for features is also contributing ;) Feel free to help
 We hang out [here](https://open.rocket.chat/channel/python_rocketchat_api) if you want to talk. 
 
 ### Supporters
-![JetBrains](https://www.jetbrains.com/company/brand/img/logo6.svg) [JetBrains](https://www.jetbrains.com/) supports this project by providing us with licenses for their fantastic products.
+![JetBrains](https://upload.wikimedia.org/wikipedia/en/thumb/0/08/JetBrains_beam_logo.svg/180px-JetBrains_beam_logo.svg.png) [JetBrains](https://www.jetbrains.com/) supports this project by providing us with licenses for their fantastic products.
