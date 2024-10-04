@@ -211,3 +211,19 @@ def test_chat_get_thread_messages(logged_rocket):
         "msg"
     ) == chat_post_message3.get("message").get("msg")
     assert chat_get_thread_messages.get("success")
+
+
+def test_chat_get_mentioned_messages(logged_rocket):
+    chat_post_message_with_mention = logged_rocket.chat_post_message(
+        "hello @user1",
+        channel="GENERAL",
+    ).json()
+    assert chat_post_message_with_mention.get("success")
+
+    chat_get_mentioned_messages = logged_rocket.chat_get_mentioned_messages(
+        room_id="GENERAL"
+    ).json()
+    assert chat_get_mentioned_messages.get("success")
+    assert "messages" in chat_get_mentioned_messages
+    assert len(chat_get_mentioned_messages.get("messages")) > 0
+    assert chat_get_mentioned_messages.get("messages")[0].get("msg") == "hello @user1"

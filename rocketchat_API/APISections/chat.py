@@ -97,3 +97,11 @@ class RocketChatChat(RocketChatBase):
             tmid=thread_msg_id,
             kwargs=kwargs,
         )
+
+    def chat_get_mentioned_messages(self, room_id, **kwargs):
+        """Get the messages in which you are mentioned (users are mentioned with the @ symbol)."""
+        return self.call_api_get(
+            "chat.getMentionedMessages",
+            roomId=room_id,
+            kwargs=kwargs,
+        )
