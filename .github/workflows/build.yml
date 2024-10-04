@@ -31,6 +31,7 @@ jobs:
     strategy:
       matrix:
         python-version: [ '3.8', '3.9', '3.10', '3.11', '3.12' ]
+        rocket-chat-version: [ '6.7', '6.8','6.9','6.10','6.11','6.12' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.0
@@ -40,6 +41,7 @@ jobs:
           compose-file: docker-compose.yml
         env:
           ROCKETCHAT_LICENSE: ${{ secrets.ROCKETCHAT_LICENSE }}
+          ROCKET_CHAT_VERSION: ${{ matrix.rocket-chat-version }}
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
