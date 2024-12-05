@@ -63,7 +63,7 @@ def secondary_user(logged_rocket):
 def skip_v7(logged_rocket):
     """Skip test if chat version is > 7.0.0"""
     version = logged_rocket.info().json().get("info").get("version")
-    if version and Version.parse(version) > Version.parse("7.0.0"):
+    if version and Version.parse(version) >= Version.parse("7.0.0"):
         pytest.skip("Endpoint not available in this version")
 
 
