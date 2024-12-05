@@ -53,7 +53,7 @@ jobs:
         run: until curl --silent http://localhost:3000/api/info/; do sleep 15; echo "waiting for Rocket.Chat server to start"; done;
         timeout-minutes: 5
       - name: Run tests
-        run: pytest tests rocketchat_API -x --cov-report xml --cov=./
+        run: pytest tests rocketchat_API --cov-report xml --cov=./
       - name: Upload code coverage
         uses: codecov/codecov-action@v5
         with:
