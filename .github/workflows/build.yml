@@ -48,7 +48,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: pip install pytest-cov requests
+        run: pip install pytest-cov requests semver
       - name: Wait for rocket.chat server to be online
         run: until curl --silent http://localhost:3000/api/info/; do sleep 15; echo "waiting for Rocket.Chat server to start"; done;
         timeout-minutes: 5
