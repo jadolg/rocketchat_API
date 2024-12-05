@@ -1,6 +1,3 @@
-from unittest import skipIf
-
-
 def test_licenses_get(logged_rocket, skip_v7):
     licenses_get = logged_rocket.licenses_get().json()
     assert licenses_get.get("success")
