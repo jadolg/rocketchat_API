@@ -1,6 +1,7 @@
 import uuid
 
 import pytest
+from semver import Version
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
 
@@ -376,10 +377,18 @@ def test_channels_counters(logged_rocket):
         logged_rocket.channels_counters()
 
 
-def test_channels_online(logged_rocket, skip_v7):
-    channels_online = logged_rocket.channels_online(query={"_id": "GENERAL"}).json()
+def test_channels_online(logged_rocket):
+    version = logged_rocket.info().json().get("info").get("version")
+    if version and Version.parse(version) >= Version.parse("7.0.0"):
+        channels_online = logged_rocket.channels_online(_id="GENERAL").json()
+    else:
+        channels_online = logged_rocket.channels_online(query={"_id": "GENERAL"}).json()
+
     assert channels_online.get("success")
     assert len(channels_online.get("online")) >= 1
+
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.channels_online()
 
 
 def test_channels_set_default(logged_rocket):
