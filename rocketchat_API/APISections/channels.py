@@ -263,7 +263,7 @@ class RocketChatChannels(RocketChatBase):
                 "The query parameter is deprecated and will be removed in version 7 of Rocket.Chat"
             )
             return self.call_api_get("channels.online", query=query)
-        elif _id:
+        if _id:
             return self.call_api_get("channels.online", _id=_id)
         else:
             raise RocketMissingParamException("_id or query required")
