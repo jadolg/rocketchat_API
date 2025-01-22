@@ -1,4 +1,5 @@
 import json
+import logging
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
 from rocketchat_API.APISections.base import RocketChatBase
@@ -253,7 +254,16 @@ class RocketChatChannels(RocketChatBase):
             )
         raise RocketMissingParamException("room_id or room_name required")
 
-    def channels_online(self, _id=None):
+    # TODO: Remove query parameter once version 6 stops being maintained
+    def channels_online(self, _id=None, query=None):
         """Lists all online users of a channel if the channel's id is provided, otherwise it gets all online users of
         all channels."""
-        return self.call_api_get("channels.online", _id=_id)
+        if query:
+            logging.warning(
+                "The query parameter is deprecated and will be removed in version 7 of Rocket.Chat"
+            )
+            return self.call_api_get("channels.online", query=query)
+        elif _id:
+            return self.call_api_get("channels.online", _id=_id)
+        else:
+            raise RocketMissingParamException("_id or query required")
