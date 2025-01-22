@@ -262,7 +262,7 @@ class RocketChatChannels(RocketChatBase):
             logging.warning(
                 "The query parameter is deprecated and will be removed in version 7 of Rocket.Chat"
             )
-            return self.call_api_get("channels.online", query=query)
+            return self.call_api_get("channels.online", query=json.dumps(query))
         if _id:
             return self.call_api_get("channels.online", _id=_id)
         else:
