@@ -9,7 +9,7 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
 
 
 class RocketChatBase:
-    API_path = "/api/v1/"
+    api_path = "/api/v1/"
 
     def __init__(
         self,
@@ -48,7 +48,7 @@ class RocketChatBase:
         return kwargs
 
     def call_api_delete(self, method):
-        url = self.server_url + self.API_path + method
+        url = self.server_url + self.api_path + method
 
         return self.req.delete(
             url,
@@ -62,7 +62,7 @@ class RocketChatBase:
     def call_api_get(self, method, api_path=None, **kwargs):
         args = self.__reduce_kwargs(kwargs)
         if not api_path:
-            api_path = self.API_path
+            api_path = self.api_path
         url = self.server_url + api_path + method
         # convert to key[]=val1&key[]=val2 for args like key=[val1, val2], else key=val
         params = "&".join(
@@ -96,7 +96,7 @@ class RocketChatBase:
             use_json = files is None
         if use_json:
             return self.req.post(
-                self.server_url + self.API_path + method,
+                self.server_url + self.api_path + method,
                 json=reduced_args,
                 files=files,
                 headers=self.headers,
@@ -106,7 +106,7 @@ class RocketChatBase:
                 timeout=self.timeout,
             )
         return self.req.post(
-            self.server_url + self.API_path + method,
+            self.server_url + self.api_path + method,
             data=reduced_args,
             files=files,
             headers=self.headers,
@@ -125,7 +125,7 @@ class RocketChatBase:
             use_json = files is None
         if use_json:
             return self.req.put(
-                self.server_url + self.API_path + method,
+                self.server_url + self.api_path + method,
                 json=reduced_args,
                 files=files,
                 headers=self.headers,
@@ -135,7 +135,7 @@ class RocketChatBase:
                 timeout=self.timeout,
             )
         return self.req.put(
-            self.server_url + self.API_path + method,
+            self.server_url + self.api_path + method,
             data=reduced_args,
             files=files,
             headers=self.headers,
@@ -157,7 +157,7 @@ class RocketChatBase:
         else:
             request_data["username"] = user
         login_request = self.req.post(
-            self.server_url + self.API_path + "login",
+            self.server_url + self.api_path + "login",
             data=request_data,
             verify=self.ssl_verify,
             proxies=self.proxies,
