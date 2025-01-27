@@ -72,8 +72,6 @@ def skip_if_no_license(logged_rocket):
     licenses_info = logged_rocket.licenses_info().json()
     if not licenses_info.get("success"):
         pytest.fail("License endpoint not available")
-    if "license" in licenses_info and licenses_info.get("license").get("license").get(
-        "information"
-    ).get("offline"):
+    if "license" in licenses_info and "license" in licenses_info.get("license"):
         return
     pytest.skip("No license available")
