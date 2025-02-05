@@ -32,7 +32,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [ '3.9', '3.10', '3.11', '3.12' ]
-        rocket-chat-version: [ '6.10.9','6.11.3','6.12.3', '6.13.1', '7.0.4', '7.1.0', '7.2.0', 'latest' ]
+        rocket-chat-version: [ '6.11.3','6.12.3', '6.13.1', '7.0.5', '7.1.1', '7.2.1', '7.3.0', 'latest' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
