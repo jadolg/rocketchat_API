@@ -1,0 +1,26 @@
+name: Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ '3.9', '3.10', '3.11', '3.12', '3.13', ]
+        rocket-chat-version: [ '6.11.3','6.12.3', '6.13.1', '7.0.5', '7.1.1', '7.2.1', '7.3.0' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      - name: Test
+        uses: ./.github/actions/test_rocketchat
+        with:
+          python-version: ${{ matrix.python-version }}
+          rocket-chat-version: ${{ matrix.rocket-chat-version }}
+          rocket-chat-license: ${{ secrets.ROCKETCHAT_LICENSE }}
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}
