@@ -24,4 +24,3 @@ jobs:
           python-version: ${{ github.event.inputs.python-version }}
           rocket-chat-version: ${{ github.event.inputs.rocket-chat-version }}
           rocket-chat-license: ${{ secrets.ROCKETCHAT_LICENSE }}
-          codecov-token: ${{ secrets.CODECOV_TOKEN }}
