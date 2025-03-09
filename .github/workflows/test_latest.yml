@@ -16,4 +16,3 @@ jobs:
           python-version: '3.13'
           rocket-chat-version: 'latest'
           rocket-chat-license: ${{ secrets.ROCKETCHAT_LICENSE }}
-          codecov-token: ${{ secrets.CODECOV_TOKEN }}

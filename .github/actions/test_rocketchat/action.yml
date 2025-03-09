@@ -13,7 +13,7 @@ inputs:
     required: true
   codecov-token:
     description: 'The token for Codecov'
-    required: true
+    required: false
 
 runs:
   using: composite
@@ -41,6 +41,7 @@ runs:
       env:
         PYTEST_ADDOPTS: "--color=yes"
     - name: Upload code coverage
+      if: ${{ inputs.codecov-token }}
       uses: codecov/codecov-action@v5
       with:
         verbose: true
