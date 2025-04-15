@@ -79,4 +79,6 @@ We hang out [here](https://open.rocket.chat/channel/python_rocketchat_api) if yo
 
 ### Supporters
 
-[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport) [JetBrains](https://www.jetbrains.com/) supports this project by providing us with licenses for their fantastic products.
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport) 
+
+[JetBrains](https://www.jetbrains.com/) supports this project by providing us with licenses for their fantastic products.
