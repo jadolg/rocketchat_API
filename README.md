@@ -1,7 +1,7 @@
 ## rocketchat_API
 Python API wrapper for [Rocket.Chat](https://developer.rocket.chat/reference/api/rest-api/)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fff725d9a0974c6597c2dd007daaa86e)](https://www.codacy.com/app/jadolg/rocketchat_API?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jadolg/rocketchat_API&amp;utm_campaign=Badge_Grade) [![Test](https://github.com/jadolg/rocketchat_API/actions/workflows/test.yml/badge.svg)](https://github.com/jadolg/rocketchat_API/actions/workflows/test.yml) [![codecov](https://codecov.io/gh/jadolg/rocketchat_API/branch/master/graph/badge.svg)](https://codecov.io/gh/jadolg/rocketchat_API) ![PyPI](https://img.shields.io/pypi/v/rocketchat_API.svg) ![](https://img.shields.io/pypi/dm/rocketchat-api.svg)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fff725d9a0974c6597c2dd007daaa86e)](https://www.codacy.com/app/jadolg/rocketchat_API?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jadolg/rocketchat_API&amp;utm_campaign=Badge_Grade) [![Test](https://github.com/jadolg/rocketchat_API/actions/workflows/test.yml/badge.svg)](https://github.com/jadolg/rocketchat_API/actions/workflows/test.yml) [![Test against latest Rocket.Chat version](https://github.com/jadolg/rocketchat_API/actions/workflows/test_latest.yml/badge.svg)](https://github.com/jadolg/rocketchat_API/actions/workflows/test_latest.yml) [![codecov](https://codecov.io/gh/jadolg/rocketchat_API/branch/master/graph/badge.svg)](https://codecov.io/gh/jadolg/rocketchat_API) ![PyPI](https://img.shields.io/pypi/v/rocketchat_API.svg) ![](https://img.shields.io/pypi/dm/rocketchat-api.svg)
 
 ### Installation
 - From pypi:
