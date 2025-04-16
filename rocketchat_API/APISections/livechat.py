@@ -16,6 +16,10 @@ class RocketChatLivechat(RocketChatBase):
             "livechat/inquiries.take", inquiryId=inquiry_id, kwargs=kwargs
         )
 
+    def livechat_get_inquiries(self, roomId, **kwargs):
+        """Get Inquiry by Room ID"""
+        return self.call_api_get("livechat/inquiries.getOne", roomId=roomId, kwargs=kwargs)
+
     def livechat_get_users(self, user_type, **kwargs):
         """Get a list of agents or managers."""
         return self.call_api_get("livechat/users/{}".format(user_type), kwargs=kwargs)
