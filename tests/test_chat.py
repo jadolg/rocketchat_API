@@ -176,6 +176,7 @@ def test_chat_follow_message(logged_rocket):
     assert chat_get_message_follow_message.get("success")
 
 
+# TODO: Rollback the room_id change if https://github.com/RocketChat/Rocket.Chat/issues/35923 works out
 def test_chat_get_thread_messages(logged_rocket):
     chat_post_message1 = logged_rocket.chat_post_message(
         "text1",
@@ -185,15 +186,14 @@ def test_chat_get_thread_messages(logged_rocket):
 
     chat_post_message2 = logged_rocket.chat_post_message(
         "text2",
-        channel="GENERAL",
+        room_id="GENERAL",
         tmid=msg1_id,
     ).json()
 
     chat_post_message3 = logged_rocket.chat_post_message(
         "text3",
-        channel="GENERAL",
+        room_id="GENERAL",
         tmid=msg1_id,
-        tshow="False",
     ).json()
 
     chat_get_thread_messages = logged_rocket.chat_get_thread_messages(

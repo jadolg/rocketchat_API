@@ -1,0 +1,26 @@
+name: Trigger test against a specific version
+
+on:
+  workflow_dispatch:
+    inputs:
+      rocket-chat-version:
+        description: 'The version of Rocket.Chat to use'
+        required: true
+        default: 'latest'
+      python-version:
+        description: 'The version of Python to use'
+        required: true
+        default: '3.13'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      - name: Test
+        uses: ./.github/actions/test_rocketchat
+        with:
+          python-version: ${{ github.event.inputs.python-version }}
+          rocket-chat-version: ${{ github.event.inputs.rocket-chat-version }}
+          rocket-chat-license: ${{ secrets.ROCKETCHAT_LICENSE }}

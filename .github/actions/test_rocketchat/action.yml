@@ -1,0 +1,55 @@
+name: Test rocket.chat server
+description: 'Run tests on the Rocket.Chat server'
+
+inputs:
+  python-version:
+    description: 'The version of Python to use'
+    required: true
+  rocket-chat-version:
+    description: 'The version of Rocket.Chat to use'
+    required: true
+  rocket-chat-license:
+    description: 'The license key for Rocket.Chat'
+    required: true
+  codecov-token:
+    description: 'The token for Codecov'
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Start rocket.chat server
+      uses: isbang/compose-action@v2.2.0
+      with:
+        compose-file: docker-compose.yml
+      env:
+        ROCKETCHAT_LICENSE: ${{ inputs.rocket-chat-license }}
+        ROCKET_CHAT_VERSION: ${{ inputs.rocket-chat-version }}
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install dependencies
+      shell: bash
+      run: pip install pytest-cov requests semver
+    - name: Wait for rocket.chat server to be online
+      shell: bash
+      run: until curl --silent http://localhost:3000/api/info/; do sleep 15; echo "waiting for Rocket.Chat server to start"; done;
+    - name: Run tests
+      shell: bash
+      run: pytest tests rocketchat_API --cov-report xml --cov=./
+      env:
+        PYTEST_ADDOPTS: "--color=yes"
+    - name: Upload code coverage
+      if: ${{ inputs.codecov-token }}
+      uses: codecov/codecov-action@v5
+      with:
+        verbose: true
+        files: coverage.xml
+        fail_ci_if_error: true
+      env:
+        CODECOV_TOKEN: ${{ inputs.codecov-token }}
+
+
+
+
