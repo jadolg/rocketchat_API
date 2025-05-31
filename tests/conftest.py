@@ -1,5 +1,4 @@
 import pytest
-from semver import Version
 
 from rocketchat_API.rocketchat import RocketChat
 
@@ -57,14 +56,6 @@ def secondary_user(logged_rocket):
     yield _testuser_id
 
     logged_rocket.users_delete(_testuser_id)
-
-
-@pytest.fixture
-def skip_v7(logged_rocket):
-    """Skip test if chat version is > 7.0.0"""
-    version = logged_rocket.info().json().get("info").get("version")
-    if version and Version.parse(version) >= Version.parse("7.0.0"):
-        pytest.skip("Endpoint not available in this version")
 
 
 @pytest.fixture
