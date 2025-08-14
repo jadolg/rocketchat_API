@@ -106,6 +106,9 @@ def test_im_messages(logged_rocket, recipient_user):
     room_id = im_create.get("room").get("_id")
     im_message = logged_rocket.im_messages(room_id=room_id).json()
     assert im_message.get("success")
+    im_message = logged_rocket.im_messages(room_id=room_id, pinned=True).json()
+    assert im_message.get("success")
+    assert im_message.get("messages") == []
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.im_messages()

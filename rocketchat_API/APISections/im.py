@@ -37,13 +37,13 @@ class RocketChatIM(RocketChatBase):
         """Retrieves members of a direct message."""
         return self.call_api_get("im.members", roomId=room_id)
 
-    def im_messages(self, room_id=None, username=None):
+    def im_messages(self, room_id=None, username=None, **kwargs):
         """Retrieves direct messages from the server by username"""
         if room_id:
-            return self.call_api_get("im.messages", roomId=room_id)
+            return self.call_api_get("im.messages", roomId=room_id, kwargs=kwargs)
 
         if username:
-            return self.call_api_get("im.messages", username=username)
+            return self.call_api_get("im.messages", username=username, kwargs=kwargs)
 
         raise RocketMissingParamException("roomId or username required")
 
