@@ -83,6 +83,12 @@ class RocketChatBase:
         )
 
     def call_api_post(self, method, files=None, use_json=None, **kwargs):
+        if "text" in kwargs:
+            kwargs["text"] = kwargs["text"].replace('\\n', '\n')
+            kwargs["text"] = kwargs["text"].replace('\\r', '\r')
+            kwargs["text"] = kwargs["text"].replace('\\t', '\t')
+            kwargs["text"] = kwargs["text"].replace('\\b', '\b')
+            kwargs["text"] = kwargs["text"].replace('\\f', '\f')
         reduced_args = self.__reduce_kwargs(kwargs)
         # Since pass is a reserved word in Python it has to be injected on the request dict
         # Some methods use pass (users.register) and others password (users.create)
