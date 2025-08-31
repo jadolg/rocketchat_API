@@ -1,0 +1,43 @@
+[build-system]
+requires = [
+    "setuptools",
+    "setuptools_scm",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rocketchat_API"
+dynamic = ["version"]
+description = "Python API wrapper for Rocket.Chat"
+
+dependencies = [
+    "requests",
+    "packaging"
+]
+
+keywords = [
+    "rocketchat",
+    "api",
+    "wrapper",
+    "rest",
+]
+
+authors = [
+    { name = "Jorge Alberto Díaz Orozco (Akiel)", email = "diazorozcoj@gmail.com" },
+]
+
+maintainers = [
+    { name = "Jorge Alberto Díaz Orozco (Akiel)", email = "diazorozcoj@gmail.com" },
+]
+
+readme = "README.md"
+license = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/jadolg/rocketchat_API"
+Issues = "https://github.com/jadolg/rocketchat_API/issues"
+
+[tool.setuptools_scm]
+
+[tool.setuptools]
+include-package-data = false
