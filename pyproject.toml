@@ -41,3 +41,5 @@ Issues = "https://github.com/jadolg/rocketchat_API/issues"
 
 [tool.setuptools]
 include-package-data = false
+
+[tool.black]
