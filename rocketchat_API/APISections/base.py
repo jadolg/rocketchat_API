@@ -164,7 +164,7 @@ class RocketChatBase:
             request_data["username"] = user
         login_request = self.req.post(
             self.server_url + self.api_path + "login",
-            data=request_data,
+            json=request_data,
             verify=self.ssl_verify,
             proxies=self.proxies,
             cert=self.cert,

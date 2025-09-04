@@ -1,7 +1,7 @@
 ## rocketchat_API
 Python API wrapper for [Rocket.Chat](https://developer.rocket.chat/reference/api/rest-api/)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fff725d9a0974c6597c2dd007daaa86e)](https://www.codacy.com/app/jadolg/rocketchat_API?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jadolg/rocketchat_API&amp;utm_campaign=Badge_Grade) [![Test](https://github.com/jadolg/rocketchat_API/actions/workflows/build.yml/badge.svg)](https://github.com/jadolg/rocketchat_API/actions/workflows/build.yml) [![codecov](https://codecov.io/gh/jadolg/rocketchat_API/branch/master/graph/badge.svg)](https://codecov.io/gh/jadolg/rocketchat_API) ![PyPI](https://img.shields.io/pypi/v/rocketchat_API.svg) ![](https://img.shields.io/pypi/dm/rocketchat-api.svg)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/fff725d9a0974c6597c2dd007daaa86e)](https://www.codacy.com/app/jadolg/rocketchat_API?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jadolg/rocketchat_API&amp;utm_campaign=Badge_Grade) [![Test](https://github.com/jadolg/rocketchat_API/actions/workflows/test.yml/badge.svg)](https://github.com/jadolg/rocketchat_API/actions/workflows/test.yml) [![Test against latest Rocket.Chat version](https://github.com/jadolg/rocketchat_API/actions/workflows/test_latest.yml/badge.svg)](https://github.com/jadolg/rocketchat_API/actions/workflows/test_latest.yml) [![codecov](https://codecov.io/gh/jadolg/rocketchat_API/branch/master/graph/badge.svg)](https://codecov.io/gh/jadolg/rocketchat_API) ![PyPI](https://img.shields.io/pypi/v/rocketchat_API.svg) ![](https://img.shields.io/pypi/dm/rocketchat-api.svg)
 
 ### Installation
 - From pypi:
@@ -78,4 +78,7 @@ Reporting bugs and asking for features is also contributing ;) Feel free to help
 We hang out [here](https://open.rocket.chat/channel/python_rocketchat_api) if you want to talk.
 
 ### Supporters
-![JetBrains](https://upload.wikimedia.org/wikipedia/en/thumb/0/08/JetBrains_beam_logo.svg/180px-JetBrains_beam_logo.svg.png) [JetBrains](https://www.jetbrains.com/) supports this project by providing us with licenses for their fantastic products.
+
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport) 
+
+[JetBrains](https://www.jetbrains.com/) supports this project by providing us with licenses for their fantastic products.
