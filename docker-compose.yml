@@ -20,7 +20,7 @@ services:
       - "3000:3000"
 
   mongo:
-    image: docker.io/bitnami/mongodb:6.0
+    image: docker.io/bitnamilegacy/mongodb:6.0
     restart: always
     environment:
       MONGODB_REPLICA_SET_MODE: primary
