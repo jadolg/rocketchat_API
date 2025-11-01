@@ -10,7 +10,7 @@ on:
       python-version:
         description: 'The version of Python to use'
         required: true
-        default: '3.13'
+        default: '3.14'
 
 jobs:
   test:

@@ -4,6 +4,7 @@ description: 'Run tests on the Rocket.Chat server'
 inputs:
   python-version:
     description: 'The version of Python to use'
+    default: '3.14'
     required: true
   rocket-chat-version:
     description: 'The version of Rocket.Chat to use'
@@ -26,7 +27,7 @@ runs:
         ROCKETCHAT_LICENSE: ${{ inputs.rocket-chat-license }}
         ROCKET_CHAT_VERSION: ${{ inputs.rocket-chat-version }}
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ inputs.python-version }}
     - name: Install dependencies
