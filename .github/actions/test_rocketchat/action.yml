@@ -32,7 +32,7 @@ runs:
         python-version: ${{ inputs.python-version }}
     - name: Install dependencies
       shell: bash
-      run: pip install pytest-cov requests semver
+      run: pip install .[test]
     - name: Wait for rocket.chat server to be online
       shell: bash
       run: until curl --silent http://localhost:3000/api/info/; do sleep 15; echo "waiting for Rocket.Chat server to start"; done;
@@ -50,7 +50,3 @@ runs:
         fail_ci_if_error: true
       env:
         CODECOV_TOKEN: ${{ inputs.codecov-token }}
-
-
-
-
