@@ -3,7 +3,7 @@ services:
     image: rocketchat/rocket.chat:${ROCKET_CHAT_VERSION:-latest}
     restart: unless-stopped
     volumes:
-      - ./uploads:/app/uploads
+      - uploads:/app/uploads
     environment:
       - PORT=3000
       - ROOT_URL=http://localhost:3000
@@ -41,3 +41,6 @@ services:
       MONGODB_ADVERTISED_HOSTNAME: mongo
       MONGODB_ENABLE_JOURNAL: true
       ALLOW_EMPTY_PASSWORD: yes
+
+volumes:
+  uploads:

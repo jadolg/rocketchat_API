@@ -12,7 +12,7 @@ description = "Python API wrapper for Rocket.Chat"
 
 dependencies = [
     "requests",
-    "packaging"
+    "packaging",
 ]
 
 keywords = [
@@ -43,3 +43,12 @@ Issues = "https://github.com/jadolg/rocketchat_API/issues"
 include-package-data = false
 
 [tool.black]
+
+[project.optional-dependencies]
+test = [
+    "black",
+    "pytest",
+    "pytest-cov",
+    "requests",
+    "semver",
+]
