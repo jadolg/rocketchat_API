@@ -1,8 +1,22 @@
+import warnings
+
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
 from rocketchat_API.APISections.base import RocketChatBase
 
 
-class RocketChatIM(RocketChatBase):
+class DeprecatedClassMixin:
+    def __getattribute__(self, name):
+        attr = super().__getattribute__(name)
+        if callable(attr) and not name.startswith("_"):
+            warnings.warn(
+                "The 'im' API section is deprecated. Please use the 'dm' API section instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+        return attr
+
+
+class RocketChatIM(DeprecatedClassMixin, RocketChatBase):
     def im_list(self, **kwargs):
         """List the private im chats for logged user"""
         return self.call_api_get("im.list", kwargs=kwargs)
