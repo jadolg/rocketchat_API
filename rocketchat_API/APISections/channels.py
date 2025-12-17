@@ -2,7 +2,7 @@ import json
 import logging
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated_itr
 
 
 class RocketChatChannels(RocketChatBase):
@@ -10,9 +10,19 @@ class RocketChatChannels(RocketChatBase):
         """Retrieves all of the channels from the server."""
         return self.call_api_get("channels.list", kwargs=kwargs)
 
+    @paginated_itr('channels')
+    def channels_list_itr(self, **kwargs):
+        """Retrieves all of the channels from the server as an iterator with automatic pagination."""
+        return self.channels_list(**kwargs)
+
     def channels_list_joined(self, **kwargs):
         """Lists all of the channels the calling user has joined"""
         return self.call_api_get("channels.list.joined", kwargs=kwargs)
+
+    @paginated_itr('channels')
+    def channels_list_joined_itr(self, **kwargs):
+        """Lists all of the channels the calling user has joined as an iterator with automatic pagination."""
+        return self.channels_list_joined(**kwargs)
 
     def channels_info(self, room_id=None, channel=None, **kwargs):
         """Gets a channel's information."""

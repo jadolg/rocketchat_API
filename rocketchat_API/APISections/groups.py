@@ -1,5 +1,5 @@
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated_itr
 
 
 class RocketChatGroups(RocketChatBase):
@@ -9,6 +9,15 @@ class RocketChatGroups(RocketChatBase):
         The calling user must have the 'view-room-administration' right
         """
         return self.call_api_get("groups.listAll", kwargs=kwargs)
+
+    @paginated_itr('groups')
+    def groups_list_all_itr(self, **kwargs):
+        """
+        List all the private groups on the server.
+        The calling user must have the 'view-room-administration' right
+        Returns an iterator that automatically handles pagination.
+        """
+        return self.groups_list_all(**kwargs) 
 
     def groups_list(self, **kwargs):
         """List the private groups the caller is part of."""

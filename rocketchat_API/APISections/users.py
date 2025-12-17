@@ -2,7 +2,7 @@ import mimetypes
 import os
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated_itr
 
 
 class RocketChatUsers(RocketChatBase):
@@ -21,6 +21,11 @@ class RocketChatUsers(RocketChatBase):
     def users_list(self, **kwargs):
         """All of the users and their information, limited to permissions."""
         return self.call_api_get("users.list", kwargs=kwargs)
+
+    @paginated_itr('users')
+    def users_list_itr(self, **kwargs):
+        """All of the users and their information as an iterator with automatic pagination."""
+        return self.users_list(**kwargs)
 
     def users_get_presence(self, user_id=None, username=None, **kwargs):
         """Gets the online presence of the a user."""
