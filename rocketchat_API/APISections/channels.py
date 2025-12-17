@@ -10,7 +10,7 @@ class RocketChatChannels(RocketChatBase):
         """Retrieves all of the channels from the server."""
         return self.call_api_get("channels.list", kwargs=kwargs)
 
-    @paginated_itr('channels')
+    @paginated_itr("channels")
     def channels_list_itr(self, **kwargs):
         """Retrieves all of the channels from the server as an iterator with automatic pagination."""
         return self.channels_list(**kwargs)
@@ -19,7 +19,7 @@ class RocketChatChannels(RocketChatBase):
         """Lists all of the channels the calling user has joined"""
         return self.call_api_get("channels.list.joined", kwargs=kwargs)
 
-    @paginated_itr('channels')
+    @paginated_itr("channels")
     def channels_list_joined_itr(self, **kwargs):
         """Lists all of the channels the calling user has joined as an iterator with automatic pagination."""
         return self.channels_list_joined(**kwargs)

@@ -22,7 +22,7 @@ class RocketChatUsers(RocketChatBase):
         """All of the users and their information, limited to permissions."""
         return self.call_api_get("users.list", kwargs=kwargs)
 
-    @paginated_itr('users')
+    @paginated_itr("users")
     def users_list_itr(self, **kwargs):
         """All of the users and their information as an iterator with automatic pagination."""
         return self.users_list(**kwargs)

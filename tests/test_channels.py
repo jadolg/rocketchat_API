@@ -42,14 +42,14 @@ def test_channels_list_joined(logged_rocket):
 def test_channels_list_itr(logged_rocket):
     iterated_channels = list(logged_rocket.channels_list_itr())
     assert len(iterated_channels) > 0, "Should have at least one channel"
-    
+
     for channel in iterated_channels:
         assert "_id" in channel
         assert "name" in channel
-    
+
     iterated_channels_custom = list(logged_rocket.channels_list_itr(count=1))
     assert len(iterated_channels_custom) > 0
-    
+
     first_channel = None
     for channel in logged_rocket.channels_list_itr():
         first_channel = channel
@@ -61,7 +61,7 @@ def test_channels_list_itr(logged_rocket):
 def test_channels_list_joined_itr(logged_rocket):
     iterated_channels = list(logged_rocket.channels_list_joined_itr())
     assert len(iterated_channels) > 0, "Should have at least one joined channel"
-    
+
     for channel in iterated_channels:
         assert "_id" in channel
         assert "name" in channel

@@ -12,47 +12,50 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
 def paginated_itr(data_key):
     """
     Decorator that converts a paginated API method into an iterator.
-    
+
     Args:
         data_key: The key in the API response that contains the list of items
                   (e.g., 'groups', 'channels', 'users')
-    
+
     Returns:
         A decorator that wraps the original method to yield items one by one,
         automatically handling pagination with offset and count parameters.
-    
+
     Example:
         @paginated_itr('groups')
         def groups_list_all_itr(self, **kwargs):
             return self.groups_list_all(**kwargs)
     """
+
     def decorator(func):
         @wraps(func)
         def wrapper(self, **kwargs):
             offset = kwargs.pop("offset", 0)
             count = kwargs.pop("count", 50)
-            
+
             while True:
                 # Call the original function with pagination parameters
                 response = func(self, offset=offset, count=count, **kwargs)
                 data = response.json()
-                
+
                 if not data.get("success"):
                     break
-                
+
                 items = data.get(data_key, [])
                 if not items:
                     break
-                
+
                 for item in items:
                     yield item
-                
+
                 # If we got fewer items than requested, we've reached the end
                 if len(items) < count:
                     break
-                
+
                 offset += count
+
         return wrapper
+
     return decorator
 
 

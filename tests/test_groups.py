@@ -43,14 +43,14 @@ def test_groups_list_all(logged_rocket):
 def test_groups_list_all_itr(logged_rocket):
     iterated_groups = list(logged_rocket.groups_list_all_itr())
     assert len(iterated_groups) > 0, "Should have at least one group"
-    
+
     for group in iterated_groups:
         assert "_id" in group
         assert "name" in group
-    
+
     iterated_groups_custom = list(logged_rocket.groups_list_all_itr(count=1))
     assert len(iterated_groups_custom) > 0
-    
+
     first_group = None
     for group in logged_rocket.groups_list_all_itr():
         first_group = group
