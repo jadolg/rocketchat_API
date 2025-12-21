@@ -41,11 +41,7 @@ def paginated_itr(data_key):
 
             while True:
                 # Call the original function with pagination parameters
-                response = func(self, offset=offset, count=count, **kwargs)
-                data = response.json()
-
-                if not data.get("success"):
-                    break
+                data = func(self, offset=offset, count=count, **kwargs)
 
                 items = data.get(data_key, [])
                 if not items:
