@@ -46,7 +46,7 @@ class RocketChatBase:
         self.ssl_verify = ssl_verify
         self.cert = client_certs
         self.timeout = timeout
-        self.req = session or requests
+        self.session = session or requests.Session()
         if user and password:
             self.login(user, password)  # skipcq: PTC-W1006
         if auth_token and user_id:
@@ -66,7 +66,7 @@ class RocketChatBase:
         url = self.server_url + self.api_path + method
 
         return json_or_error(
-            self.req.delete(
+            self.session.delete(
                 url,
                 headers=self.headers,
                 verify=self.ssl_verify,
@@ -92,7 +92,7 @@ class RocketChatBase:
         )
 
         return json_or_error(
-            self.req.get(
+            self.session.get(
                 "%s?%s" % (url, params),
                 headers=self.headers,
                 verify=self.ssl_verify,
@@ -116,7 +116,7 @@ class RocketChatBase:
             use_json = files is None
         if use_json:
             return json_or_error(
-                self.req.post(
+                self.session.post(
                     self.server_url + self.api_path + method,
                     json=reduced_args,
                     files=files,
@@ -129,7 +129,7 @@ class RocketChatBase:
             )
 
         return json_or_error(
-            self.req.post(
+            self.session.post(
                 self.server_url + self.api_path + method,
                 data=reduced_args,
                 files=files,
@@ -150,7 +150,7 @@ class RocketChatBase:
             use_json = files is None
         if use_json:
             return json_or_error(
-                self.req.put(
+                self.session.put(
                     self.server_url + self.api_path + method,
                     json=reduced_args,
                     files=files,
@@ -163,7 +163,7 @@ class RocketChatBase:
             )
 
         return json_or_error(
-            self.req.put(
+            self.session.put(
                 self.server_url + self.api_path + method,
                 data=reduced_args,
                 files=files,
@@ -186,7 +186,7 @@ class RocketChatBase:
             request_data["user"] = user
         else:
             request_data["username"] = user
-        login_request = self.req.post(
+        login_request = self.session.post(
             self.server_url + self.api_path + "login",
             json=request_data,
             verify=self.ssl_verify,
