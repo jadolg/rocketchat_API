@@ -2,8 +2,6 @@ services:
   rocketchat:
     image: rocketchat/rocket.chat:${ROCKET_CHAT_VERSION:-latest}
     restart: unless-stopped
-    volumes:
-      - uploads:/app/uploads
     environment:
       - PORT=3000
       - ROOT_URL=http://localhost:3000

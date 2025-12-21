@@ -1,6 +1,9 @@
 import pytest
 
-from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
+from rocketchat_API.APIExceptions.RocketExceptions import (
+    RocketMissingParamException,
+    RocketBadStatusCodeException,
+)
 
 
 @pytest.fixture(scope="module")
@@ -25,89 +28,78 @@ def recipient_user2(create_user):
 
 
 def test_dm_create_multiple(logged_rocket, recipient_user3, recipient_user2):
-    dm_create = logged_rocket.dm_create_multiple(
-        [recipient_user3, recipient_user2]
-    ).json()
-    assert dm_create.get("success")
+    dm_create = logged_rocket.dm_create_multiple([recipient_user3, recipient_user2])
     room_id = dm_create.get("room").get("_id")
-    dm_send = logged_rocket.chat_post_message(
-        room_id=room_id, text="Das ist eine Testnachricht"
-    ).json()
-    assert dm_send.get("success")
+    logged_rocket.chat_post_message(room_id=room_id, text="Das ist eine Testnachricht")
 
 
 def test_dm_create(logged_rocket, recipient_user):
-    dm_create = logged_rocket.dm_create(recipient_user).json()
-    assert dm_create.get("success")
+    logged_rocket.dm_create(recipient_user)
 
 
 def test_dm_send(logged_rocket, recipient_user):
-    dm_create = logged_rocket.dm_create(recipient_user).json()
+    dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    dm_send = logged_rocket.chat_post_message(room_id=room_id, text="test").json()
-    assert dm_send.get("success")
+    logged_rocket.chat_post_message(room_id=room_id, text="test")
 
 
 def test_dm_send_no_text(logged_rocket, recipient_user):
-    dm_create = logged_rocket.dm_create(recipient_user).json()
+    dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    dm_send = logged_rocket.chat_post_message(room_id=room_id, text=None).json()
-    assert dm_send.get("success")
+    logged_rocket.chat_post_message(room_id=room_id, text=None)
 
 
 def test_dm_list(logged_rocket, recipient_user):
     logged_rocket.dm_create(recipient_user)
-    dm_list = logged_rocket.dm_list().json()
-    assert dm_list.get("success")
+    logged_rocket.dm_list()
 
 
 def test_dm_close_open(logged_rocket, recipient_user):
-    dm_create = logged_rocket.dm_create(recipient_user).json()
+    dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    dm_close = logged_rocket.dm_close(room_id).json()
-    assert dm_close.get("success")
-    dm_open = logged_rocket.dm_open(room_id).json()
-    assert dm_open.get("success")
+    logged_rocket.dm_close(room_id)
+    logged_rocket.dm_open(room_id)
 
 
 def test_dm_set_topic(logged_rocket, recipient_user):
     topic = "this is my new topic"
-    dm_create = logged_rocket.dm_create(recipient_user).json()
+    dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    dm_set_topic = logged_rocket.dm_set_topic(room_id, topic).json()
-    assert dm_set_topic.get("success")
+    dm_set_topic = logged_rocket.dm_set_topic(room_id, topic)
     assert dm_set_topic.get("topic") == topic, "Topic set does not match topic returned"
 
 
 def test_dm_list_everyone(logged_rocket):
-    dm_list_everyone = logged_rocket.dm_list_everyone().json()
-    assert dm_list_everyone.get("success")
+    dm_list_everyone = logged_rocket.dm_list_everyone()
+    assert "ims" in dm_list_everyone
+    assert isinstance(dm_list_everyone.get("ims"), list)
 
 
 def test_dm_history(logged_rocket, recipient_user):
-    dm_create = logged_rocket.dm_create(recipient_user).json()
+    dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    dm_history = logged_rocket.dm_history(room_id).json()
-    assert dm_history.get("success")
+    dm_history = logged_rocket.dm_history(room_id)
+    assert "messages" in dm_history
+    assert isinstance(dm_history.get("messages"), list)
 
 
 def test_dm_members(logged_rocket, recipient_user):
-    dm_create = logged_rocket.dm_create(recipient_user).json()
+    dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    dm_members = logged_rocket.dm_members(room_id=room_id).json()
-    assert dm_members.get("success")
+    dm_members = logged_rocket.dm_members(room_id=room_id)
     assert dm_members.get("members")[0].get("name") == "user1"
 
 
 def test_dm_messages(logged_rocket, recipient_user):
-    dm_message = logged_rocket.dm_messages(username=recipient_user).json()
-    assert dm_message.get("success")
-    dm_create = logged_rocket.dm_create(recipient_user).json()
+    dm_message = logged_rocket.dm_messages(username=recipient_user)
+    assert "messages" in dm_message
+    assert isinstance(dm_message.get("messages"), list)
+    dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    dm_message = logged_rocket.dm_messages(room_id=room_id).json()
-    assert dm_message.get("success")
-    dm_message = logged_rocket.dm_messages(room_id=room_id, pinned=True).json()
-    assert dm_message.get("success")
+    dm_message = logged_rocket.dm_messages(room_id=room_id)
+    assert "messages" in dm_message
+    assert isinstance(dm_message.get("messages"), list)
+    dm_message = logged_rocket.dm_messages(room_id=room_id, pinned=True)
     assert dm_message.get("messages") == []
 
     with pytest.raises(RocketMissingParamException):
@@ -116,37 +108,41 @@ def test_dm_messages(logged_rocket, recipient_user):
 
 def test_dm_messages_others(logged_rocket, recipient_user):
     # ToDo: Try changing the access configuration so endpoint can be successfully tested
-    dm_create = logged_rocket.dm_create(recipient_user).json()
+    dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    dm_messages_others = logged_rocket.dm_messages_others(room_id).json()
-    assert not dm_messages_others.get("success")
+    with pytest.raises(RocketBadStatusCodeException):
+        logged_rocket.dm_messages_others(room_id)
 
 
 def test_dm_files(logged_rocket, recipient_user):
-    dm_create = logged_rocket.dm_create(recipient_user).json()
-    assert dm_create.get("success")
+    dm_create = logged_rocket.dm_create(recipient_user)
 
-    dm_files = logged_rocket.dm_files(room_id=dm_create.get("room").get("_id")).json()
-    assert dm_files.get("success")
+    dm_files = logged_rocket.dm_files(room_id=dm_create.get("room").get("_id"))
+    assert "files" in dm_files
+    assert isinstance(dm_files.get("files"), list)
 
-    dm_files = logged_rocket.dm_files(user_name=recipient_user).json()
-    assert dm_files.get("success")
+    dm_files = logged_rocket.dm_files(user_name=recipient_user)
+    assert "files" in dm_files
+    assert isinstance(dm_files.get("files"), list)
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.dm_files()
 
 
 def test_dm_counters(logged_rocket, recipient_user):
-    dm_create = logged_rocket.dm_create(recipient_user).json()
-    assert dm_create.get("success")
+    dm_create = logged_rocket.dm_create(recipient_user)
 
-    dm_counters = logged_rocket.dm_counters(
-        room_id=dm_create.get("room").get("_id")
-    ).json()
-    assert dm_counters.get("success")
+    dm_counters = logged_rocket.dm_counters(room_id=dm_create.get("room").get("_id"))
+    assert all(
+        key in dm_counters
+        for key in ["joined", "members", "unreads", "msgs", "userMentions"]
+    )
 
     dm_counters = logged_rocket.dm_counters(
         room_id=dm_create.get("room").get("_id"),
-        user_name=logged_rocket.me().json().get("_id"),
-    ).json()
-    assert dm_counters.get("success")
+        user_name=logged_rocket.me().get("_id"),
+    )
+    assert all(
+        key in dm_counters
+        for key in ["joined", "members", "unreads", "msgs", "userMentions"]
+    )
