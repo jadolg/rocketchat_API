@@ -9,14 +9,6 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
 )
 
 
-@pytest.fixture
-def delete_user2(logged_rocket):
-    user2_exists = logged_rocket.users_info(username="user2")
-    if user2_exists:
-        user_id = logged_rocket.users_info(username="user2").get("user").get("_id")
-        logged_rocket.users_delete(user_id)
-
-
 def test_login(logged_rocket, user):
     login = logged_rocket.login(user.name, user.password)
 
