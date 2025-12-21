@@ -179,8 +179,7 @@ def test_users_list(logged_rocket):
 
 
 def test_users_list_itr(logged_rocket):
-    users_list = logged_rocket.users_list().json()
-    assert users_list.get("success")
+    users_list = logged_rocket.users_list()
     expected_users = users_list.get("users", [])
 
     iterated_users = list(logged_rocket.users_list_itr())
