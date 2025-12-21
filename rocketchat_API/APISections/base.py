@@ -15,7 +15,6 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
 )
 
 
-
 def paginated_itr(data_key):
     """
     Decorator that converts a paginated API method into an iterator.
@@ -76,7 +75,6 @@ def json_or_error(r: requests.Response) -> Any:
         return r.text
 
     return result
-
 
 
 class RocketChatBase:
