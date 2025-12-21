@@ -66,8 +66,7 @@ class RocketChatUsers(RocketChatBase):
             return self.call_api_get(
                 "users.getAvatar", username=username, kwargs=kwargs
             )
-        else:
-            raise RocketMissingParamException("userID or username required")
+        raise RocketMissingParamException("userID or username required")
 
     def users_set_avatar(self, avatar_url, **kwargs):
         """Set a user's avatar"""
