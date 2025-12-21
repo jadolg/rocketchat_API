@@ -62,7 +62,7 @@ class RocketChatUsers(RocketChatBase):
         """Gets the URL for a user's avatar."""
         if user_id:
             return self.call_api_get("users.getAvatar", userId=user_id, kwargs=kwargs)
-        elif username:
+        if username:
             return self.call_api_get(
                 "users.getAvatar", username=username, kwargs=kwargs
             )
