@@ -1,8 +1,3 @@
-import time
-
-import pytest
-
-
 def test_settings(logged_rocket):
     settings = logged_rocket.settings()
     assert all(key in settings for key in ["settings", "count", "offset", "total"])
