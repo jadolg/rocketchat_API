@@ -1,7 +1,3 @@
-class RocketException(Exception):
-    pass
-
-
 class RocketConnectionException(Exception):
     pass
 
@@ -28,7 +24,3 @@ class RocketBadStatusCodeException(Exception):
 
     def __str__(self):
         return f"{self.status_code} -> {self.message}"
-
-
-class RocketNoSuccessExeption(Exception):
-    pass

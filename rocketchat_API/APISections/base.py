@@ -8,7 +8,6 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketAuthenticationException,
     RocketConnectionException,
     RocketBadStatusCodeException,
-    RocketNoSuccessExeption,
 )
 
 
@@ -21,8 +20,6 @@ def json_or_error(r: requests.Response) -> Any:
     except JSONDecodeError:
         return r.text
 
-    if "success" in result and not result.get("success"):
-        raise RocketNoSuccessExeption
     return result
 
 
