@@ -18,14 +18,6 @@ class RocketChatSettings(RocketChatBase):
         """List all private settings."""
         return self.call_api_get("settings.public", kwargs=kwargs)
 
-    def settings_oauth(self, **kwargs):
-        """List all OAuth services."""
-        return self.call_api_get("settings.oauth", kwargs=kwargs)
-
-    def settings_addcustomoauth(self, name, **kwargs):
-        """Add a new custom OAuth service with the provided name."""
-        return self.call_api_post("settings.addCustomOAuth", name=name, kwargs=kwargs)
-
     def service_configurations(self, **kwargs):
         """List all service configurations."""
         return self.call_api_get("service.configurations", kwargs=kwargs)

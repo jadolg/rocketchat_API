@@ -23,10 +23,10 @@ proxy_dict = {
 }
 
 rocket = RocketChat('user', 'pass', server_url='https://demo.rocket.chat', proxies=proxy_dict)
-pprint(rocket.me().json())
-pprint(rocket.channels_list().json())
-pprint(rocket.chat_post_message('good news everyone!', channel='GENERAL', alias='Farnsworth').json())
-pprint(rocket.channels_history('GENERAL', count=5).json())
+pprint(rocket.me())
+pprint(rocket.channels_list())
+pprint(rocket.chat_post_message('good news everyone!', channel='GENERAL', alias='Farnsworth'))
+pprint(rocket.channels_history('GENERAL', count=5))
 ```
 
 *note*: every method returns a [requests](https://github.com/kennethreitz/requests) Response object.
@@ -41,10 +41,10 @@ from rocketchat_API.rocketchat import RocketChat
 
 with sessions.Session() as session:
     rocket = RocketChat('user', 'pass', server_url='https://demo.rocket.chat', session=session)
-    pprint(rocket.me().json())
-    pprint(rocket.channels_list().json())
-    pprint(rocket.chat_post_message('good news everyone!', channel='GENERAL', alias='Farnsworth').json())
-    pprint(rocket.channels_history('GENERAL', count=5).json())
+    pprint(rocket.me())
+    pprint(rocket.channels_list())
+    pprint(rocket.chat_post_message('good news everyone!', channel='GENERAL', alias='Farnsworth'))
+    pprint(rocket.channels_history('GENERAL', count=5))
 ```
 
 #### Using a token for authentication instead of user and password
@@ -54,7 +54,7 @@ from pprint import pprint
 from rocketchat_API.rocketchat import RocketChat
 
 rocket = RocketChat(user_id='WPXGmQ64S3BXdCRb6', auth_token='jvNyOYw2f0YKwtiFS06Fk21HBRBBuV7zI43HmkNzI_s', server_url='https://demo.rocket.chat')
-pprint(rocket.me().json())
+pprint(rocket.me())
 ```
 
 ### Method parameters
@@ -79,6 +79,6 @@ We hang out [here](https://open.rocket.chat/channel/python_rocketchat_api) if yo
 
 ### Supporters
 
-[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport) 
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://jb.gg/OpenSourceSupport)
 
 [JetBrains](https://www.jetbrains.com/) supports this project by providing us with licenses for their fantastic products.
