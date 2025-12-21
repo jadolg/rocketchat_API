@@ -61,27 +61,13 @@ class RocketChatUsers(RocketChatBase):
     def users_get_avatar(self, user_id=None, username=None, **kwargs):
         """Gets the URL for a user's avatar."""
         if user_id:
-            response = self.call_api_get(
-                "users.getAvatar", userId=user_id, kwargs=kwargs
-            )
+            return self.call_api_get("users.getAvatar", userId=user_id, kwargs=kwargs)
         elif username:
-            response = self.call_api_get(
+            return self.call_api_get(
                 "users.getAvatar", username=username, kwargs=kwargs
             )
         else:
             raise RocketMissingParamException("userID or username required")
-
-        # If Accounts_AvatarBlockUnauthorizedAccess is set, we need to provide the Token as cookies
-        if response.status_code == 403:
-            return self.req.get(
-                response.url,
-                cert=self.cert,
-                cookies={
-                    "rc_uid": self.headers.get("X-User-Id"),
-                    "rc_token": self.headers.get("X-Auth-Token"),
-                },
-            )
-        return response
 
     def users_set_avatar(self, avatar_url, **kwargs):
         """Set a user's avatar"""

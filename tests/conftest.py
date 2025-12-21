@@ -1,5 +1,6 @@
 import pytest
 
+from rocketchat_API.APIExceptions.RocketExceptions import RocketWrongStatusCodeException
 from rocketchat_API.rocketchat import RocketChat
 
 
@@ -20,9 +21,15 @@ def create_user(rocket, name="user1", email="email@domain.com"):
         user.password = password
         user.email = email
 
-        rocket.users_register(
-            email=user.email, name=user.name, password=user.password, username=user.name
-        )
+        try:
+            rocket.users_register(
+                email=user.email,
+                name=user.name,
+                password=user.password,
+                username=user.name,
+            )
+        except RocketWrongStatusCodeException:
+            pass
 
         return user
 
@@ -45,11 +52,15 @@ def logged_rocket(user):
 
 @pytest.fixture
 def secondary_user(logged_rocket):
-    testuser = logged_rocket.users_info(username="secondary").json()
-    if not testuser.get("success"):
-        testuser = logged_rocket.users_create(
-            "secondary@domain.com", "secondary", "password", "secondary"
-        ).json()
+    try:
+        testuser = logged_rocket.users_info(username="secondary")
+    except RocketWrongStatusCodeException as exc_info:
+        if "User not found." in str(exc_info):
+            testuser = logged_rocket.users_create(
+                "secondary@domain.com", "secondary", "password", "secondary"
+            )
+        else:
+            raise
 
     _testuser_id = testuser.get("user").get("_id")
 
@@ -60,9 +71,10 @@ def secondary_user(logged_rocket):
 
 @pytest.fixture
 def skip_if_no_license(logged_rocket):
-    licenses_info = logged_rocket.licenses_info().json()
-    if not licenses_info.get("success"):
+    try:
+        licenses_info = logged_rocket.licenses_info()
+        if "license" in licenses_info and "license" in licenses_info.get("license"):
+            return
+    except RocketWrongStatusCodeException:
         pytest.fail("License endpoint not available")
-    if "license" in licenses_info and "license" in licenses_info.get("license"):
-        return
     pytest.skip("No license available")

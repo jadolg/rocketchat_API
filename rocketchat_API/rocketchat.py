@@ -20,30 +20,28 @@ from rocketchat_API.APISections.statistics import RocketChatStatistics
 from rocketchat_API.APISections.subscriptions import RocketChatSubscriptions
 from rocketchat_API.APISections.teams import RocketChatTeams
 from rocketchat_API.APISections.users import RocketChatUsers
-from rocketchat_API.APISections.video_conferences import RocketChatVideConferences
 
 
 class RocketChat(
-    RocketChatUsers,
-    RocketChatChat,
+    RocketChatAssets,
+    RocketChatBanners,
     RocketChatChannels,
+    RocketChatChat,
+    RocketChatDM,
     RocketChatGroups,
     RocketChatIM,
-    RocketChatDM,
     RocketChatIntegrations,
-    RocketChatStatistics,
-    RocketChatMiscellaneous,
-    RocketChatSettings,
-    RocketChatRooms,
-    RocketChatSubscriptions,
-    RocketChatAssets,
-    RocketChatPermissions,
     RocketChatInvites,
-    RocketChatVideConferences,
-    RocketChatLivechat,
-    RocketChatTeams,
-    RocketChatRoles,
-    RocketChatBanners,
     RocketChatLicenses,
+    RocketChatLivechat,
+    RocketChatMiscellaneous,
+    RocketChatPermissions,
+    RocketChatRoles,
+    RocketChatRooms,
+    RocketChatSettings,
+    RocketChatStatistics,
+    RocketChatSubscriptions,
+    RocketChatTeams,
+    RocketChatUsers,
 ):
     pass
