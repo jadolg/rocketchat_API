@@ -166,7 +166,7 @@ def test_channels_join(logged_rocket, testuser_id):
         channels_create.get("channel").get("_id"), join_code
     )
     assert "channel" in channels_set_join_code
-    assert channels_set_join_code.get("channel").get("joinCodeRequired") == True
+    assert channels_set_join_code.get("channel").get("joinCodeRequired")
 
     channels_leave = logged_rocket.channels_leave(
         channels_create.get("channel").get("_id")
@@ -229,7 +229,7 @@ def test_channels_set_join_code(logged_rocket):
     join_code = str(uuid.uuid1())
     channels_set_join_code = logged_rocket.channels_set_join_code("GENERAL", join_code)
     assert "channel" in channels_set_join_code
-    assert channels_set_join_code.get("channel").get("joinCodeRequired") == True
+    assert channels_set_join_code.get("channel").get("joinCodeRequired")
 
 
 def test_channels_set_read_only(logged_rocket):
