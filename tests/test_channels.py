@@ -5,7 +5,7 @@ from semver import Version
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketMissingParamException,
-    RocketWrongStatusCodeException,
+    RocketBadStatusCodeException,
 )
 
 
@@ -14,7 +14,7 @@ def add_owner(logged_rocket, user):
     """Add test user as owner in GENERAL channel in every test in this module"""
     try:
         logged_rocket.channels_add_owner("GENERAL", username=user.name)
-    except RocketWrongStatusCodeException:
+    except RocketBadStatusCodeException:
         pass
 
 
@@ -22,7 +22,7 @@ def add_owner(logged_rocket, user):
 def testuser_id(logged_rocket):
     try:
         testuser = logged_rocket.users_info(username="testuser1")
-    except RocketWrongStatusCodeException:
+    except RocketBadStatusCodeException:
         testuser = logged_rocket.users_create(
             "testuser1@domain.com", "testuser1", "password", "testuser1"
         )
@@ -33,7 +33,7 @@ def testuser_id(logged_rocket):
 
     try:
         logged_rocket.users_delete(_testuser_id)
-    except RocketWrongStatusCodeException:
+    except RocketBadStatusCodeException:
         pass
 
 
@@ -186,7 +186,7 @@ def test_channels_kick(logged_rocket, testuser_id):
 
 
 def test_channels_leave(logged_rocket, testuser_id):
-    with pytest.raises(RocketWrongStatusCodeException) as exc_info:
+    with pytest.raises(RocketBadStatusCodeException) as exc_info:
         logged_rocket.channels_leave("GENERAL")
     assert "error-you-are-last-owner" in str(exc_info.value)
 
@@ -251,7 +251,7 @@ def test_channels_set_type(logged_rocket):
     channels_set_type = logged_rocket.channels_set_type(channel_id, "p")
     assert channels_set_type.get("channel").get("t"), "p"
 
-    with pytest.raises(RocketWrongStatusCodeException):
+    with pytest.raises(RocketBadStatusCodeException):
         logged_rocket.channels_set_type(channel_id, "c")
 
 

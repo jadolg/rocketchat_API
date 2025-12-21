@@ -18,7 +18,7 @@ class RocketUnsuportedIntegrationType(Exception):
     pass
 
 
-class RocketWrongStatusCodeException(Exception):
+class RocketBadStatusCodeException(Exception):
     def __init__(self, status_code, response):
         self.status_code = status_code
         self.message = (

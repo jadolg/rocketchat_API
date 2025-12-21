@@ -4,7 +4,7 @@ import pytest
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketMissingParamException,
-    RocketWrongStatusCodeException,
+    RocketBadStatusCodeException,
 )
 
 
@@ -33,7 +33,7 @@ def testuser_id(logged_rocket):
 
     try:
         logged_rocket.users_delete(_testuser_id)
-    except RocketWrongStatusCodeException:
+    except RocketBadStatusCodeException:
         pass
 
 

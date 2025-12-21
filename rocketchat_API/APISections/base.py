@@ -7,14 +7,14 @@ import requests
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketAuthenticationException,
     RocketConnectionException,
-    RocketWrongStatusCodeException,
+    RocketBadStatusCodeException,
     RocketNoSuccessExeption,
 )
 
 
 def json_or_error(r: requests.Response) -> Any:
     if r.status_code > 399 or r.status_code < 200:
-        raise RocketWrongStatusCodeException(r.status_code, r.text)
+        raise RocketBadStatusCodeException(r.status_code, r.text)
 
     try:
         result = r.json()

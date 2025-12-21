@@ -5,7 +5,7 @@ import pytest
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketAuthenticationException,
     RocketMissingParamException,
-    RocketWrongStatusCodeException,
+    RocketBadStatusCodeException,
 )
 
 
@@ -80,7 +80,7 @@ def test_users_get_presence(logged_rocket, user):
 def test_users_get_avatar(logged_rocket, user):
     login = logged_rocket.login(user.name, user.password)
 
-    with pytest.raises(RocketWrongStatusCodeException):
+    with pytest.raises(RocketBadStatusCodeException):
         logged_rocket.users_get_avatar(user_id="no_user")
 
     logged_rocket.users_get_avatar(user_id=login.get("data").get("userId"))

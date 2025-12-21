@@ -1,6 +1,6 @@
 import pytest
 
-from rocketchat_API.APIExceptions.RocketExceptions import RocketWrongStatusCodeException
+from rocketchat_API.APIExceptions.RocketExceptions import RocketBadStatusCodeException
 from rocketchat_API.rocketchat import RocketChat
 
 
@@ -28,7 +28,7 @@ def create_user(rocket, name="user1", email="email@domain.com"):
                 password=user.password,
                 username=user.name,
             )
-        except RocketWrongStatusCodeException:
+        except RocketBadStatusCodeException:
             pass
 
         return user
@@ -54,7 +54,7 @@ def logged_rocket(user):
 def secondary_user(logged_rocket):
     try:
         testuser = logged_rocket.users_info(username="secondary")
-    except RocketWrongStatusCodeException as exc_info:
+    except RocketBadStatusCodeException as exc_info:
         if "User not found." in str(exc_info):
             testuser = logged_rocket.users_create(
                 "secondary@domain.com", "secondary", "password", "secondary"
@@ -75,6 +75,6 @@ def skip_if_no_license(logged_rocket):
         licenses_info = logged_rocket.licenses_info()
         if "license" in licenses_info and "license" in licenses_info.get("license"):
             return
-    except RocketWrongStatusCodeException:
+    except RocketBadStatusCodeException:
         pytest.fail("License endpoint not available")
     pytest.skip("No license available")

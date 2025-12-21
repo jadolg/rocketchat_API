@@ -2,7 +2,7 @@ import pytest
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketMissingParamException,
-    RocketWrongStatusCodeException,
+    RocketBadStatusCodeException,
 )
 
 
@@ -110,7 +110,7 @@ def test_dm_messages_others(logged_rocket, recipient_user):
     # ToDo: Try changing the access configuration so endpoint can be successfully tested
     dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    with pytest.raises(RocketWrongStatusCodeException):
+    with pytest.raises(RocketBadStatusCodeException):
         logged_rocket.dm_messages_others(room_id)
 
 
