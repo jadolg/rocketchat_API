@@ -46,7 +46,7 @@ pprint(rocket.me())
 
 ### Method parameters
 
-Only required parameters are explicit on the RocketChat class but you can still use all other parameters. For a detailed
+Only required parameters are explicit on the RocketChat class, but you can still use all other parameters. For a detailed
 parameters list check the [Rocket chat API](https://developer.rocket.chat/reference/api/rest-api)
 
 ### API coverage
