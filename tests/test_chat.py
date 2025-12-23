@@ -201,3 +201,41 @@ def test_chat_get_mentioned_messages(logged_rocket):
     assert "messages" in chat_get_mentioned_messages
     assert len(chat_get_mentioned_messages.get("messages")) > 0
     assert chat_get_mentioned_messages.get("messages")[0].get("msg") == "hello @user1"
+
+
+def test_chat_post_sanitizes_text_and_attachments(logged_rocket):
+    # message text contains double-escaped sequences
+    msg_text = "hello\\nworld\\t!"
+    att_text = "line1\\nline2"
+
+    chat_post_message = logged_rocket.chat_post_message(
+        msg_text,
+        channel="GENERAL",
+        attachments=[{"color": "#00ff00", "text": att_text}],
+    ).json()
+
+    assert chat_post_message.get("success")
+    mid = chat_post_message["message"]["_id"]
+
+    # retrieve and verify that sequences became real control chars
+    got = logged_rocket.chat_get_message(msg_id=mid).json()
+    assert got.get("success")
+
+    posted = got["message"]
+    assert posted["msg"] == "hello\nworld\t!"
+    assert posted["attachments"][0]["text"] == "line1\nline2"
+
+
+def test_chat_update_sanitizes_text(logged_rocket):
+    # create a message first
+    mid = (
+        logged_rocket.chat_post_message("seed", channel="GENERAL")
+        .json()["message"]["_id"]
+    )
+    # update with escaped content
+    upd = logged_rocket.chat_update(
+        room_id="GENERAL", msg_id=mid, text="foo\\nbar"
+    ).json()
+    assert upd.get("success")
+    assert upd["message"]["msg"] == "foo\nbar"
+
