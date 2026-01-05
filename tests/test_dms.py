@@ -95,6 +95,12 @@ def test_dm_messages(logged_rocket, recipient_user):
     for message in iterated_messages:
         assert "_id" in message
 
+    iterated_messages_username = list(
+        logged_rocket.dm_messages(username=recipient_user)
+    )
+
+    assert iterated_messages == iterated_messages_username
+
     with pytest.raises(RocketMissingParamException):
         logged_rocket.dm_messages()
 
