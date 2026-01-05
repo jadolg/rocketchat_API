@@ -141,7 +141,11 @@ class RocketChatTeams(RocketChatBase):
     ):
         """List all rooms of the team as an iterator with automatic pagination."""
         return self.teams_list_rooms(
-            team_id=team_id, team_name=team_name, room_type=room_type, name=name, **kwargs
+            team_id=team_id,
+            team_name=team_name,
+            room_type=room_type,
+            name=name,
+            **kwargs
         )
 
     def teams_add_rooms(self, team_id=None, team_name=None, rooms=None, **kwargs):

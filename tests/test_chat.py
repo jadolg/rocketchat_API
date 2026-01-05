@@ -208,7 +208,9 @@ def test_chat_search_itr(logged_rocket):
     logged_rocket.chat_post_message("unique_search_term_test", channel="GENERAL")
 
     iterated_messages = list(
-        logged_rocket.chat_search_itr(room_id="GENERAL", search_text="unique_search_term_test")
+        logged_rocket.chat_search_itr(
+            room_id="GENERAL", search_text="unique_search_term_test"
+        )
     )
     assert len(iterated_messages) > 0
 
@@ -218,20 +220,26 @@ def test_chat_search_itr(logged_rocket):
 
 def test_chat_get_starred_messages_itr(logged_rocket):
     # Starred messages may be empty, so we just test that iteration works
-    iterated_messages = list(logged_rocket.chat_get_starred_messages_itr(room_id="GENERAL"))
+    iterated_messages = list(
+        logged_rocket.chat_get_starred_messages_itr(room_id="GENERAL")
+    )
     for message in iterated_messages:
         assert "_id" in message
 
 
 def test_chat_get_thread_messages_itr(logged_rocket):
     # Create a thread first
-    chat_post_message1 = logged_rocket.chat_post_message("thread_parent", channel="GENERAL")
+    chat_post_message1 = logged_rocket.chat_post_message(
+        "thread_parent", channel="GENERAL"
+    )
     msg1_id = chat_post_message1.get("message").get("_id")
 
     logged_rocket.chat_post_message("thread_reply_1", room_id="GENERAL", tmid=msg1_id)
     logged_rocket.chat_post_message("thread_reply_2", room_id="GENERAL", tmid=msg1_id)
 
-    iterated_messages = list(logged_rocket.chat_get_thread_messages_itr(thread_msg_id=msg1_id))
+    iterated_messages = list(
+        logged_rocket.chat_get_thread_messages_itr(thread_msg_id=msg1_id)
+    )
     assert len(iterated_messages) >= 2
 
     for message in iterated_messages:
@@ -242,7 +250,9 @@ def test_chat_get_mentioned_messages_itr(logged_rocket):
     # Post a message with mention
     logged_rocket.chat_post_message("hello @user1 itr test", channel="GENERAL")
 
-    iterated_messages = list(logged_rocket.chat_get_mentioned_messages_itr(room_id="GENERAL"))
+    iterated_messages = list(
+        logged_rocket.chat_get_mentioned_messages_itr(room_id="GENERAL")
+    )
     # May have mentions or may not
     for message in iterated_messages:
         assert "_id" in message

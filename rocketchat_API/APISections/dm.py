@@ -95,4 +95,3 @@ class RocketChatDM(RocketChatBase):
         if user_name:
             return self.call_api_get("dm.counters", roomId=room_id, username=user_name)
         return self.call_api_get("dm.counters", roomId=room_id)
-
