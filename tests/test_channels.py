@@ -396,6 +396,9 @@ def test_channels_files(logged_rocket):
 
     assert len(iterated_files_room_name) == len(iterated_files)
 
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.channels_files()
+
 
 def test_channels_get_all_user_mentions_by_channel(logged_rocket):
     logged_rocket.chat_post_message(channel="GENERAL", text="Hello @user1")
