@@ -346,7 +346,11 @@ def test_groups_members_itr(logged_rocket, test_group_id):
 
 
 def test_groups_files_itr(logged_rocket, test_group_id):
-    # Files may be empty, so we just test that iteration works
+    rooms_upload = logged_rocket.rooms_upload(
+        rid=test_group_id, file="tests/assets/avatar.png", description="hey there"
+    )
+    assert "message" in rooms_upload
+
     iterated_files = list(logged_rocket.groups_files_itr(room_id=test_group_id))
     for file in iterated_files:
         assert "_id" in file
