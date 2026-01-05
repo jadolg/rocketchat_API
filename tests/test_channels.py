@@ -1,7 +1,6 @@
 import uuid
 
 import pytest
-from semver import Version
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketMissingParamException,
