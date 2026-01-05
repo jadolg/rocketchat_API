@@ -1,5 +1,5 @@
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase, paginated_itr
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatGroups(RocketChatBase):
@@ -10,7 +10,7 @@ class RocketChatGroups(RocketChatBase):
         """
         return self.call_api_get("groups.listAll", kwargs=kwargs)
 
-    @paginated_itr("groups")
+    @paginated("groups")
     def groups_list_all_itr(self, **kwargs):
         """
         List all the private groups on the server.
@@ -23,7 +23,7 @@ class RocketChatGroups(RocketChatBase):
         """List the private groups the caller is part of."""
         return self.call_api_get("groups.list", kwargs=kwargs)
 
-    @paginated_itr("groups")
+    @paginated("groups")
     def groups_list_itr(self, **kwargs):
         """List the private groups the caller is part of as an iterator with automatic pagination."""
         return self.groups_list(**kwargs)
@@ -32,7 +32,7 @@ class RocketChatGroups(RocketChatBase):
         """Retrieves the messages from a private group."""
         return self.call_api_get("groups.history", roomId=room_id, kwargs=kwargs)
 
-    @paginated_itr("messages")
+    @paginated("messages")
     def groups_history_itr(self, room_id, **kwargs):
         """Retrieves the messages from a private group as an iterator with automatic pagination."""
         return self.groups_history(room_id, **kwargs)
@@ -199,7 +199,7 @@ class RocketChatGroups(RocketChatBase):
             return self.call_api_get("groups.members", roomName=group, kwargs=kwargs)
         raise RocketMissingParamException("room_id or group required")
 
-    @paginated_itr("members")
+    @paginated("members")
     def groups_members_itr(self, room_id=None, group=None, **kwargs):
         """Lists all group users as an iterator with automatic pagination."""
         return self.groups_members(room_id=room_id, group=group, **kwargs)
@@ -220,7 +220,7 @@ class RocketChatGroups(RocketChatBase):
             return self.call_api_get("groups.files", roomName=room_name, kwargs=kwargs)
         raise RocketMissingParamException("room_id or room_name required")
 
-    @paginated_itr("files")
+    @paginated("files")
     def groups_files_itr(self, room_id=None, room_name=None, **kwargs):
         """Retrieves the files from a private group as an iterator with automatic pagination."""
         return self.groups_files(room_id=room_id, room_name=room_name, **kwargs)

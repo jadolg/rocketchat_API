@@ -15,7 +15,7 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
 )
 
 
-def paginated_itr(data_key):
+def paginated(data_key):
     """
     Decorator that converts a paginated API method into an iterator.
 

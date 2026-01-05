@@ -2,7 +2,7 @@ import json
 import logging
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase, paginated_itr
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatChannels(RocketChatBase):
@@ -10,7 +10,7 @@ class RocketChatChannels(RocketChatBase):
         """Retrieves all of the channels from the server."""
         return self.call_api_get("channels.list", kwargs=kwargs)
 
-    @paginated_itr("channels")
+    @paginated("channels")
     def channels_list_itr(self, **kwargs):
         """Retrieves all of the channels from the server as an iterator with automatic pagination."""
         return self.channels_list(**kwargs)
@@ -19,7 +19,7 @@ class RocketChatChannels(RocketChatBase):
         """Lists all of the channels the calling user has joined"""
         return self.call_api_get("channels.list.joined", kwargs=kwargs)
 
-    @paginated_itr("channels")
+    @paginated("channels")
     def channels_list_joined_itr(self, **kwargs):
         """Lists all of the channels the calling user has joined as an iterator with automatic pagination."""
         return self.channels_list_joined(**kwargs)
@@ -36,7 +36,7 @@ class RocketChatChannels(RocketChatBase):
         """Retrieves the messages from a channel."""
         return self.call_api_get("channels.history", roomId=room_id, kwargs=kwargs)
 
-    @paginated_itr("messages")
+    @paginated("messages")
     def channels_history_itr(self, room_id, **kwargs):
         """Retrieves the messages from a channel as an iterator with automatic pagination."""
         return self.channels_history(room_id, **kwargs)
@@ -233,7 +233,7 @@ class RocketChatChannels(RocketChatBase):
             )
         raise RocketMissingParamException("room_id or channel required")
 
-    @paginated_itr("members")
+    @paginated("members")
     def channels_members_itr(self, room_id=None, channel=None, **kwargs):
         """Lists all channel users as an iterator with automatic pagination."""
         return self.channels_members(room_id=room_id, channel=channel, **kwargs)
@@ -258,7 +258,7 @@ class RocketChatChannels(RocketChatBase):
             )
         raise RocketMissingParamException("room_id or room_name required")
 
-    @paginated_itr("files")
+    @paginated("files")
     def channels_files_itr(self, room_id=None, room_name=None, **kwargs):
         """Retrieves the files from a channel as an iterator with automatic pagination."""
         return self.channels_files(room_id=room_id, room_name=room_name, **kwargs)
@@ -269,7 +269,7 @@ class RocketChatChannels(RocketChatBase):
             "channels.getAllUserMentionsByChannel", roomId=room_id, kwargs=kwargs
         )
 
-    @paginated_itr("mentions")
+    @paginated("mentions")
     def channels_get_all_user_mentions_by_channel_itr(self, room_id, **kwargs):
         """Gets all the mentions of a channel as an iterator with automatic pagination."""
         return self.channels_get_all_user_mentions_by_channel(room_id, **kwargs)

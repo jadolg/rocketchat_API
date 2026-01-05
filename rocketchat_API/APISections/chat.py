@@ -1,5 +1,5 @@
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase, paginated_itr
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatChat(RocketChatBase):
@@ -65,7 +65,7 @@ class RocketChatChat(RocketChatBase):
             "chat.search", roomId=room_id, searchText=search_text, kwargs=kwargs
         )
 
-    @paginated_itr("messages")
+    @paginated("messages")
     def chat_search_itr(self, room_id, search_text, **kwargs):
         """Search for messages in a channel as an iterator with automatic pagination."""
         return self.chat_search(room_id, search_text, **kwargs)
@@ -82,7 +82,7 @@ class RocketChatChat(RocketChatBase):
             "chat.getStarredMessages", roomId=room_id, kwargs=kwargs
         )
 
-    @paginated_itr("messages")
+    @paginated("messages")
     def chat_get_starred_messages_itr(self, room_id, **kwargs):
         """Retrieve starred messages as an iterator with automatic pagination."""
         return self.chat_get_starred_messages(room_id, **kwargs)
@@ -108,7 +108,7 @@ class RocketChatChat(RocketChatBase):
             kwargs=kwargs,
         )
 
-    @paginated_itr("messages")
+    @paginated("messages")
     def chat_get_thread_messages_itr(self, thread_msg_id, **kwargs):
         """Get thread messages as an iterator with automatic pagination."""
         return self.chat_get_thread_messages(thread_msg_id, **kwargs)
@@ -121,7 +121,7 @@ class RocketChatChat(RocketChatBase):
             kwargs=kwargs,
         )
 
-    @paginated_itr("messages")
+    @paginated("messages")
     def chat_get_mentioned_messages_itr(self, room_id, **kwargs):
         """Get the messages in which you are mentioned as an iterator with automatic pagination."""
         return self.chat_get_mentioned_messages(room_id, **kwargs)

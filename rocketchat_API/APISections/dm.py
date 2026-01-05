@@ -1,5 +1,5 @@
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase, paginated_itr
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatDM(RocketChatBase):
@@ -7,7 +7,7 @@ class RocketChatDM(RocketChatBase):
         """List the private im chats for logged user"""
         return self.call_api_get("dm.list", kwargs=kwargs)
 
-    @paginated_itr("ims")
+    @paginated("ims")
     def dm_list_itr(self, **kwargs):
         """List the private im chats for logged user as an iterator with automatic pagination."""
         return self.dm_list(**kwargs)
@@ -16,7 +16,7 @@ class RocketChatDM(RocketChatBase):
         """List all direct message the caller in the server."""
         return self.call_api_get("dm.list.everyone", kwargs=kwargs)
 
-    @paginated_itr("ims")
+    @paginated("ims")
     def dm_list_everyone_itr(self, **kwargs):
         """List all direct message the caller in the server as an iterator with automatic pagination."""
         return self.dm_list_everyone(**kwargs)
@@ -25,7 +25,7 @@ class RocketChatDM(RocketChatBase):
         """Retrieves the history for a private im chat"""
         return self.call_api_get("dm.history", roomId=room_id, kwargs=kwargs)
 
-    @paginated_itr("messages")
+    @paginated("messages")
     def dm_history_itr(self, room_id, **kwargs):
         """Retrieves the history for a private im chat as an iterator with automatic pagination."""
         return self.dm_history(room_id, **kwargs)
@@ -62,7 +62,7 @@ class RocketChatDM(RocketChatBase):
 
         raise RocketMissingParamException("roomId or username required")
 
-    @paginated_itr("messages")
+    @paginated("messages")
     def dm_messages_itr(self, room_id=None, username=None, **kwargs):
         """Retrieves direct messages from the server as an iterator with automatic pagination."""
         return self.dm_messages(room_id=room_id, username=username, **kwargs)
@@ -85,7 +85,7 @@ class RocketChatDM(RocketChatBase):
             return self.call_api_get("dm.files", username=user_name, kwargs=kwargs)
         raise RocketMissingParamException("roomId or username required")
 
-    @paginated_itr("files")
+    @paginated("files")
     def dm_files_itr(self, room_id=None, user_name=None, **kwargs):
         """Retrieves the files from a direct message as an iterator with automatic pagination."""
         return self.dm_files(room_id=room_id, user_name=user_name, **kwargs)
