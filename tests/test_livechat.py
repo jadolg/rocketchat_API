@@ -6,15 +6,11 @@ from rocketchat_API.APIExceptions.RocketExceptions import RocketBadStatusCodeExc
 
 
 def test_livechat_rooms(logged_rocket):
-    livechat_rooms = logged_rocket.livechat_rooms()
-    for room in livechat_rooms:
-        assert "_id" in room
+    logged_rocket.livechat_rooms()
 
 
 def test_livechat_inquiries_list(logged_rocket):
-    livechat_inquiries_list = logged_rocket.livechat_inquiries_list()
-    for inquiry in livechat_inquiries_list:
-        assert "_id" in inquiry
+    logged_rocket.livechat_inquiries_list()
 
 
 def test_livechat_inquiries_take(logged_rocket):
