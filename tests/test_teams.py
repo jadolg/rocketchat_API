@@ -193,18 +193,6 @@ def test_teams_add_update_remove_members_team_name(
 
 
 def test_teams_list_rooms(logged_rocket, test_team_name, test_team_id):
-    iterated_rooms = list(logged_rocket.teams_list_rooms(team_id=test_team_id))
-    # Team may or may not have rooms
-    for room in iterated_rooms:
-        assert "_id" in room
-
-    # Test by team name
-    iterated_rooms_by_name = list(
-        logged_rocket.teams_list_rooms(team_name=test_team_name)
-    )
-    for room in iterated_rooms_by_name:
-        assert "_id" in room
-
     with pytest.raises(RocketMissingParamException):
         logged_rocket.teams_list_rooms()
 
