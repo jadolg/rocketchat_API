@@ -21,8 +21,6 @@ class RocketChatGroups(RocketChatBase):
         """Retrieves the messages from a private group."""
         return self.call_api_get("groups.history", roomId=room_id, kwargs=kwargs)
 
-
-
     def groups_add_moderator(self, room_id, user_id, **kwargs):
         """Gives the role of moderator for a user in the current groups."""
         return self.call_api_post(
