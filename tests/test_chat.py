@@ -220,11 +220,19 @@ def test_chat_search_itr(logged_rocket):
 
 def test_chat_get_starred_messages_itr(logged_rocket):
     # Starred messages may be empty, so we just test that iteration works
+    message_id = (
+        logged_rocket.chat_post_message(room_id="GENERAL", text="star this message")
+        .get("message")
+        .get("_id")
+    )
+    logged_rocket.chat_star_message(msg_id=message_id)
     iterated_messages = list(
         logged_rocket.chat_get_starred_messages_itr(room_id="GENERAL")
     )
     for message in iterated_messages:
         assert "_id" in message
+
+    logged_rocket.chat_unstar_message(msg_id=message_id)
 
 
 def test_chat_get_thread_messages_itr(logged_rocket):
