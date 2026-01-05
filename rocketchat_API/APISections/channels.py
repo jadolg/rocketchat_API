@@ -271,5 +271,5 @@ class RocketChatChannels(RocketChatBase):
             return self.call_api_get("channels.online", query=json.dumps(query))
         if _id:
             return self.call_api_get("channels.online", _id=_id)
-        else:
-            raise RocketMissingParamException("_id or query required")
+
+        raise RocketMissingParamException("_id or query required")
