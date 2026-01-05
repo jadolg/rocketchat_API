@@ -65,8 +65,11 @@ def test_teams_create_delete(logged_rocket):
 
 
 def test_teams_list_all(logged_rocket):
+    name = str(uuid.uuid1())
+    logged_rocket.teams_create(name=name, team_type=1)
+
     iterated_teams = list(logged_rocket.teams_list_all())
-    assert len(iterated_teams) > 0 or len(iterated_teams) == 0  # May have teams or not
+    assert len(iterated_teams) >= 1
 
     for team in iterated_teams:
         assert "_id" in team
