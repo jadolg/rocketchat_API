@@ -436,6 +436,11 @@ def test_channels_members_itr(logged_rocket):
 
 def test_channels_files_itr(logged_rocket):
     # Files may be empty, so we just test that iteration works
+    rooms_upload = logged_rocket.rooms_upload(
+        "GENERAL", file="tests/assets/avatar.png", description="a test file"
+    )
+    assert "message" in rooms_upload
+
     iterated_files = list(logged_rocket.channels_files_itr(room_id="GENERAL"))
     for file in iterated_files:
         assert "_id" in file
