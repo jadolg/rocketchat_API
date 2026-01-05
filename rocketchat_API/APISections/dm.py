@@ -18,8 +18,6 @@ class RocketChatDM(RocketChatBase):
         """Retrieves the history for a private im chat."""
         return self.call_api_get("dm.history", roomId=room_id, kwargs=kwargs)
 
-
-
     def dm_create(self, username, **kwargs):
         """Create a direct message session with another user."""
         return self.call_api_post("dm.create", username=username, kwargs=kwargs)

@@ -83,4 +83,3 @@ def test_integration_invalid_type(logged_rocket):
             channel=GENERAL_CHANNEL,
             script_enabled=False,
         )
-

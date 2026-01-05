@@ -73,7 +73,6 @@ def test_dm_set_topic(logged_rocket, recipient_user):
     assert dm_set_topic.get("topic") == topic, "Topic set does not match topic returned"
 
 
-
 def test_dm_history(logged_rocket, recipient_user):
     dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")

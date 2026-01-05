@@ -95,7 +95,9 @@ def test_teams_members(logged_rocket, test_team_name, test_team_id):
         assert "_id" in member.get("user")
 
     # Test by team name
-    iterated_members_by_name = list(logged_rocket.teams_members(team_name=test_team_name))
+    iterated_members_by_name = list(
+        logged_rocket.teams_members(team_name=test_team_name)
+    )
     assert len(iterated_members_by_name) > 0
 
     with pytest.raises(RocketMissingParamException):
@@ -117,9 +119,7 @@ def test_teams_add_update_remove_members(logged_rocket, test_team_id, testuser_i
 
     teams_members = list(logged_rocket.teams_members(team_id=test_team_id))
     assert len(teams_members) == 2
-    user_ids = [
-        member.get("user").get("_id") for member in teams_members
-    ]
+    user_ids = [member.get("user").get("_id") for member in teams_members]
     assert testuser_id in user_ids
 
     # Make testuser owner
@@ -167,9 +167,7 @@ def test_teams_add_update_remove_members_team_name(
 
     teams_members = list(logged_rocket.teams_members(team_name=test_team_name))
     assert len(teams_members) == 2
-    user_ids = [
-        member.get("user").get("_id") for member in teams_members
-    ]
+    user_ids = [member.get("user").get("_id") for member in teams_members]
     assert testuser_id in user_ids
 
     # Make testuser owner
@@ -198,7 +196,9 @@ def test_teams_list_rooms(logged_rocket, test_team_name, test_team_id):
         assert "_id" in room
 
     # Test by team name
-    iterated_rooms_by_name = list(logged_rocket.teams_list_rooms(team_name=test_team_name))
+    iterated_rooms_by_name = list(
+        logged_rocket.teams_list_rooms(team_name=test_team_name)
+    )
     for room in iterated_rooms_by_name:
         assert "_id" in room
 
@@ -264,5 +264,3 @@ def test_teams_add_update_remove_rooms_name(
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.teams_remove_room()
-
-
