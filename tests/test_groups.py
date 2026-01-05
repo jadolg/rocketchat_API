@@ -321,6 +321,9 @@ def test_groups_list_itr(logged_rocket):
 
 
 def test_groups_history_itr(logged_rocket, test_group_id):
+    logged_rocket.chat_post_message(
+        room_id=test_group_id, text="Testing groups_history_itr"
+    )
     iterated_messages = list(logged_rocket.groups_history_itr(room_id=test_group_id))
     # Messages may be empty
     for message in iterated_messages:
