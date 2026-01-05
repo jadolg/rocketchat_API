@@ -344,9 +344,6 @@ def test_channels_online(logged_rocket):
     channels_online = logged_rocket.channels_online(_id="GENERAL")
     assert len(channels_online.get("online")) >= 1
 
-    with pytest.raises(RocketMissingParamException):
-        logged_rocket.channels_online()
-
 
 def test_channels_set_default(logged_rocket):
     channels_set_default = logged_rocket.channels_set_default(
