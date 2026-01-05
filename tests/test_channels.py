@@ -47,12 +47,8 @@ def test_channels_list(logged_rocket):
     iterated_channels_custom = list(logged_rocket.channels_list(count=1))
     assert len(iterated_channels_custom) > 0
 
-    first_channel = None
     for channel in logged_rocket.channels_list():
-        first_channel = channel
-        break
-    assert first_channel is not None
-    assert "_id" in first_channel
+        assert "_id" in channel
 
 
 def test_channels_list_joined(logged_rocket):
@@ -62,6 +58,12 @@ def test_channels_list_joined(logged_rocket):
     for channel in iterated_channels:
         assert "_id" in channel
         assert "name" in channel
+
+    iterated_channels_custom = list(logged_rocket.channels_list_joined(count=1))
+    assert len(iterated_channels_custom) > 0
+
+    for channel in logged_rocket.channels_list_joined():
+        assert "_id" in channel
 
 
 def test_channels_info(logged_rocket):
@@ -92,10 +94,8 @@ def test_channels_history(logged_rocket):
     for message in iterated_messages_custom:
         assert "_id" in message
 
-    # Test iterator early break
     for message in logged_rocket.channels_history(room_id="GENERAL"):
         assert "_id" in message
-        break
 
 
 def test_channels_add_all(logged_rocket):
@@ -371,10 +371,8 @@ def test_channels_members(logged_rocket):
     )
     assert len(iterated_members_custom) > 0
 
-    # Test iterator early break
     for member in logged_rocket.channels_members(room_id="GENERAL"):
         assert "_id" in member
-        break
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.channels_members()

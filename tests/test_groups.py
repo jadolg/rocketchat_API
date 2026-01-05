@@ -52,12 +52,8 @@ def test_groups_list_all(logged_rocket):
     iterated_groups_custom = list(logged_rocket.groups_list_all(count=1))
     assert len(iterated_groups_custom) > 0
 
-    first_group = None
     for group in logged_rocket.groups_list_all():
-        first_group = group
-        break
-    assert first_group is not None
-    assert "_id" in first_group
+        assert "_id" in group
 
 
 def test_groups_list(logged_rocket):

@@ -185,12 +185,8 @@ def test_users_list(logged_rocket):
     assert len(iterated_users_custom) > 0
     assert len(iterated_users_custom) == len(iterated_users)
 
-    first_user = None
     for user in logged_rocket.users_list():
-        first_user = user
-        break
-    assert first_user is not None
-    assert "_id" in first_user
+        assert "_id" in user
 
 
 def test_users_set_status(logged_rocket):
