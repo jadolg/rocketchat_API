@@ -45,7 +45,6 @@ def test_integrations_history(integrations_create_webhook_incoming, logged_rocke
     logged_rocket.integrations_history(integration_id=integration_id)
 
 
-
 def test_integrations_list(logged_rocket):
     iterated_integrations = list(logged_rocket.integrations_list())
     for integration in iterated_integrations:
