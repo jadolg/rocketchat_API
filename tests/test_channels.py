@@ -376,6 +376,9 @@ def test_channels_members(logged_rocket):
         assert "_id" in member
         break
 
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.channels_members()
+
 
 def test_channels_files(logged_rocket):
     rooms_upload = logged_rocket.rooms_upload(
