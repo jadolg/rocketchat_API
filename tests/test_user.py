@@ -174,31 +174,19 @@ def test_users_set_get_preferences(logged_rocket):
 
 
 def test_users_list(logged_rocket):
-    users_list = logged_rocket.users_list()
-    assert all(key in users_list for key in ["users", "count", "offset", "total"])
-
-
-def test_users_list_itr(logged_rocket):
-    users_list = logged_rocket.users_list()
-    expected_users = users_list.get("users", [])
-
-    iterated_users = list(logged_rocket.users_list_itr())
+    iterated_users = list(logged_rocket.users_list())
     assert len(iterated_users) > 0, "Should have at least one user"
-
-    assert len(iterated_users) >= len(
-        expected_users
-    ), "Iterator should yield at least as many users as single page"
 
     for user in iterated_users:
         assert "_id" in user
         assert "username" in user
 
-    iterated_users_custom = list(logged_rocket.users_list_itr(count=1))
+    iterated_users_custom = list(logged_rocket.users_list(count=1))
     assert len(iterated_users_custom) > 0
     assert len(iterated_users_custom) == len(iterated_users)
 
     first_user = None
-    for user in logged_rocket.users_list_itr():
+    for user in logged_rocket.users_list():
         first_user = user
         break
     assert first_user is not None

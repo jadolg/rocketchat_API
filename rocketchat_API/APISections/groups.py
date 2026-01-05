@@ -3,6 +3,7 @@ from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatGroups(RocketChatBase):
+    @paginated("groups")
     def groups_list_all(self, **kwargs):
         """
         List all the private groups on the server.
@@ -11,31 +12,16 @@ class RocketChatGroups(RocketChatBase):
         return self.call_api_get("groups.listAll", kwargs=kwargs)
 
     @paginated("groups")
-    def groups_list_all_itr(self, **kwargs):
-        """
-        List all the private groups on the server.
-        The calling user must have the 'view-room-administration' right
-        Returns an iterator that automatically handles pagination.
-        """
-        return self.groups_list_all(**kwargs)
-
     def groups_list(self, **kwargs):
         """List the private groups the caller is part of."""
         return self.call_api_get("groups.list", kwargs=kwargs)
 
-    @paginated("groups")
-    def groups_list_itr(self, **kwargs):
-        """List the private groups the caller is part of as an iterator with automatic pagination."""
-        return self.groups_list(**kwargs)
-
+    @paginated("messages")
     def groups_history(self, room_id, **kwargs):
         """Retrieves the messages from a private group."""
         return self.call_api_get("groups.history", roomId=room_id, kwargs=kwargs)
 
-    @paginated("messages")
-    def groups_history_itr(self, room_id, **kwargs):
-        """Retrieves the messages from a private group as an iterator with automatic pagination."""
-        return self.groups_history(room_id, **kwargs)
+
 
     def groups_add_moderator(self, room_id, user_id, **kwargs):
         """Gives the role of moderator for a user in the current groups."""
@@ -191,6 +177,7 @@ class RocketChatGroups(RocketChatBase):
             return self.call_api_post("groups.delete", roomName=group, kwargs=kwargs)
         raise RocketMissingParamException("room_id or group required")
 
+    @paginated("members")
     def groups_members(self, room_id=None, group=None, **kwargs):
         """Lists all group users."""
         if room_id:
@@ -198,11 +185,6 @@ class RocketChatGroups(RocketChatBase):
         if group:
             return self.call_api_get("groups.members", roomName=group, kwargs=kwargs)
         raise RocketMissingParamException("room_id or group required")
-
-    @paginated("members")
-    def groups_members_itr(self, room_id=None, group=None, **kwargs):
-        """Lists all group users as an iterator with automatic pagination."""
-        return self.groups_members(room_id=room_id, group=group, **kwargs)
 
     def groups_roles(self, room_id=None, room_name=None, **kwargs):
         """Lists all user's roles in the private group."""
@@ -212,6 +194,7 @@ class RocketChatGroups(RocketChatBase):
             return self.call_api_get("groups.roles", roomName=room_name, kwargs=kwargs)
         raise RocketMissingParamException("room_id or room_name required")
 
+    @paginated("files")
     def groups_files(self, room_id=None, room_name=None, **kwargs):
         """Retrieves the files from a private group."""
         if room_id:
@@ -219,11 +202,6 @@ class RocketChatGroups(RocketChatBase):
         if room_name:
             return self.call_api_get("groups.files", roomName=room_name, kwargs=kwargs)
         raise RocketMissingParamException("room_id or room_name required")
-
-    @paginated("files")
-    def groups_files_itr(self, room_id=None, room_name=None, **kwargs):
-        """Retrieves the files from a private group as an iterator with automatic pagination."""
-        return self.groups_files(room_id=room_id, room_name=room_name, **kwargs)
 
     def groups_add_leader(self, room_id, user_id, **kwargs):
         """Gives the role of Leader for a user in the current group."""

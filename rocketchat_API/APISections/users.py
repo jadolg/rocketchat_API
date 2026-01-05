@@ -18,14 +18,10 @@ class RocketChatUsers(RocketChatBase):
             return self.call_api_get("users.info", username=username, kwargs=kwargs)
         raise RocketMissingParamException("userID or username required")
 
+    @paginated("users")
     def users_list(self, **kwargs):
         """All of the users and their information, limited to permissions."""
         return self.call_api_get("users.list", kwargs=kwargs)
-
-    @paginated("users")
-    def users_list_itr(self, **kwargs):
-        """All of the users and their information as an iterator with automatic pagination."""
-        return self.users_list(**kwargs)
 
     def users_get_presence(self, user_id=None, username=None, **kwargs):
         """Gets the online presence of the a user."""

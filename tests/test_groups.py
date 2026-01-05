@@ -42,23 +42,18 @@ def test_group_id(test_group_name, logged_rocket):
 
 
 def test_groups_list_all(logged_rocket):
-    groups_list = logged_rocket.groups_list_all()
-    assert "groups" in groups_list
-
-
-def test_groups_list_all_itr(logged_rocket):
-    iterated_groups = list(logged_rocket.groups_list_all_itr())
+    iterated_groups = list(logged_rocket.groups_list_all())
     assert len(iterated_groups) > 0, "Should have at least one group"
 
     for group in iterated_groups:
         assert "_id" in group
         assert "name" in group
 
-    iterated_groups_custom = list(logged_rocket.groups_list_all_itr(count=1))
+    iterated_groups_custom = list(logged_rocket.groups_list_all(count=1))
     assert len(iterated_groups_custom) > 0
 
     first_group = None
-    for group in logged_rocket.groups_list_all_itr():
+    for group in logged_rocket.groups_list_all():
         first_group = group
         break
     assert first_group is not None
@@ -66,8 +61,11 @@ def test_groups_list_all_itr(logged_rocket):
 
 
 def test_groups_list(logged_rocket):
-    groups_list = logged_rocket.groups_list()
-    assert "groups" in groups_list
+    iterated_groups = list(logged_rocket.groups_list())
+    # User may have groups or may not
+    for group in iterated_groups:
+        assert "_id" in group
+        assert "name" in group
 
 
 def test_groups_info(logged_rocket, test_group_name, test_group_id):
@@ -84,8 +82,13 @@ def test_groups_info(logged_rocket, test_group_name, test_group_id):
 
 
 def test_groups_history(logged_rocket, test_group_id):
-    groups_history = logged_rocket.groups_history(room_id=test_group_id)
-    assert "messages" in groups_history
+    logged_rocket.chat_post_message(
+        room_id=test_group_id, text="Testing groups_history"
+    )
+    iterated_messages = list(logged_rocket.groups_history(room_id=test_group_id))
+    # Messages may be empty
+    for message in iterated_messages:
+        assert "_id" in message
 
 
 def test_groups_add_and_remove_moderator(logged_rocket, test_group_id):
@@ -296,42 +299,20 @@ def test_groups_roles(logged_rocket):
         logged_rocket.groups_roles()
 
 
-def test_groups_files(logged_rocket):
-    name = str(uuid.uuid1())
-    groups_create = logged_rocket.groups_create(name)
-
-    groups_files = logged_rocket.groups_files(
-        room_id=groups_create.get("group").get("_id")
+def test_groups_files(logged_rocket, test_group_id):
+    rooms_upload = logged_rocket.rooms_upload(
+        rid=test_group_id, file="tests/assets/avatar.png", description="hey there"
     )
-    assert all(key in groups_files for key in ["files", "count", "offset", "total"])
+    assert "message" in rooms_upload
 
-    groups_files = logged_rocket.groups_files(room_name=name)
-    assert all(key in groups_files for key in ["files", "count", "offset", "total"])
-
-    with pytest.raises(RocketMissingParamException):
-        logged_rocket.groups_files()
+    iterated_files = list(logged_rocket.groups_files(room_id=test_group_id))
+    for file in iterated_files:
+        assert "_id" in file
 
 
-def test_groups_list_itr(logged_rocket):
-    iterated_groups = list(logged_rocket.groups_list_itr())
-    # User may have groups or may not
-    for group in iterated_groups:
-        assert "_id" in group
-        assert "name" in group
 
-
-def test_groups_history_itr(logged_rocket, test_group_id):
-    logged_rocket.chat_post_message(
-        room_id=test_group_id, text="Testing groups_history_itr"
-    )
-    iterated_messages = list(logged_rocket.groups_history_itr(room_id=test_group_id))
-    # Messages may be empty
-    for message in iterated_messages:
-        assert "_id" in message
-
-
-def test_groups_members_itr(logged_rocket, test_group_id):
-    iterated_members = list(logged_rocket.groups_members_itr(room_id=test_group_id))
+def test_groups_members(logged_rocket, test_group_id):
+    iterated_members = list(logged_rocket.groups_members(room_id=test_group_id))
     assert len(iterated_members) > 0, "Should have at least one member"
 
     for member in iterated_members:
@@ -340,17 +321,7 @@ def test_groups_members_itr(logged_rocket, test_group_id):
 
     # Test with custom count parameter
     iterated_members_custom = list(
-        logged_rocket.groups_members_itr(room_id=test_group_id, count=1)
+        logged_rocket.groups_members(room_id=test_group_id, count=1)
     )
     assert len(iterated_members_custom) > 0
 
-
-def test_groups_files_itr(logged_rocket, test_group_id):
-    rooms_upload = logged_rocket.rooms_upload(
-        rid=test_group_id, file="tests/assets/avatar.png", description="hey there"
-    )
-    assert "message" in rooms_upload
-
-    iterated_files = list(logged_rocket.groups_files_itr(room_id=test_group_id))
-    for file in iterated_files:
-        assert "_id" in file

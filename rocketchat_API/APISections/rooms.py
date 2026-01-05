@@ -53,14 +53,10 @@ class RocketChatRooms(RocketChatBase):
             return self.call_api_get("rooms.info", roomName=room_name)
         raise RocketMissingParamException("room_id or roomName required")
 
+    @paginated("rooms")
     def rooms_admin_rooms(self, **kwargs):
         """Retrieves all rooms (requires the view-room-administration permission)."""
         return self.call_api_get("rooms.adminRooms", kwargs=kwargs)
-
-    @paginated("rooms")
-    def rooms_admin_rooms_itr(self, **kwargs):
-        """Retrieves all rooms as an iterator with automatic pagination."""
-        return self.rooms_admin_rooms(**kwargs)
 
     def rooms_create_discussion(self, prid, t_name, **kwargs):
         """
