@@ -18,30 +18,24 @@ Python API wrapper for [Rocket.Chat](https://developer.rocket.chat/reference/api
 ### Usage
 
 ```python
-from pprint import pprint
 from rocketchat_API.rocketchat import RocketChat
 
-proxy_dict = {
-    "http": "http://127.0.0.1:3128",
-    "https": "https://127.0.0.1:3128",
-}
-
-rocket = RocketChat('user', 'pass', server_url='https://demo.rocket.chat', proxies=proxy_dict)
-pprint(rocket.me())
-pprint(rocket.channels_list())
-pprint(rocket.chat_post_message('good news everyone!', channel='GENERAL', alias='Farnsworth'))
-pprint(rocket.channels_history('GENERAL', count=5))
+rocket = RocketChat('user', 'pass', server_url='https://demo.rocket.chat')
+rocket.me()
+for channel in rocket.channels_list():
+    print(channel.get("name"))
+rocket.chat_post_message('good news everyone!', channel='GENERAL', alias='Farnsworth')
+rocket.channels_history('GENERAL', count=5)
 ```
 
 #### Using a token for authentication instead of user and password
 
 ```python
-from pprint import pprint
 from rocketchat_API.rocketchat import RocketChat
 
 rocket = RocketChat(user_id='WPXGmQ64S3BXdCRb6', auth_token='jvNyOYw2f0YKwtiFS06Fk21HBRBBuV7zI43HmkNzI_s',
                     server_url='https://demo.rocket.chat')
-pprint(rocket.me())
+rocket.me()
 ```
 
 ### Method parameters
