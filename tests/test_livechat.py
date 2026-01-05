@@ -93,7 +93,6 @@ def test_livechat_visitor_room_and_message(logged_rocket):
 
 
 def test_livechat_rooms_itr(logged_rocket):
-    # Rooms may be empty, so we just test that iteration works
     iterated_rooms = list(logged_rocket.livechat_rooms_itr())
     for room in iterated_rooms:
         assert "_id" in room

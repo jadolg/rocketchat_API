@@ -435,7 +435,6 @@ def test_channels_members_itr(logged_rocket):
 
 
 def test_channels_files_itr(logged_rocket):
-    # Files may be empty, so we just test that iteration works
     rooms_upload = logged_rocket.rooms_upload(
         "GENERAL", file="tests/assets/avatar.png", description="a test file"
     )

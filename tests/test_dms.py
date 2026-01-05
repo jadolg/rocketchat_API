@@ -168,7 +168,6 @@ def test_dm_history_itr(logged_rocket, recipient_user):
     dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
     iterated_messages = list(logged_rocket.dm_history_itr(room_id=room_id))
-    # Messages may be empty
     for message in iterated_messages:
         assert "_id" in message
 
@@ -177,7 +176,6 @@ def test_dm_messages_itr(logged_rocket, recipient_user):
     dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
     iterated_messages = list(logged_rocket.dm_messages_itr(room_id=room_id))
-    # Messages may be empty
     for message in iterated_messages:
         assert "_id" in message
 
