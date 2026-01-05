@@ -115,11 +115,10 @@ def test_teams_add_update_remove_members(logged_rocket, test_team_id, testuser_i
         ],
     )
 
-    teams_members = logged_rocket.teams_members(team_id=test_team_id)
-    assert "members" in teams_members
-    assert len(teams_members.get("members")) == 2
+    teams_members = list(logged_rocket.teams_members(team_id=test_team_id))
+    assert len(teams_members) == 2
     user_ids = [
-        member.get("user").get("_id") for member in teams_members.get("members")
+        member.get("user").get("_id") for member in teams_members
     ]
     assert testuser_id in user_ids
 
@@ -128,19 +127,18 @@ def test_teams_add_update_remove_members(logged_rocket, test_team_id, testuser_i
         team_id=test_team_id, member={"userId": testuser_id, "roles": ["owner"]}
     )
 
-    teams_members = logged_rocket.teams_members(team_id=test_team_id)
+    teams_members = list(logged_rocket.teams_members(team_id=test_team_id))
     testuser_member = list(
         filter(
             lambda member: member.get("user").get("_id") == testuser_id,
-            teams_members.get("members"),
+            teams_members,
         )
     )[0]
     assert "owner" in testuser_member.get("roles")
 
     logged_rocket.teams_remove_member(team_id=test_team_id, user_id=testuser_id)
-    teams_members = logged_rocket.teams_members(team_id=test_team_id)
-    assert "members" in teams_members
-    assert len(teams_members.get("members")) == 1
+    teams_members = list(logged_rocket.teams_members(team_id=test_team_id))
+    assert len(teams_members) == 1
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.teams_add_members()
@@ -167,11 +165,10 @@ def test_teams_add_update_remove_members_team_name(
         ],
     )
 
-    teams_members = logged_rocket.teams_members(team_name=test_team_name)
-    assert "members" in teams_members
-    assert len(teams_members.get("members")) == 2
+    teams_members = list(logged_rocket.teams_members(team_name=test_team_name))
+    assert len(teams_members) == 2
     user_ids = [
-        member.get("user").get("_id") for member in teams_members.get("members")
+        member.get("user").get("_id") for member in teams_members
     ]
     assert testuser_id in user_ids
 
@@ -180,19 +177,18 @@ def test_teams_add_update_remove_members_team_name(
         team_name=test_team_name, member={"userId": testuser_id, "roles": ["owner"]}
     )
 
-    teams_members = logged_rocket.teams_members(team_name=test_team_name)
+    teams_members = list(logged_rocket.teams_members(team_name=test_team_name))
     testuser_member = list(
         filter(
             lambda member: member.get("user").get("_id") == testuser_id,
-            teams_members.get("members"),
+            teams_members,
         )
     )[0]
     assert "owner" in testuser_member.get("roles")
 
     logged_rocket.teams_remove_member(team_name=test_team_name, user_id=testuser_id)
-    teams_members = logged_rocket.teams_members(team_name=test_team_name)
-    assert "members" in teams_members
-    assert len(teams_members.get("members")) == 1
+    teams_members = list(logged_rocket.teams_members(team_name=test_team_name))
+    assert len(teams_members) == 1
 
 
 def test_teams_list_rooms(logged_rocket, test_team_name, test_team_id):
@@ -217,23 +213,23 @@ def test_teams_add_update_remove_rooms(logged_rocket, test_team_id, test_group_i
     assert "rooms" in created_room
     assert created_room.get("rooms")[0]["_id"] == test_group_id
 
-    teams_rooms = logged_rocket.teams_list_rooms(team_id=test_team_id)
-    assert len(teams_rooms.get("rooms")) == 1
-    assert teams_rooms.get("rooms")[0]["_id"] == test_group_id
+    teams_rooms = list(logged_rocket.teams_list_rooms(team_id=test_team_id))
+    assert len(teams_rooms) == 1
+    assert teams_rooms[0]["_id"] == test_group_id
 
     teams_update_room = logged_rocket.teams_update_room(test_group_id, is_default=True)
     assert teams_update_room.get("room")["_id"] == test_group_id
     assert teams_update_room.get("room")["teamDefault"]
 
-    teams_rooms = logged_rocket.teams_list_rooms(team_id=test_team_id)
-    assert len(teams_rooms.get("rooms")) == 1
-    assert teams_rooms.get("rooms")[0]["_id"] == test_group_id
-    assert teams_rooms.get("rooms")[0]["teamDefault"]
+    teams_rooms = list(logged_rocket.teams_list_rooms(team_id=test_team_id))
+    assert len(teams_rooms) == 1
+    assert teams_rooms[0]["_id"] == test_group_id
+    assert teams_rooms[0]["teamDefault"]
 
     logged_rocket.teams_remove_room(team_id=test_team_id, room_id=test_group_id)
 
-    teams_rooms = logged_rocket.teams_list_rooms(team_id=test_team_id)
-    assert len(teams_rooms.get("rooms")) == 0
+    teams_rooms = list(logged_rocket.teams_list_rooms(team_id=test_team_id))
+    assert len(teams_rooms) == 0
 
 
 def test_teams_add_update_remove_rooms_name(
@@ -245,23 +241,23 @@ def test_teams_add_update_remove_rooms_name(
     assert "rooms" in created_room
     assert created_room.get("rooms")[0]["_id"] == test_group_id
 
-    teams_rooms = logged_rocket.teams_list_rooms(team_name=test_team_name)
-    assert len(teams_rooms.get("rooms")) == 1
-    assert teams_rooms.get("rooms")[0]["_id"] == test_group_id
+    teams_rooms = list(logged_rocket.teams_list_rooms(team_name=test_team_name))
+    assert len(teams_rooms) == 1
+    assert teams_rooms[0]["_id"] == test_group_id
 
     teams_update_room = logged_rocket.teams_update_room(test_group_id, is_default=True)
     assert teams_update_room.get("room")["_id"] == test_group_id
     assert teams_update_room.get("room")["teamDefault"]
 
-    teams_rooms = logged_rocket.teams_list_rooms(team_name=test_team_name)
-    assert len(teams_rooms.get("rooms")) == 1
-    assert teams_rooms.get("rooms")[0]["_id"] == test_group_id
-    assert teams_rooms.get("rooms")[0]["teamDefault"]
+    teams_rooms = list(logged_rocket.teams_list_rooms(team_name=test_team_name))
+    assert len(teams_rooms) == 1
+    assert teams_rooms[0]["_id"] == test_group_id
+    assert teams_rooms[0]["teamDefault"]
 
     logged_rocket.teams_remove_room(team_name=test_team_name, room_id=test_group_id)
 
-    teams_rooms = logged_rocket.teams_list_rooms(team_name=test_team_name)
-    assert len(teams_rooms.get("rooms")) == 0
+    teams_rooms = list(logged_rocket.teams_list_rooms(team_name=test_team_name))
+    assert len(teams_rooms) == 0
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.teams_add_rooms()

@@ -28,21 +28,16 @@ def paginated(data_key):
         automatically handling pagination with offset and count parameters.
 
     Example:
-        @paginated_itr('groups')
-        def groups_list_all_itr(self, **kwargs):
-            return self.groups_list_all(**kwargs)
+        @paginated('groups')
+        def groups_list_all(self, **kwargs):
+            return self.call_api_get("groups.listAll", kwargs=kwargs)
     """
 
     def decorator(func):
-        @wraps(func)
-        def wrapper(self, **kwargs):
-            offset = kwargs.pop("offset", 0)
-            count = kwargs.pop("count", 50)
-
+        def _generator(self, first_data, offset, count, **kwargs):
+            """Inner generator that yields items from paginated API responses."""
+            data = first_data
             while True:
-                # Call the original function with pagination parameters
-                data = func(self, offset=offset, count=count, **kwargs)
-
                 items = data.get(data_key, [])
                 if not items:
                     break
@@ -55,6 +50,18 @@ def paginated(data_key):
                     break
 
                 offset += count
+                # Call the original function with pagination parameters
+                data = func(self, offset=offset, count=count, **kwargs)
+
+        @wraps(func)
+        def wrapper(self, **kwargs):
+            offset = kwargs.pop("offset", 0)
+            count = kwargs.pop("count", 50)
+
+            # Call the original function eagerly to propagate any exceptions
+            first_data = func(self, offset=offset, count=count, **kwargs)
+
+            return _generator(self, first_data, offset, count, **kwargs)
 
         return wrapper
 

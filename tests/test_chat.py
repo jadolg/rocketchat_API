@@ -95,27 +95,15 @@ def test_post_star_unstar_get_starred_messages(logged_rocket):
         .get("_id")
     )
 
-    chat_get_starred_messages = logged_rocket.chat_get_starred_messages(
-        room_id="GENERAL"
-    )
-    assert chat_get_starred_messages.get("count") == 0
-    assert chat_get_starred_messages.get("messages") == []
+    starred_messages = list(logged_rocket.chat_get_starred_messages(room_id="GENERAL"))
+    assert len(starred_messages) == 0
 
     logged_rocket.chat_star_message(message_id)
 
-    chat_get_starred_messages = logged_rocket.chat_get_starred_messages(
-        room_id="GENERAL"
-    )
-    assert chat_get_starred_messages.get("count") == 1
-    assert chat_get_starred_messages.get("messages") != []
+    starred_messages = list(logged_rocket.chat_get_starred_messages(room_id="GENERAL"))
+    assert len(starred_messages) == 1
 
     logged_rocket.chat_unstar_message(message_id)
-
-
-def test_chat_search(logged_rocket):
-    chat_search = logged_rocket.chat_search(room_id="GENERAL", search_text="hello")
-    assert "messages" in chat_search
-    assert isinstance(chat_search.get("messages"), list)
 
 
 def test_chat_get_message_read_receipts(logged_rocket, skip_if_no_license):
@@ -170,20 +158,18 @@ def test_chat_get_thread_messages(logged_rocket):
         tmid=msg1_id,
     )
 
-    chat_get_thread_messages = logged_rocket.chat_get_thread_messages(
-        thread_msg_id=msg1_id,
+    thread_messages = list(
+        logged_rocket.chat_get_thread_messages(
+            thread_msg_id=msg1_id,
+        )
     )
 
     # check that correct number of messages is returned
-    assert chat_get_thread_messages.get("count") == 2
+    assert len(thread_messages) == 2
 
     # check that text of messages are correct and messages are returned in order
-    assert chat_get_thread_messages.get("messages")[0].get(
-        "msg"
-    ) == chat_post_message2.get("message").get("msg")
-    assert chat_get_thread_messages.get("messages")[1].get(
-        "msg"
-    ) == chat_post_message3.get("message").get("msg")
+    assert thread_messages[0].get("msg") == chat_post_message2.get("message").get("msg")
+    assert thread_messages[1].get("msg") == chat_post_message3.get("message").get("msg")
 
 
 def test_chat_get_mentioned_messages(logged_rocket):
@@ -195,20 +181,19 @@ def test_chat_get_mentioned_messages(logged_rocket):
     assert "message" in chat_post_message_with_mention
     assert chat_post_message_with_mention.get("message").get("msg") == "hello @user1"
 
-    chat_get_mentioned_messages = logged_rocket.chat_get_mentioned_messages(
-        room_id="GENERAL"
+    mentioned_messages = list(
+        logged_rocket.chat_get_mentioned_messages(room_id="GENERAL")
     )
-    assert "messages" in chat_get_mentioned_messages
-    assert len(chat_get_mentioned_messages.get("messages")) > 0
-    assert chat_get_mentioned_messages.get("messages")[0].get("msg") == "hello @user1"
+    assert len(mentioned_messages) > 0
+    assert mentioned_messages[0].get("msg") == "hello @user1"
 
 
-def test_chat_search_itr(logged_rocket):
+def test_chat_search(logged_rocket):
     # First post a message to search for
     logged_rocket.chat_post_message("unique_search_term_test", channel="GENERAL")
 
     iterated_messages = list(
-        logged_rocket.chat_search_itr(
+        logged_rocket.chat_search(
             room_id="GENERAL", search_text="unique_search_term_test"
         )
     )
@@ -218,7 +203,7 @@ def test_chat_search_itr(logged_rocket):
         assert "_id" in message
 
 
-def test_chat_get_starred_messages_itr(logged_rocket):
+def test_chat_get_starred_messages(logged_rocket):
     # Starred messages may be empty, so we just test that iteration works
     message_id = (
         logged_rocket.chat_post_message(room_id="GENERAL", text="star this message")
@@ -226,41 +211,8 @@ def test_chat_get_starred_messages_itr(logged_rocket):
         .get("_id")
     )
     logged_rocket.chat_star_message(msg_id=message_id)
-    iterated_messages = list(
-        logged_rocket.chat_get_starred_messages_itr(room_id="GENERAL")
-    )
+    iterated_messages = list(logged_rocket.chat_get_starred_messages(room_id="GENERAL"))
     for message in iterated_messages:
         assert "_id" in message
 
     logged_rocket.chat_unstar_message(msg_id=message_id)
-
-
-def test_chat_get_thread_messages_itr(logged_rocket):
-    # Create a thread first
-    chat_post_message1 = logged_rocket.chat_post_message(
-        "thread_parent", channel="GENERAL"
-    )
-    msg1_id = chat_post_message1.get("message").get("_id")
-
-    logged_rocket.chat_post_message("thread_reply_1", room_id="GENERAL", tmid=msg1_id)
-    logged_rocket.chat_post_message("thread_reply_2", room_id="GENERAL", tmid=msg1_id)
-
-    iterated_messages = list(
-        logged_rocket.chat_get_thread_messages_itr(thread_msg_id=msg1_id)
-    )
-    assert len(iterated_messages) >= 2
-
-    for message in iterated_messages:
-        assert "_id" in message
-
-
-def test_chat_get_mentioned_messages_itr(logged_rocket):
-    # Post a message with mention
-    logged_rocket.chat_post_message("hello @user1 itr test", channel="GENERAL")
-
-    iterated_messages = list(
-        logged_rocket.chat_get_mentioned_messages_itr(room_id="GENERAL")
-    )
-    # May have mentions or may not
-    for message in iterated_messages:
-        assert "_id" in message

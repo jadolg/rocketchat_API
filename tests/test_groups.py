@@ -273,16 +273,6 @@ def test_groups_set_custom_fields(
         logged_rocket.groups_set_custom_fields(custom_fields)
 
 
-def test_groups_members(logged_rocket, test_group_name, test_group_id):
-    groups_members = logged_rocket.groups_members(room_id=test_group_id)
-    assert all(key in groups_members for key in ["members", "count", "offset", "total"])
-    groups_members = logged_rocket.groups_members(group=test_group_name)
-    assert all(key in groups_members for key in ["members", "count", "offset", "total"])
-
-    with pytest.raises(RocketMissingParamException):
-        logged_rocket.groups_members()
-
-
 def test_groups_roles(logged_rocket):
     name = str(uuid.uuid1())
     groups_create = logged_rocket.groups_create(name)
@@ -310,7 +300,6 @@ def test_groups_files(logged_rocket, test_group_id):
         assert "_id" in file
 
 
-
 def test_groups_members(logged_rocket, test_group_id):
     iterated_members = list(logged_rocket.groups_members(room_id=test_group_id))
     assert len(iterated_members) > 0, "Should have at least one member"
@@ -325,3 +314,5 @@ def test_groups_members(logged_rocket, test_group_id):
     )
     assert len(iterated_members_custom) > 0
 
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.groups_members()
