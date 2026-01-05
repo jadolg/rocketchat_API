@@ -289,7 +289,7 @@ def test_groups_roles(logged_rocket):
         logged_rocket.groups_roles()
 
 
-def test_groups_files(logged_rocket, test_group_id):
+def test_groups_files(logged_rocket, test_group_name, test_group_id):
     rooms_upload = logged_rocket.rooms_upload(
         rid=test_group_id, file="tests/assets/avatar.png", description="hey there"
     )
@@ -299,10 +299,17 @@ def test_groups_files(logged_rocket, test_group_id):
     for file in iterated_files:
         assert "_id" in file
 
+    iterated_files_name = list(logged_rocket.groups_files(room_name=test_group_name))
+    assert iterated_files_name == iterated_files
 
-def test_groups_members(logged_rocket, test_group_id):
+
+def test_groups_members(logged_rocket, test_group_name, test_group_id):
     iterated_members = list(logged_rocket.groups_members(room_id=test_group_id))
+    iterated_members_room_name = list(
+        logged_rocket.groups_members(group=test_group_name)
+    )
     assert len(iterated_members) > 0, "Should have at least one member"
+    assert iterated_members_room_name == iterated_members
 
     for member in iterated_members:
         assert "_id" in member
