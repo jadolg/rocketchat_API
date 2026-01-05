@@ -1,8 +1,9 @@
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatGroups(RocketChatBase):
+    @paginated("groups")
     def groups_list_all(self, **kwargs):
         """
         List all the private groups on the server.
@@ -10,10 +11,12 @@ class RocketChatGroups(RocketChatBase):
         """
         return self.call_api_get("groups.listAll", kwargs=kwargs)
 
+    @paginated("groups")
     def groups_list(self, **kwargs):
         """List the private groups the caller is part of."""
         return self.call_api_get("groups.list", kwargs=kwargs)
 
+    @paginated("messages")
     def groups_history(self, room_id, **kwargs):
         """Retrieves the messages from a private group."""
         return self.call_api_get("groups.history", roomId=room_id, kwargs=kwargs)
@@ -172,6 +175,7 @@ class RocketChatGroups(RocketChatBase):
             return self.call_api_post("groups.delete", roomName=group, kwargs=kwargs)
         raise RocketMissingParamException("room_id or group required")
 
+    @paginated("members")
     def groups_members(self, room_id=None, group=None, **kwargs):
         """Lists all group users."""
         if room_id:
@@ -188,6 +192,7 @@ class RocketChatGroups(RocketChatBase):
             return self.call_api_get("groups.roles", roomName=room_name, kwargs=kwargs)
         raise RocketMissingParamException("room_id or room_name required")
 
+    @paginated("files")
     def groups_files(self, room_id=None, room_name=None, **kwargs):
         """Retrieves the files from a private group."""
         if room_id:

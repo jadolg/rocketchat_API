@@ -1,5 +1,5 @@
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatChat(RocketChatBase):
@@ -59,6 +59,7 @@ class RocketChatChat(RocketChatBase):
             "chat.react", messageId=msg_id, emoji=emoji, kwargs=kwargs
         )
 
+    @paginated("messages")
     def chat_search(self, room_id, search_text, **kwargs):
         """Search for messages in a channel by id and text message."""
         return self.call_api_get(
@@ -71,6 +72,7 @@ class RocketChatChat(RocketChatBase):
             "chat.getMessageReadReceipts", messageId=message_id, kwargs=kwargs
         )
 
+    @paginated("messages")
     def chat_get_starred_messages(self, room_id, **kwargs):
         """Retrieve starred messages."""
         return self.call_api_get(
@@ -90,6 +92,7 @@ class RocketChatChat(RocketChatBase):
         """Follows a chat message to the message's channel."""
         return self.call_api_post("chat.followMessage", mid=mid, kwargs=kwargs)
 
+    @paginated("messages")
     def chat_get_thread_messages(self, thread_msg_id, **kwargs):
         """Get thread messages."""
         return self.call_api_get(
@@ -98,6 +101,7 @@ class RocketChatChat(RocketChatBase):
             kwargs=kwargs,
         )
 
+    @paginated("messages")
     def chat_get_mentioned_messages(self, room_id, **kwargs):
         """Get the messages in which you are mentioned (users are mentioned with the @ symbol)."""
         return self.call_api_get(

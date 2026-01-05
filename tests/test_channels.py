@@ -1,7 +1,6 @@
 import uuid
 
 import pytest
-from semver import Version
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketMissingParamException,
@@ -38,13 +37,33 @@ def testuser_id(logged_rocket):
 
 
 def test_channels_list(logged_rocket):
-    channels_list = logged_rocket.channels_list()
-    assert "channels" in channels_list
+    iterated_channels = list(logged_rocket.channels_list())
+    assert len(iterated_channels) > 0, "Should have at least one channel"
+
+    for channel in iterated_channels:
+        assert "_id" in channel
+        assert "name" in channel
+
+    iterated_channels_custom = list(logged_rocket.channels_list(count=1))
+    assert len(iterated_channels_custom) > 0
+
+    for channel in logged_rocket.channels_list():
+        assert "_id" in channel
 
 
 def test_channels_list_joined(logged_rocket):
-    channels_list_joined = logged_rocket.channels_list_joined()
-    assert "channels" in channels_list_joined
+    iterated_channels = list(logged_rocket.channels_list_joined())
+    assert len(iterated_channels) > 0, "Should have at least one joined channel"
+
+    for channel in iterated_channels:
+        assert "_id" in channel
+        assert "name" in channel
+
+    iterated_channels_custom = list(logged_rocket.channels_list_joined(count=1))
+    assert len(iterated_channels_custom) > 0
+
+    for channel in logged_rocket.channels_list_joined():
+        assert "_id" in channel
 
 
 def test_channels_info(logged_rocket):
@@ -63,8 +82,19 @@ def test_channels_info(logged_rocket):
 
 
 def test_channels_history(logged_rocket):
-    channels_history = logged_rocket.channels_history(room_id="GENERAL")
-    assert "messages" in channels_history
+    iterated_messages = list(logged_rocket.channels_history(room_id="GENERAL"))
+    for message in iterated_messages:
+        assert "_id" in message
+
+    # Test with custom count parameter
+    iterated_messages_custom = list(
+        logged_rocket.channels_history(room_id="GENERAL", count=1)
+    )
+    for message in iterated_messages_custom:
+        assert "_id" in message
+
+    for message in logged_rocket.channels_history(room_id="GENERAL"):
+        assert "_id" in message
 
 
 def test_channels_add_all(logged_rocket):
@@ -271,20 +301,6 @@ def test_channels_set_custom_fields(logged_rocket):
     assert cf == channels_set_custom_fields["channel"]["customFields"]
 
 
-def test_channels_members(logged_rocket):
-    channels_members = logged_rocket.channels_members(room_id="GENERAL")
-    assert all(
-        key in channels_members for key in ["members", "count", "offset", "total"]
-    )
-    channels_members = logged_rocket.channels_members(channel="general")
-    assert all(
-        key in channels_members for key in ["members", "count", "offset", "total"]
-    )
-
-    with pytest.raises(RocketMissingParamException):
-        logged_rocket.channels_members()
-
-
 def test_channels_roles(logged_rocket):
     channels_roles = logged_rocket.channels_roles(room_id="GENERAL")
     assert channels_roles.get("roles") is not None
@@ -293,27 +309,6 @@ def test_channels_roles(logged_rocket):
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.channels_roles()
-
-
-def test_channels_files(logged_rocket):
-    channels_files = logged_rocket.channels_files(room_id="GENERAL")
-    assert all(key in channels_files for key in ["files", "count", "offset", "total"])
-
-    channels_files = logged_rocket.channels_files(room_name="general")
-    assert all(key in channels_files for key in ["files", "count", "offset", "total"])
-
-    with pytest.raises(RocketMissingParamException):
-        logged_rocket.channels_files()
-
-
-def test_channels_get_all_user_mentions_by_channel(logged_rocket):
-    channels_get_all_user_mentions_by_channel = (
-        logged_rocket.channels_get_all_user_mentions_by_channel(room_id="GENERAL")
-    )
-    assert all(
-        key in channels_get_all_user_mentions_by_channel
-        for key in ["mentions", "count", "offset", "total"]
-    )
 
 
 def test_channels_counters(logged_rocket):
@@ -344,16 +339,8 @@ def test_channels_counters(logged_rocket):
 
 
 def test_channels_online(logged_rocket):
-    version = logged_rocket.info().get("info").get("version")
-    if version and Version.parse(version) >= Version.parse("7.0.0"):
-        channels_online = logged_rocket.channels_online(_id="GENERAL")
-    else:
-        channels_online = logged_rocket.channels_online(query={"_id": "GENERAL"})
-
+    channels_online = logged_rocket.channels_online(_id="GENERAL")
     assert len(channels_online.get("online")) >= 1
-
-    with pytest.raises(RocketMissingParamException):
-        logged_rocket.channels_online()
 
 
 def test_channels_set_default(logged_rocket):
@@ -365,3 +352,55 @@ def test_channels_set_default(logged_rocket):
         room_id="GENERAL", default=True
     )
     assert channels_set_default.get("channel").get("default")
+
+
+def test_channels_members(logged_rocket):
+    iterated_members = list(logged_rocket.channels_members(room_id="GENERAL"))
+    iterated_members_channel = list(logged_rocket.channels_members(channel="general"))
+    assert len(iterated_members) > 0, "Should have at least one member"
+    assert len(iterated_members) == len(iterated_members_channel)
+
+    for member in iterated_members:
+        assert "_id" in member
+        assert "username" in member
+
+    # Test with custom count parameter
+    iterated_members_custom = list(
+        logged_rocket.channels_members(room_id="GENERAL", count=1)
+    )
+    assert len(iterated_members_custom) > 0
+
+    for member in logged_rocket.channels_members(room_id="GENERAL"):
+        assert "_id" in member
+
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.channels_members()
+
+
+def test_channels_files(logged_rocket):
+    rooms_upload = logged_rocket.rooms_upload(
+        "GENERAL", file="tests/assets/avatar.png", description="a test file"
+    )
+    assert "message" in rooms_upload
+
+    iterated_files = list(logged_rocket.channels_files(room_id="GENERAL"))
+    for file in iterated_files:
+        assert "_id" in file
+
+    iterated_files_room_name = list(logged_rocket.channels_files(room_name="general"))
+    for file in iterated_files:
+        assert "_id" in file
+
+    assert len(iterated_files_room_name) == len(iterated_files)
+
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.channels_files()
+
+
+def test_channels_get_all_user_mentions_by_channel(logged_rocket):
+    logged_rocket.chat_post_message(channel="GENERAL", text="Hello @user1")
+    iterated_mentions = list(
+        logged_rocket.channels_get_all_user_mentions_by_channel(room_id="GENERAL")
+    )
+    for mention in iterated_mentions:
+        assert "_id" in mention

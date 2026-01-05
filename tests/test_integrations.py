@@ -42,11 +42,13 @@ def test_integrations_get(integrations_create_webhook_incoming, logged_rocket):
 
 def test_integrations_history(integrations_create_webhook_incoming, logged_rocket):
     integration_id = integrations_create_webhook_incoming.get("integration").get("_id")
-    logged_rocket.integrations_history(integration_id)
+    logged_rocket.integrations_history(integration_id=integration_id)
 
 
 def test_integrations_list(logged_rocket):
-    logged_rocket.integrations_list()
+    iterated_integrations = list(logged_rocket.integrations_list())
+    for integration in iterated_integrations:
+        assert "_id" in integration
 
 
 def test_integrations_remove(integrations_create_webhook_incoming, logged_rocket):

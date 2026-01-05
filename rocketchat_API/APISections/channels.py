@@ -1,14 +1,16 @@
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatChannels(RocketChatBase):
+    @paginated("channels")
     def channels_list(self, **kwargs):
         """Retrieves all of the channels from the server."""
         return self.call_api_get("channels.list", kwargs=kwargs)
 
+    @paginated("channels")
     def channels_list_joined(self, **kwargs):
-        """Lists all of the channels the calling user has joined"""
+        """Lists all of the channels the calling user has joined."""
         return self.call_api_get("channels.list.joined", kwargs=kwargs)
 
     def channels_info(self, room_id=None, channel=None, **kwargs):
@@ -19,6 +21,7 @@ class RocketChatChannels(RocketChatBase):
             return self.call_api_get("channels.info", roomName=channel, kwargs=kwargs)
         raise RocketMissingParamException("room_id or channel required")
 
+    @paginated("messages")
     def channels_history(self, room_id, **kwargs):
         """Retrieves the messages from a channel."""
         return self.call_api_get("channels.history", roomId=room_id, kwargs=kwargs)
@@ -205,6 +208,7 @@ class RocketChatChannels(RocketChatBase):
             )
         raise RocketMissingParamException("room_id or channel required")
 
+    @paginated("members")
     def channels_members(self, room_id=None, channel=None, **kwargs):
         """Lists all channel users."""
         if room_id:
@@ -225,6 +229,7 @@ class RocketChatChannels(RocketChatBase):
             )
         raise RocketMissingParamException("room_id or room_name required")
 
+    @paginated("files")
     def channels_files(self, room_id=None, room_name=None, **kwargs):
         """Retrieves the files from a channel."""
         if room_id:
@@ -235,6 +240,7 @@ class RocketChatChannels(RocketChatBase):
             )
         raise RocketMissingParamException("room_id or room_name required")
 
+    @paginated("mentions")
     def channels_get_all_user_mentions_by_channel(self, room_id, **kwargs):
         """Gets all the mentions of a channel."""
         return self.call_api_get(
@@ -251,10 +257,7 @@ class RocketChatChannels(RocketChatBase):
             )
         raise RocketMissingParamException("room_id or room_name required")
 
-    def channels_online(self, _id=None):
+    def channels_online(self, _id):
         """Lists all online users of a channel if the channel's id is provided, otherwise it gets all online users of
         all channels."""
-        if _id:
-            return self.call_api_get("channels.online", _id=_id)
-        else:
-            raise RocketMissingParamException("_id or query required")
+        return self.call_api_get("channels.online", _id=_id)

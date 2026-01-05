@@ -31,11 +31,17 @@ def test_roles_add_remove_user_to_from_role(logged_rocket):
 
 
 def test_roles_get_users_in_role(logged_rocket):
-    roles_get_users_in_role = logged_rocket.roles_get_users_in_role(
-        role="owner", roomId="GENERAL"
+    iterated_users = list(
+        logged_rocket.roles_get_users_in_role(role="owner", roomId="GENERAL")
     )
+    assert len(iterated_users) > 0, "Should have at least one owner"
 
-    assert roles_get_users_in_role.get("users")[0].get("name") == "user1"
+    for user in iterated_users:
+        assert "_id" in user
+        assert "name" in user
+
+    # Verify the admin/owner user is in the list
+    assert any(user.get("name") == "user1" for user in iterated_users)
 
 
 def test_roles_sync(logged_rocket):

@@ -2,7 +2,7 @@ import mimetypes
 import os
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatUsers(RocketChatBase):
@@ -18,6 +18,7 @@ class RocketChatUsers(RocketChatBase):
             return self.call_api_get("users.info", username=username, kwargs=kwargs)
         raise RocketMissingParamException("userID or username required")
 
+    @paginated("users")
     def users_list(self, **kwargs):
         """All of the users and their information, limited to permissions."""
         return self.call_api_get("users.list", kwargs=kwargs)

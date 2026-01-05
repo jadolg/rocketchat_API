@@ -1,11 +1,13 @@
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatLivechat(RocketChatBase):
+    @paginated("rooms")
     def livechat_rooms(self, **kwargs):
         """Retrieves a list of livechat rooms."""
         return self.call_api_get("livechat/rooms", kwargs=kwargs)
 
+    @paginated("inquiries")
     def livechat_inquiries_list(self, **kwargs):
         """Lists all of the open livechat inquiries."""
         return self.call_api_get("livechat/inquiries.list", kwargs=kwargs)
@@ -16,6 +18,7 @@ class RocketChatLivechat(RocketChatBase):
             "livechat/inquiries.take", inquiryId=inquiry_id, kwargs=kwargs
         )
 
+    @paginated("users")
     def livechat_get_users(self, user_type, **kwargs):
         """Get a list of agents or managers."""
         return self.call_api_get("livechat/users/{}".format(user_type), kwargs=kwargs)

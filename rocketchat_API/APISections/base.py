@@ -1,6 +1,10 @@
 import re
+
+from functools import wraps
+
 from json import JSONDecodeError
 from typing import Any
+
 
 import requests
 
@@ -9,6 +13,59 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketConnectionException,
     RocketBadStatusCodeException,
 )
+
+
+def paginated(data_key):
+    """
+    Decorator that converts a paginated API method into an iterator.
+
+    Args:
+        data_key: The key in the API response that contains the list of items
+                  (e.g., 'groups', 'channels', 'users')
+
+    Returns:
+        A decorator that wraps the original method to yield items one by one,
+        automatically handling pagination with offset and count parameters.
+
+    Example:
+        @paginated('groups')
+        def groups_list_all(self, **kwargs):
+            return self.call_api_get("groups.listAll", kwargs=kwargs)
+    """
+
+    def decorator(func):
+        def _generator(self, first_data, offset, count, **kwargs):
+            """Inner generator that yields items from paginated API responses."""
+            data = first_data
+            while True:
+                items = data.get(data_key, [])
+                if not items:
+                    break
+
+                for item in items:
+                    yield item
+
+                # If we got fewer items than requested, we've reached the end
+                if len(items) < count:
+                    break
+
+                offset += count
+                # Call the original function with pagination parameters
+                data = func(self, offset=offset, count=count, **kwargs)
+
+        @wraps(func)
+        def wrapper(self, **kwargs):
+            offset = kwargs.pop("offset", 0)
+            count = kwargs.pop("count", 50)
+
+            # Call the original function eagerly to propagate any exceptions
+            first_data = func(self, offset=offset, count=count, **kwargs)
+
+            return _generator(self, first_data, offset, count, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def json_or_error(r: requests.Response) -> Any:

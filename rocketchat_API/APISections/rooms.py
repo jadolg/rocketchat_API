@@ -2,7 +2,7 @@ import mimetypes
 import os
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatRooms(RocketChatBase):
@@ -53,6 +53,7 @@ class RocketChatRooms(RocketChatBase):
             return self.call_api_get("rooms.info", roomName=room_name)
         raise RocketMissingParamException("room_id or roomName required")
 
+    @paginated("rooms")
     def rooms_admin_rooms(self, **kwargs):
         """Retrieves all rooms (requires the view-room-administration permission)."""
         return self.call_api_get("rooms.adminRooms", kwargs=kwargs)

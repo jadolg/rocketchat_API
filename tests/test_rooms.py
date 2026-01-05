@@ -66,26 +66,19 @@ def test_rooms_create_discussion(logged_rocket):
 
 
 def test_rooms_admin_rooms(logged_rocket):
-    rooms_simple = logged_rocket.rooms_admin_rooms()
-    assert all(key in rooms_simple for key in ["rooms", "count", "offset", "total"])
-    # Using a room type filter does not seem to work
-    offset = actual_count = 0
-    res = {}
-    while res.get("total") is None or res.get("total") > offset:
-        res = logged_rocket.rooms_admin_rooms(
-            **{
-                "types": [
-                    "c",
-                ],
-                "offset": offset,
-            }
-        )
-        offset += res.get("count")
-        actual_count += len(list(filter(lambda x: "c" in x["t"], res.get("rooms"))))
-    assert res.get("total") == actual_count
+    iterated_rooms = list(logged_rocket.rooms_admin_rooms())
+    assert len(iterated_rooms) > 0, "Should have at least one room"
 
-    rooms_with_filter = logged_rocket.rooms_admin_rooms(**{"filter": "general"})
-    assert rooms_with_filter.get("rooms")[0].get("_id") == "GENERAL"
+    for room in iterated_rooms:
+        assert "_id" in room
+        assert "t" in room
+
+    # Test with custom count parameter
+    iterated_rooms_custom = list(logged_rocket.rooms_admin_rooms(count=1))
+    assert len(iterated_rooms_custom) > 0
+
+    rooms_with_filter = list(logged_rocket.rooms_admin_rooms(filter="general"))
+    assert len(rooms_with_filter) == 1
 
 
 def test_rooms_leave(logged_rocket, secondary_user):

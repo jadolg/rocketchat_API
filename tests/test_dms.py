@@ -51,7 +51,11 @@ def test_dm_send_no_text(logged_rocket, recipient_user):
 
 def test_dm_list(logged_rocket, recipient_user):
     logged_rocket.dm_create(recipient_user)
-    logged_rocket.dm_list()
+    iterated_dms = list(logged_rocket.dm_list())
+    assert len(iterated_dms) > 0, "Should have at least one DM"
+
+    for dm in iterated_dms:
+        assert "_id" in dm
 
 
 def test_dm_close_open(logged_rocket, recipient_user):
@@ -69,18 +73,12 @@ def test_dm_set_topic(logged_rocket, recipient_user):
     assert dm_set_topic.get("topic") == topic, "Topic set does not match topic returned"
 
 
-def test_dm_list_everyone(logged_rocket):
-    dm_list_everyone = logged_rocket.dm_list_everyone()
-    assert "ims" in dm_list_everyone
-    assert isinstance(dm_list_everyone.get("ims"), list)
-
-
 def test_dm_history(logged_rocket, recipient_user):
     dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    dm_history = logged_rocket.dm_history(room_id)
-    assert "messages" in dm_history
-    assert isinstance(dm_history.get("messages"), list)
+    iterated_messages = list(logged_rocket.dm_history(room_id=room_id))
+    for message in iterated_messages:
+        assert "_id" in message
 
 
 def test_dm_members(logged_rocket, recipient_user):
@@ -91,16 +89,17 @@ def test_dm_members(logged_rocket, recipient_user):
 
 
 def test_dm_messages(logged_rocket, recipient_user):
-    dm_message = logged_rocket.dm_messages(username=recipient_user)
-    assert "messages" in dm_message
-    assert isinstance(dm_message.get("messages"), list)
     dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    dm_message = logged_rocket.dm_messages(room_id=room_id)
-    assert "messages" in dm_message
-    assert isinstance(dm_message.get("messages"), list)
-    dm_message = logged_rocket.dm_messages(room_id=room_id, pinned=True)
-    assert dm_message.get("messages") == []
+    iterated_messages = list(logged_rocket.dm_messages(room_id=room_id))
+    for message in iterated_messages:
+        assert "_id" in message
+
+    iterated_messages_username = list(
+        logged_rocket.dm_messages(username=recipient_user)
+    )
+
+    assert iterated_messages == iterated_messages_username
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.dm_messages()
@@ -116,14 +115,17 @@ def test_dm_messages_others(logged_rocket, recipient_user):
 
 def test_dm_files(logged_rocket, recipient_user):
     dm_create = logged_rocket.dm_create(recipient_user)
+    room_id = dm_create.get("room").get("_id")
+    logged_rocket.rooms_upload(
+        rid=room_id, file="tests/assets/avatar.png", description="hey there"
+    )
+    iterated_files = list(logged_rocket.dm_files(room_id=room_id))
+    for file in iterated_files:
+        assert "_id" in file
 
-    dm_files = logged_rocket.dm_files(room_id=dm_create.get("room").get("_id"))
-    assert "files" in dm_files
-    assert isinstance(dm_files.get("files"), list)
+    iterated_files_username = list(logged_rocket.dm_files(user_name=recipient_user))
 
-    dm_files = logged_rocket.dm_files(user_name=recipient_user)
-    assert "files" in dm_files
-    assert isinstance(dm_files.get("files"), list)
+    assert iterated_files == iterated_files_username
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.dm_files()
@@ -146,3 +148,9 @@ def test_dm_counters(logged_rocket, recipient_user):
         key in dm_counters
         for key in ["joined", "members", "unreads", "msgs", "userMentions"]
     )
+
+
+def test_dm_list_everyone(logged_rocket):
+    iterated_dms = list(logged_rocket.dm_list_everyone())
+    for dm in iterated_dms:
+        assert "_id" in dm

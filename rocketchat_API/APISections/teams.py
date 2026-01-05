@@ -1,5 +1,5 @@
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 ID_OR_TEAM_NAME_REQUIRED = "team_id or team_name required"
 
@@ -19,6 +19,7 @@ class RocketChatTeams(RocketChatBase):
             return self.call_api_post("teams.delete", teamName=team_name, kwargs=kwargs)
         raise RocketMissingParamException(ID_OR_TEAM_NAME_REQUIRED)
 
+    @paginated("teams")
     def teams_list_all(self, **kwargs):
         """
         List all the teams on the server.
@@ -38,6 +39,7 @@ class RocketChatTeams(RocketChatBase):
             return self.call_api_get("teams.info", teamName=team_name, kwargs=kwargs)
         raise RocketMissingParamException(ID_OR_TEAM_NAME_REQUIRED)
 
+    @paginated("members")
     def teams_members(
         self, team_id=None, team_name=None, name="", username="", **kwargs
     ):
@@ -96,6 +98,7 @@ class RocketChatTeams(RocketChatBase):
             )
         raise RocketMissingParamException(ID_OR_TEAM_NAME_REQUIRED)
 
+    @paginated("rooms")
     def teams_list_rooms(
         self, team_id=None, team_name=None, room_type="", name="", **kwargs
     ):

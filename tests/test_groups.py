@@ -42,13 +42,25 @@ def test_group_id(test_group_name, logged_rocket):
 
 
 def test_groups_list_all(logged_rocket):
-    groups_list = logged_rocket.groups_list_all()
-    assert "groups" in groups_list
+    iterated_groups = list(logged_rocket.groups_list_all())
+    assert len(iterated_groups) > 0, "Should have at least one group"
+
+    for group in iterated_groups:
+        assert "_id" in group
+        assert "name" in group
+
+    iterated_groups_custom = list(logged_rocket.groups_list_all(count=1))
+    assert len(iterated_groups_custom) > 0
+
+    for group in logged_rocket.groups_list_all():
+        assert "_id" in group
 
 
 def test_groups_list(logged_rocket):
-    groups_list = logged_rocket.groups_list()
-    assert "groups" in groups_list
+    iterated_groups = list(logged_rocket.groups_list())
+    for group in iterated_groups:
+        assert "_id" in group
+        assert "name" in group
 
 
 def test_groups_info(logged_rocket, test_group_name, test_group_id):
@@ -65,8 +77,12 @@ def test_groups_info(logged_rocket, test_group_name, test_group_id):
 
 
 def test_groups_history(logged_rocket, test_group_id):
-    groups_history = logged_rocket.groups_history(room_id=test_group_id)
-    assert "messages" in groups_history
+    logged_rocket.chat_post_message(
+        room_id=test_group_id, text="Testing groups_history"
+    )
+    iterated_messages = list(logged_rocket.groups_history(room_id=test_group_id))
+    for message in iterated_messages:
+        assert "_id" in message
 
 
 def test_groups_add_and_remove_moderator(logged_rocket, test_group_id):
@@ -251,16 +267,6 @@ def test_groups_set_custom_fields(
         logged_rocket.groups_set_custom_fields(custom_fields)
 
 
-def test_groups_members(logged_rocket, test_group_name, test_group_id):
-    groups_members = logged_rocket.groups_members(room_id=test_group_id)
-    assert all(key in groups_members for key in ["members", "count", "offset", "total"])
-    groups_members = logged_rocket.groups_members(group=test_group_name)
-    assert all(key in groups_members for key in ["members", "count", "offset", "total"])
-
-    with pytest.raises(RocketMissingParamException):
-        logged_rocket.groups_members()
-
-
 def test_groups_roles(logged_rocket):
     name = str(uuid.uuid1())
     groups_create = logged_rocket.groups_create(name)
@@ -277,17 +283,40 @@ def test_groups_roles(logged_rocket):
         logged_rocket.groups_roles()
 
 
-def test_groups_files(logged_rocket):
-    name = str(uuid.uuid1())
-    groups_create = logged_rocket.groups_create(name)
-
-    groups_files = logged_rocket.groups_files(
-        room_id=groups_create.get("group").get("_id")
+def test_groups_files(logged_rocket, test_group_name, test_group_id):
+    rooms_upload = logged_rocket.rooms_upload(
+        rid=test_group_id, file="tests/assets/avatar.png", description="hey there"
     )
-    assert all(key in groups_files for key in ["files", "count", "offset", "total"])
+    assert "message" in rooms_upload
 
-    groups_files = logged_rocket.groups_files(room_name=name)
-    assert all(key in groups_files for key in ["files", "count", "offset", "total"])
+    iterated_files = list(logged_rocket.groups_files(room_id=test_group_id))
+    for file in iterated_files:
+        assert "_id" in file
+
+    iterated_files_name = list(logged_rocket.groups_files(room_name=test_group_name))
+    assert iterated_files_name == iterated_files
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.groups_files()
+
+
+def test_groups_members(logged_rocket, test_group_name, test_group_id):
+    iterated_members = list(logged_rocket.groups_members(room_id=test_group_id))
+    iterated_members_room_name = list(
+        logged_rocket.groups_members(group=test_group_name)
+    )
+    assert len(iterated_members) > 0, "Should have at least one member"
+    assert iterated_members_room_name == iterated_members
+
+    for member in iterated_members:
+        assert "_id" in member
+        assert "username" in member
+
+    # Test with custom count parameter
+    iterated_members_custom = list(
+        logged_rocket.groups_members(room_id=test_group_id, count=1)
+    )
+    assert len(iterated_members_custom) > 0
+
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.groups_members()

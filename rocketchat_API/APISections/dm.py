@@ -1,18 +1,21 @@
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatDM(RocketChatBase):
+    @paginated("ims")
     def dm_list(self, **kwargs):
-        """List the private im chats for logged user"""
+        """List the private im chats for logged user."""
         return self.call_api_get("dm.list", kwargs=kwargs)
 
+    @paginated("ims")
     def dm_list_everyone(self, **kwargs):
         """List all direct message the caller in the server."""
         return self.call_api_get("dm.list.everyone", kwargs=kwargs)
 
+    @paginated("messages")
     def dm_history(self, room_id, **kwargs):
-        """Retrieves the history for a private im chat"""
+        """Retrieves the history for a private im chat."""
         return self.call_api_get("dm.history", roomId=room_id, kwargs=kwargs)
 
     def dm_create(self, username, **kwargs):
@@ -37,8 +40,9 @@ class RocketChatDM(RocketChatBase):
         """Retrieves members of a direct message."""
         return self.call_api_get("dm.members", roomId=room_id)
 
+    @paginated("messages")
     def dm_messages(self, room_id=None, username=None, **kwargs):
-        """Retrieves direct messages from the server by username"""
+        """Retrieves direct messages from the server."""
         if room_id:
             return self.call_api_get("dm.messages", roomId=room_id, kwargs=kwargs)
 
@@ -57,6 +61,7 @@ class RocketChatDM(RocketChatBase):
             "dm.setTopic", roomId=room_id, topic=topic, kwargs=kwargs
         )
 
+    @paginated("files")
     def dm_files(self, room_id=None, user_name=None, **kwargs):
         """Retrieves the files from a direct message."""
         if room_id:

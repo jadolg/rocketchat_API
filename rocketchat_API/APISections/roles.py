@@ -1,4 +1,4 @@
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatRoles(RocketChatBase):
@@ -25,8 +25,9 @@ class RocketChatRoles(RocketChatBase):
             kwargs=kwargs,
         )
 
+    @paginated("users")
     def roles_get_users_in_role(self, role, **kwargs):
-        """Gets the users that belongs to a role. It supports the Offset and Count Only."""
+        """Gets the users that belongs to a role."""
         return self.call_api_get("roles.getUsersInRole", role=role, kwargs=kwargs)
 
     def roles_sync(self, updated_since):
