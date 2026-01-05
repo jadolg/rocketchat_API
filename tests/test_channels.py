@@ -366,7 +366,9 @@ def test_channels_set_default(logged_rocket):
 
 def test_channels_members(logged_rocket):
     iterated_members = list(logged_rocket.channels_members(room_id="GENERAL"))
+    iterated_members_channel = list(logged_rocket.channels_members(channel="general"))
     assert len(iterated_members) > 0, "Should have at least one member"
+    assert len(iterated_members) == len(iterated_members_channel)
 
     for member in iterated_members:
         assert "_id" in member
