@@ -36,6 +36,11 @@ class RocketChatChannels(RocketChatBase):
         """Retrieves the messages from a channel."""
         return self.call_api_get("channels.history", roomId=room_id, kwargs=kwargs)
 
+    @paginated_itr("messages")
+    def channels_history_itr(self, room_id, **kwargs):
+        """Retrieves the messages from a channel as an iterator with automatic pagination."""
+        return self.channels_history(room_id, **kwargs)
+
     def channels_add_all(self, room_id, **kwargs):
         """Adds all of the users of the Rocket.Chat server to the channel."""
         return self.call_api_post("channels.addAll", roomId=room_id, kwargs=kwargs)
@@ -228,6 +233,11 @@ class RocketChatChannels(RocketChatBase):
             )
         raise RocketMissingParamException("room_id or channel required")
 
+    @paginated_itr("members")
+    def channels_members_itr(self, room_id=None, channel=None, **kwargs):
+        """Lists all channel users as an iterator with automatic pagination."""
+        return self.channels_members(room_id=room_id, channel=channel, **kwargs)
+
     def channels_roles(self, room_id=None, room_name=None, **kwargs):
         """Lists all user's roles in the channel."""
         if room_id:
@@ -248,11 +258,21 @@ class RocketChatChannels(RocketChatBase):
             )
         raise RocketMissingParamException("room_id or room_name required")
 
+    @paginated_itr("files")
+    def channels_files_itr(self, room_id=None, room_name=None, **kwargs):
+        """Retrieves the files from a channel as an iterator with automatic pagination."""
+        return self.channels_files(room_id=room_id, room_name=room_name, **kwargs)
+
     def channels_get_all_user_mentions_by_channel(self, room_id, **kwargs):
         """Gets all the mentions of a channel."""
         return self.call_api_get(
             "channels.getAllUserMentionsByChannel", roomId=room_id, kwargs=kwargs
         )
+
+    @paginated_itr("mentions")
+    def channels_get_all_user_mentions_by_channel_itr(self, room_id, **kwargs):
+        """Gets all the mentions of a channel as an iterator with automatic pagination."""
+        return self.channels_get_all_user_mentions_by_channel(room_id, **kwargs)
 
     def channels_counters(self, room_id=None, room_name=None, **kwargs):
         """Gets counters for a channel."""

@@ -1,4 +1,4 @@
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated_itr
 
 
 class RocketChatLivechat(RocketChatBase):
@@ -6,9 +6,19 @@ class RocketChatLivechat(RocketChatBase):
         """Retrieves a list of livechat rooms."""
         return self.call_api_get("livechat/rooms", kwargs=kwargs)
 
+    @paginated_itr("rooms")
+    def livechat_rooms_itr(self, **kwargs):
+        """Retrieves a list of livechat rooms as an iterator with automatic pagination."""
+        return self.livechat_rooms(**kwargs)
+
     def livechat_inquiries_list(self, **kwargs):
         """Lists all of the open livechat inquiries."""
         return self.call_api_get("livechat/inquiries.list", kwargs=kwargs)
+
+    @paginated_itr("inquiries")
+    def livechat_inquiries_list_itr(self, **kwargs):
+        """Lists all of the open livechat inquiries as an iterator with automatic pagination."""
+        return self.livechat_inquiries_list(**kwargs)
 
     def livechat_inquiries_take(self, inquiry_id, **kwargs):
         """Takes an open inquiry."""
@@ -19,6 +29,11 @@ class RocketChatLivechat(RocketChatBase):
     def livechat_get_users(self, user_type, **kwargs):
         """Get a list of agents or managers."""
         return self.call_api_get("livechat/users/{}".format(user_type), kwargs=kwargs)
+
+    @paginated_itr("users")
+    def livechat_get_users_itr(self, user_type, **kwargs):
+        """Get a list of agents or managers as an iterator with automatic pagination."""
+        return self.livechat_get_users(user_type, **kwargs)
 
     def livechat_create_user(self, user_type, **kwargs):
         """Register a new agent or manager."""

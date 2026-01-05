@@ -41,3 +41,14 @@ def test_roles_get_users_in_role(logged_rocket):
 def test_roles_sync(logged_rocket):
     roles_sync = logged_rocket.roles_sync(updated_since="2017-11-25T15:08:17.248Z")
     assert len(roles_sync.get("roles")) > 0
+
+
+def test_roles_get_users_in_role_itr(logged_rocket):
+    iterated_users = list(
+        logged_rocket.roles_get_users_in_role_itr(role="owner", roomId="GENERAL")
+    )
+    assert len(iterated_users) > 0, "Should have at least one owner"
+
+    for user in iterated_users:
+        assert "_id" in user
+        assert "name" in user

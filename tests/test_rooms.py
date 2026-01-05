@@ -103,3 +103,16 @@ def test_rooms_leave(logged_rocket, secondary_user):
         channels_create.get("channel").get("_id"), user_id=secondary_user
     )
     logged_rocket.rooms_leave(channels_create.get("channel").get("_id"))
+
+
+def test_rooms_admin_rooms_itr(logged_rocket):
+    iterated_rooms = list(logged_rocket.rooms_admin_rooms_itr())
+    assert len(iterated_rooms) > 0, "Should have at least one room"
+
+    for room in iterated_rooms:
+        assert "_id" in room
+        assert "t" in room
+
+    # Test with custom count parameter
+    iterated_rooms_custom = list(logged_rocket.rooms_admin_rooms_itr(count=1))
+    assert len(iterated_rooms_custom) > 0

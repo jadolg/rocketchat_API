@@ -256,3 +256,32 @@ def test_teams_add_update_remove_rooms_name(
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.teams_remove_room()
+
+
+def test_teams_list_all_itr(logged_rocket, test_team_id):
+    iterated_teams = list(logged_rocket.teams_list_all_itr())
+    assert len(iterated_teams) > 0, "Should have at least one team"
+
+    for team in iterated_teams:
+        assert "_id" in team
+        assert "name" in team
+
+
+def test_teams_members_itr(logged_rocket, test_team_id):
+    iterated_members = list(logged_rocket.teams_members_itr(team_id=test_team_id))
+    assert len(iterated_members) > 0, "Should have at least one member"
+
+    for member in iterated_members:
+        assert "user" in member
+        assert "_id" in member.get("user")
+
+
+def test_teams_list_rooms_itr(logged_rocket, test_team_id, test_group_id):
+    # Add a room to the team first
+    logged_rocket.teams_add_rooms(team_id=test_team_id, rooms=[test_group_id])
+
+    iterated_rooms = list(logged_rocket.teams_list_rooms_itr(team_id=test_team_id))
+    assert len(iterated_rooms) > 0, "Should have at least one room"
+
+    for room in iterated_rooms:
+        assert "_id" in room

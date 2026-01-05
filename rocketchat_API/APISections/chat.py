@@ -1,5 +1,5 @@
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated_itr
 
 
 class RocketChatChat(RocketChatBase):
@@ -65,6 +65,11 @@ class RocketChatChat(RocketChatBase):
             "chat.search", roomId=room_id, searchText=search_text, kwargs=kwargs
         )
 
+    @paginated_itr("messages")
+    def chat_search_itr(self, room_id, search_text, **kwargs):
+        """Search for messages in a channel as an iterator with automatic pagination."""
+        return self.chat_search(room_id, search_text, **kwargs)
+
     def chat_get_message_read_receipts(self, message_id, **kwargs):
         """Get Message Read Receipts"""
         return self.call_api_get(
@@ -76,6 +81,11 @@ class RocketChatChat(RocketChatBase):
         return self.call_api_get(
             "chat.getStarredMessages", roomId=room_id, kwargs=kwargs
         )
+
+    @paginated_itr("messages")
+    def chat_get_starred_messages_itr(self, room_id, **kwargs):
+        """Retrieve starred messages as an iterator with automatic pagination."""
+        return self.chat_get_starred_messages(room_id, **kwargs)
 
     def chat_report_message(self, message_id, description, **kwargs):
         """Reports a message."""
@@ -98,6 +108,11 @@ class RocketChatChat(RocketChatBase):
             kwargs=kwargs,
         )
 
+    @paginated_itr("messages")
+    def chat_get_thread_messages_itr(self, thread_msg_id, **kwargs):
+        """Get thread messages as an iterator with automatic pagination."""
+        return self.chat_get_thread_messages(thread_msg_id, **kwargs)
+
     def chat_get_mentioned_messages(self, room_id, **kwargs):
         """Get the messages in which you are mentioned (users are mentioned with the @ symbol)."""
         return self.call_api_get(
@@ -105,3 +120,8 @@ class RocketChatChat(RocketChatBase):
             roomId=room_id,
             kwargs=kwargs,
         )
+
+    @paginated_itr("messages")
+    def chat_get_mentioned_messages_itr(self, room_id, **kwargs):
+        """Get the messages in which you are mentioned as an iterator with automatic pagination."""
+        return self.chat_get_mentioned_messages(room_id, **kwargs)

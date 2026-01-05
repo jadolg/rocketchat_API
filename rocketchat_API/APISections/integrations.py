@@ -1,7 +1,7 @@
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketUnsuportedIntegrationType,
 )
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated_itr
 
 
 class RocketChatIntegrations(RocketChatBase):
@@ -58,9 +58,19 @@ class RocketChatIntegrations(RocketChatBase):
             "integrations.history", id=integration_id, kwargs=kwargs
         )
 
+    @paginated_itr("history")
+    def integrations_history_itr(self, integration_id, **kwargs):
+        """Lists all history of the specified integration as an iterator with automatic pagination."""
+        return self.integrations_history(integration_id, **kwargs)
+
     def integrations_list(self, **kwargs):
         """Lists all of the integrations on the server."""
         return self.call_api_get("integrations.list", kwargs=kwargs)
+
+    @paginated_itr("integrations")
+    def integrations_list_itr(self, **kwargs):
+        """Lists all of the integrations on the server as an iterator with automatic pagination."""
+        return self.integrations_list(**kwargs)
 
     def integrations_remove(self, integrations_type, integration_id, **kwargs):
         """Removes an integration from the server."""

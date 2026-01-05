@@ -95,6 +95,25 @@ def test_channels_history(logged_rocket):
     assert "messages" in channels_history
 
 
+def test_channels_history_itr(logged_rocket):
+    iterated_messages = list(logged_rocket.channels_history_itr(room_id="GENERAL"))
+    # GENERAL channel may have messages or may be empty
+    for message in iterated_messages:
+        assert "_id" in message
+
+    # Test with custom count parameter
+    iterated_messages_custom = list(
+        logged_rocket.channels_history_itr(room_id="GENERAL", count=1)
+    )
+    for message in iterated_messages_custom:
+        assert "_id" in message
+
+    # Test iterator early break
+    for message in logged_rocket.channels_history_itr(room_id="GENERAL"):
+        assert "_id" in message
+        break
+
+
 def test_channels_add_all(logged_rocket):
     channels_add_all = logged_rocket.channels_add_all("GENERAL")
     assert "channel" in channels_add_all
@@ -393,3 +412,39 @@ def test_channels_set_default(logged_rocket):
         room_id="GENERAL", default=True
     )
     assert channels_set_default.get("channel").get("default")
+
+
+def test_channels_members_itr(logged_rocket):
+    iterated_members = list(logged_rocket.channels_members_itr(room_id="GENERAL"))
+    assert len(iterated_members) > 0, "Should have at least one member"
+
+    for member in iterated_members:
+        assert "_id" in member
+        assert "username" in member
+
+    # Test with custom count parameter
+    iterated_members_custom = list(
+        logged_rocket.channels_members_itr(room_id="GENERAL", count=1)
+    )
+    assert len(iterated_members_custom) > 0
+
+    # Test iterator early break
+    for member in logged_rocket.channels_members_itr(room_id="GENERAL"):
+        assert "_id" in member
+        break
+
+
+def test_channels_files_itr(logged_rocket):
+    # Files may be empty, so we just test that iteration works
+    iterated_files = list(logged_rocket.channels_files_itr(room_id="GENERAL"))
+    for file in iterated_files:
+        assert "_id" in file
+
+
+def test_channels_get_all_user_mentions_by_channel_itr(logged_rocket):
+    # Mentions may be empty, so we just test that iteration works
+    iterated_mentions = list(
+        logged_rocket.channels_get_all_user_mentions_by_channel_itr(room_id="GENERAL")
+    )
+    for mention in iterated_mentions:
+        assert "_id" in mention

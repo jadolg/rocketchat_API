@@ -146,3 +146,46 @@ def test_dm_counters(logged_rocket, recipient_user):
         key in dm_counters
         for key in ["joined", "members", "unreads", "msgs", "userMentions"]
     )
+
+
+def test_dm_list_itr(logged_rocket, recipient_user):
+    logged_rocket.dm_create(recipient_user)
+    iterated_dms = list(logged_rocket.dm_list_itr())
+    assert len(iterated_dms) > 0, "Should have at least one DM"
+
+    for dm in iterated_dms:
+        assert "_id" in dm
+
+
+def test_dm_list_everyone_itr(logged_rocket):
+    iterated_dms = list(logged_rocket.dm_list_everyone_itr())
+    # May have DMs or may not
+    for dm in iterated_dms:
+        assert "_id" in dm
+
+
+def test_dm_history_itr(logged_rocket, recipient_user):
+    dm_create = logged_rocket.dm_create(recipient_user)
+    room_id = dm_create.get("room").get("_id")
+    iterated_messages = list(logged_rocket.dm_history_itr(room_id=room_id))
+    # Messages may be empty
+    for message in iterated_messages:
+        assert "_id" in message
+
+
+def test_dm_messages_itr(logged_rocket, recipient_user):
+    dm_create = logged_rocket.dm_create(recipient_user)
+    room_id = dm_create.get("room").get("_id")
+    iterated_messages = list(logged_rocket.dm_messages_itr(room_id=room_id))
+    # Messages may be empty
+    for message in iterated_messages:
+        assert "_id" in message
+
+
+def test_dm_files_itr(logged_rocket, recipient_user):
+    dm_create = logged_rocket.dm_create(recipient_user)
+    room_id = dm_create.get("room").get("_id")
+    iterated_files = list(logged_rocket.dm_files_itr(room_id=room_id))
+    # Files may be empty
+    for file in iterated_files:
+        assert "_id" in file

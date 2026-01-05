@@ -23,9 +23,19 @@ class RocketChatGroups(RocketChatBase):
         """List the private groups the caller is part of."""
         return self.call_api_get("groups.list", kwargs=kwargs)
 
+    @paginated_itr("groups")
+    def groups_list_itr(self, **kwargs):
+        """List the private groups the caller is part of as an iterator with automatic pagination."""
+        return self.groups_list(**kwargs)
+
     def groups_history(self, room_id, **kwargs):
         """Retrieves the messages from a private group."""
         return self.call_api_get("groups.history", roomId=room_id, kwargs=kwargs)
+
+    @paginated_itr("messages")
+    def groups_history_itr(self, room_id, **kwargs):
+        """Retrieves the messages from a private group as an iterator with automatic pagination."""
+        return self.groups_history(room_id, **kwargs)
 
     def groups_add_moderator(self, room_id, user_id, **kwargs):
         """Gives the role of moderator for a user in the current groups."""
@@ -189,6 +199,11 @@ class RocketChatGroups(RocketChatBase):
             return self.call_api_get("groups.members", roomName=group, kwargs=kwargs)
         raise RocketMissingParamException("room_id or group required")
 
+    @paginated_itr("members")
+    def groups_members_itr(self, room_id=None, group=None, **kwargs):
+        """Lists all group users as an iterator with automatic pagination."""
+        return self.groups_members(room_id=room_id, group=group, **kwargs)
+
     def groups_roles(self, room_id=None, room_name=None, **kwargs):
         """Lists all user's roles in the private group."""
         if room_id:
@@ -204,6 +219,11 @@ class RocketChatGroups(RocketChatBase):
         if room_name:
             return self.call_api_get("groups.files", roomName=room_name, kwargs=kwargs)
         raise RocketMissingParamException("room_id or room_name required")
+
+    @paginated_itr("files")
+    def groups_files_itr(self, room_id=None, room_name=None, **kwargs):
+        """Retrieves the files from a private group as an iterator with automatic pagination."""
+        return self.groups_files(room_id=room_id, room_name=room_name, **kwargs)
 
     def groups_add_leader(self, room_id, user_id, **kwargs):
         """Gives the role of Leader for a user in the current group."""

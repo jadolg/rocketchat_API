@@ -2,7 +2,7 @@ import mimetypes
 import os
 
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated_itr
 
 
 class RocketChatRooms(RocketChatBase):
@@ -56,6 +56,11 @@ class RocketChatRooms(RocketChatBase):
     def rooms_admin_rooms(self, **kwargs):
         """Retrieves all rooms (requires the view-room-administration permission)."""
         return self.call_api_get("rooms.adminRooms", kwargs=kwargs)
+
+    @paginated_itr("rooms")
+    def rooms_admin_rooms_itr(self, **kwargs):
+        """Retrieves all rooms as an iterator with automatic pagination."""
+        return self.rooms_admin_rooms(**kwargs)
 
     def rooms_create_discussion(self, prid, t_name, **kwargs):
         """

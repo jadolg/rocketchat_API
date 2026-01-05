@@ -1,5 +1,5 @@
 from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated_itr
 
 ID_OR_TEAM_NAME_REQUIRED = "team_id or team_name required"
 
@@ -25,6 +25,14 @@ class RocketChatTeams(RocketChatBase):
         The calling user must have the 'view-all-teams' permission
         """
         return self.call_api_get("teams.listAll", kwargs=kwargs)
+
+    @paginated_itr("teams")
+    def teams_list_all_itr(self, **kwargs):
+        """
+        List all the teams on the server as an iterator with automatic pagination.
+        The calling user must have the 'view-all-teams' permission
+        """
+        return self.teams_list_all(**kwargs)
 
     def teams_info(self, team_id=None, team_name=None, **kwargs):
         """
@@ -59,6 +67,15 @@ class RocketChatTeams(RocketChatBase):
                 kwargs=kwargs,
             )
         raise RocketMissingParamException(ID_OR_TEAM_NAME_REQUIRED)
+
+    @paginated_itr("members")
+    def teams_members_itr(
+        self, team_id=None, team_name=None, name="", username="", **kwargs
+    ):
+        """Lists the members of a team as an iterator with automatic pagination."""
+        return self.teams_members(
+            team_id=team_id, team_name=team_name, name=name, username=username, **kwargs
+        )
 
     def teams_add_members(self, team_id=None, team_name=None, members=None, **kwargs):
         """Adds members to the team."""
@@ -117,6 +134,15 @@ class RocketChatTeams(RocketChatBase):
                 kwargs=kwargs,
             )
         raise RocketMissingParamException(ID_OR_TEAM_NAME_REQUIRED)
+
+    @paginated_itr("rooms")
+    def teams_list_rooms_itr(
+        self, team_id=None, team_name=None, room_type="", name="", **kwargs
+    ):
+        """List all rooms of the team as an iterator with automatic pagination."""
+        return self.teams_list_rooms(
+            team_id=team_id, team_name=team_name, room_type=room_type, name=name, **kwargs
+        )
 
     def teams_add_rooms(self, team_id=None, team_name=None, rooms=None, **kwargs):
         """Adds rooms to the team. Requires add-team-channel permission."""

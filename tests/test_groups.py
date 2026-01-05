@@ -310,3 +310,40 @@ def test_groups_files(logged_rocket):
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.groups_files()
+
+
+def test_groups_list_itr(logged_rocket):
+    iterated_groups = list(logged_rocket.groups_list_itr())
+    # User may have groups or may not
+    for group in iterated_groups:
+        assert "_id" in group
+        assert "name" in group
+
+
+def test_groups_history_itr(logged_rocket, test_group_id):
+    iterated_messages = list(logged_rocket.groups_history_itr(room_id=test_group_id))
+    # Messages may be empty
+    for message in iterated_messages:
+        assert "_id" in message
+
+
+def test_groups_members_itr(logged_rocket, test_group_id):
+    iterated_members = list(logged_rocket.groups_members_itr(room_id=test_group_id))
+    assert len(iterated_members) > 0, "Should have at least one member"
+
+    for member in iterated_members:
+        assert "_id" in member
+        assert "username" in member
+
+    # Test with custom count parameter
+    iterated_members_custom = list(
+        logged_rocket.groups_members_itr(room_id=test_group_id, count=1)
+    )
+    assert len(iterated_members_custom) > 0
+
+
+def test_groups_files_itr(logged_rocket, test_group_id):
+    # Files may be empty, so we just test that iteration works
+    iterated_files = list(logged_rocket.groups_files_itr(room_id=test_group_id))
+    for file in iterated_files:
+        assert "_id" in file
