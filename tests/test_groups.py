@@ -302,6 +302,9 @@ def test_groups_files(logged_rocket, test_group_name, test_group_id):
     iterated_files_name = list(logged_rocket.groups_files(room_name=test_group_name))
     assert iterated_files_name == iterated_files
 
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.groups_files()
+
 
 def test_groups_members(logged_rocket, test_group_name, test_group_id):
     iterated_members = list(logged_rocket.groups_members(room_id=test_group_id))
