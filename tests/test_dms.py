@@ -152,6 +152,5 @@ def test_dm_counters(logged_rocket, recipient_user):
 
 def test_dm_list_everyone(logged_rocket):
     iterated_dms = list(logged_rocket.dm_list_everyone())
-    # May have DMs or may not
     for dm in iterated_dms:
         assert "_id" in dm

@@ -58,7 +58,6 @@ def test_groups_list_all(logged_rocket):
 
 def test_groups_list(logged_rocket):
     iterated_groups = list(logged_rocket.groups_list())
-    # User may have groups or may not
     for group in iterated_groups:
         assert "_id" in group
         assert "name" in group
@@ -82,7 +81,6 @@ def test_groups_history(logged_rocket, test_group_id):
         room_id=test_group_id, text="Testing groups_history"
     )
     iterated_messages = list(logged_rocket.groups_history(room_id=test_group_id))
-    # Messages may be empty
     for message in iterated_messages:
         assert "_id" in message
 

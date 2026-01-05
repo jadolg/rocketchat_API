@@ -189,7 +189,6 @@ def test_chat_get_mentioned_messages(logged_rocket):
 
 
 def test_chat_search(logged_rocket):
-    # First post a message to search for
     logged_rocket.chat_post_message("unique_search_term_test", channel="GENERAL")
 
     iterated_messages = list(
@@ -204,7 +203,6 @@ def test_chat_search(logged_rocket):
 
 
 def test_chat_get_starred_messages(logged_rocket):
-    # Starred messages may be empty, so we just test that iteration works
     message_id = (
         logged_rocket.chat_post_message(room_id="GENERAL", text="star this message")
         .get("message")

@@ -83,7 +83,6 @@ def test_channels_info(logged_rocket):
 
 def test_channels_history(logged_rocket):
     iterated_messages = list(logged_rocket.channels_history(room_id="GENERAL"))
-    # GENERAL channel may have messages or may be empty
     for message in iterated_messages:
         assert "_id" in message
 
