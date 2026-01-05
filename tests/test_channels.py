@@ -341,12 +341,7 @@ def test_channels_counters(logged_rocket):
 
 
 def test_channels_online(logged_rocket):
-    version = logged_rocket.info().get("info").get("version")
-    if version and Version.parse(version) >= Version.parse("7.0.0"):
-        channels_online = logged_rocket.channels_online(_id="GENERAL")
-    else:
-        channels_online = logged_rocket.channels_online(query={"_id": "GENERAL"})
-
+    channels_online = logged_rocket.channels_online(_id="GENERAL")
     assert len(channels_online.get("online")) >= 1
 
     with pytest.raises(RocketMissingParamException):
