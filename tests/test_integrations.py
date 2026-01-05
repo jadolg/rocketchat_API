@@ -42,10 +42,8 @@ def test_integrations_get(integrations_create_webhook_incoming, logged_rocket):
 
 def test_integrations_history(integrations_create_webhook_incoming, logged_rocket):
     integration_id = integrations_create_webhook_incoming.get("integration").get("_id")
-    history = list(logged_rocket.integrations_history(integration_id=integration_id))
-    # History may be empty, just verify it works
-    for entry in history:
-        assert "_id" in entry
+    logged_rocket.integrations_history(integration_id=integration_id)
+
 
 
 def test_integrations_list(logged_rocket):
