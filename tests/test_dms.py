@@ -123,8 +123,7 @@ def test_dm_files(logged_rocket, recipient_user):
     for file in iterated_files:
         assert "_id" in file
 
-    iterated_files_username = list(
-        logged_rocket.dm_files(user_name=recipient_user))
+    iterated_files_username = list(logged_rocket.dm_files(user_name=recipient_user))
 
     assert iterated_files == iterated_files_username
 
