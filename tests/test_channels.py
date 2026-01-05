@@ -396,6 +396,12 @@ def test_channels_files(logged_rocket):
     for file in iterated_files:
         assert "_id" in file
 
+    iterated_files_room_name = list(logged_rocket.channels_files(room_name="general"))
+    for file in iterated_files:
+        assert "_id" in file
+
+    assert len(iterated_files_room_name) == len(iterated_files)
+
 
 def test_channels_get_all_user_mentions_by_channel(logged_rocket):
     logged_rocket.chat_post_message(channel="GENERAL", text="Hello @user1")
