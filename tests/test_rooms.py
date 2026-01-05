@@ -78,7 +78,7 @@ def test_rooms_admin_rooms(logged_rocket):
     assert len(iterated_rooms_custom) > 0
 
     rooms_with_filter = list(logged_rocket.rooms_admin_rooms(filter="general"))
-    # Filter may or may not find the GENERAL room depending on server setup
+    assert len(rooms_with_filter) == 1
 
 
 def test_rooms_leave(logged_rocket, secondary_user):
@@ -96,5 +96,3 @@ def test_rooms_leave(logged_rocket, secondary_user):
         channels_create.get("channel").get("_id"), user_id=secondary_user
     )
     logged_rocket.rooms_leave(channels_create.get("channel").get("_id"))
-
-
