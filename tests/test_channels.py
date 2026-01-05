@@ -447,7 +447,7 @@ def test_channels_files_itr(logged_rocket):
 
 
 def test_channels_get_all_user_mentions_by_channel_itr(logged_rocket):
-    # Mentions may be empty, so we just test that iteration works
+    logged_rocket.chat_post_message(channel="GENERAL", text="Hello @user1")
     iterated_mentions = list(
         logged_rocket.channels_get_all_user_mentions_by_channel_itr(room_id="GENERAL")
     )
