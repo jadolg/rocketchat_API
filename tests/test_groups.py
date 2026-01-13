@@ -80,9 +80,18 @@ def test_groups_history(logged_rocket, test_group_id):
     logged_rocket.chat_post_message(
         room_id=test_group_id, text="Testing groups_history"
     )
-    iterated_messages = list(logged_rocket.groups_history(room_id=test_group_id))
-    for message in iterated_messages:
+
+    # Test with positional argument
+    for message in logged_rocket.groups_history(test_group_id):
         assert "_id" in message
+        assert "msg" in message
+        assert message.get("msg") == "Testing groups_history"
+
+    # Test with keyword argument
+    for message in logged_rocket.groups_history(room_id=test_group_id):
+        assert "_id" in message
+        assert "msg" in message
+        assert message.get("msg") == "Testing groups_history"
 
 
 def test_groups_add_and_remove_moderator(logged_rocket, test_group_id):
