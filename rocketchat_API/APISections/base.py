@@ -34,7 +34,7 @@ def paginated(data_key):
     """
 
     def decorator(func):
-        def _generator(self, first_data, offset, count, **kwargs):
+        def _generator(self, first_data, offset, count, args, kwargs):
             """Inner generator that yields items from paginated API responses."""
             data = first_data
             while True:
@@ -51,17 +51,17 @@ def paginated(data_key):
 
                 offset += count
                 # Call the original function with pagination parameters
-                data = func(self, offset=offset, count=count, **kwargs)
+                data = func(self, *args, offset=offset, count=count, **kwargs)
 
         @wraps(func)
-        def wrapper(self, **kwargs):
+        def wrapper(self, *args, **kwargs):
             offset = kwargs.pop("offset", 0)
             count = kwargs.pop("count", 50)
 
             # Call the original function eagerly to propagate any exceptions
-            first_data = func(self, offset=offset, count=count, **kwargs)
+            first_data = func(self, *args, offset=offset, count=count, **kwargs)
 
-            return _generator(self, first_data, offset, count, **kwargs)
+            return _generator(self, first_data, offset, count, args, kwargs)
 
         return wrapper
 
