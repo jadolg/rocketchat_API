@@ -1,6 +1,5 @@
 import mimetypes
 import os
-import warnings
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketMissingParamException,
