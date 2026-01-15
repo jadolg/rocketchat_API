@@ -116,8 +116,8 @@ def test_dm_messages_others(logged_rocket, recipient_user):
 def test_dm_files(logged_rocket, recipient_user):
     dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    logged_rocket.rooms_upload(
-        rid=room_id, file="tests/assets/avatar.png", description="hey there"
+    logged_rocket.rooms_media(
+        room_id=room_id, file="tests/assets/avatar.png", msg="hey there"
     )
     iterated_files = list(logged_rocket.dm_files(room_id=room_id))
     for file in iterated_files:

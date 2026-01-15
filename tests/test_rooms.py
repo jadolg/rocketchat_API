@@ -8,14 +8,11 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
 )
 
 
-def test_rooms_upload(logged_rocket):
-    rooms_upload = logged_rocket.rooms_upload(
+def test_rooms_media(logged_rocket):
+    rooms_media = logged_rocket.rooms_media(
         "GENERAL", file="tests/assets/avatar.png", description="hey there"
     )
-    assert "message" in rooms_upload
-    assert rooms_upload.get("message").get("file").get("format") == "png"
-    assert rooms_upload.get("message").get("file").get("name") == "avatar.png"
-    assert rooms_upload.get("message").get("file").get("type") == "image/png"
+    assert str(rooms_media.get("file").get("url")).endswith("avatar.png")
 
 
 def test_rooms_get(logged_rocket):

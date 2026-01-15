@@ -293,8 +293,8 @@ def test_groups_roles(logged_rocket):
 
 
 def test_groups_files(logged_rocket, test_group_name, test_group_id):
-    rooms_upload = logged_rocket.rooms_upload(
-        rid=test_group_id, file="tests/assets/avatar.png", description="hey there"
+    rooms_upload = logged_rocket.rooms_media(
+        room_id=test_group_id, file="tests/assets/avatar.png", description="hey there"
     )
     assert "message" in rooms_upload
 
