@@ -18,7 +18,7 @@ services:
       - "3000:3000"
 
   mongo:
-    image: docker.io/bitnamilegacy/mongodb:6.0
+    image: docker.io/bitnamilegacy/mongodb:8.0
     ports:
       # Normally not needed but if we need to access the interface directly for debugging we'd like to skip the
       # onboarding/registering wizard. For some reason the flag to disable it does not work so database access it is.
