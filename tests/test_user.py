@@ -103,20 +103,13 @@ def test_users_reset_avatar(logged_rocket, user):
 
 def test_users_create_token(logged_rocket, user):
     login = logged_rocket.login(user.name, user.password)
+    # noinspection HardcodedPassword
+    secret = "1234567890abcdef"
     users_create_token = logged_rocket.users_create_token(
-        user_id=login.get("data").get("userId")
+        user_id=login.get("data").get("userId"), secret=secret
     )
     assert "authToken" in users_create_token.get("data")
     assert "userId" in users_create_token.get("data")
-
-    users_create_token = logged_rocket.users_create_token(
-        username=login.get("data").get("me").get("name")
-    )
-    assert "authToken" in users_create_token.get("data")
-    assert "userId" in users_create_token.get("data")
-
-    with pytest.raises(RocketMissingParamException):
-        logged_rocket.users_create_token()
 
 
 def test_users_create_update_delete(logged_rocket, user):
