@@ -18,16 +18,19 @@ def test_roles_create(logged_rocket, skip_if_no_license):
 
 def test_roles_add_remove_user_to_from_role(logged_rocket):
     me = logged_rocket.me()
+    role_name = str(uuid.uuid1())
+    role_id = logged_rocket.roles_create(name=role_name).get("role").get("_id")
     roles_add_user_to_role = logged_rocket.roles_add_user_to_role(
-        role_name="auditor-log", username=me.get("username")
+        role_id=role_id, username=me.get("username")
     )
-    assert roles_add_user_to_role.get("role").get("name") == "auditor-log"
+    assert roles_add_user_to_role.get("role").get("name") == role_name
+    assert roles_add_user_to_role.get("role").get("_id") == role_id
 
     roles_remove_user_from_role = logged_rocket.roles_remove_user_from_role(
-        role_name="auditor-log", username=me.get("username")
+        role_id=role_id, username=me.get("username")
     )
     assert "role" in roles_remove_user_from_role
-    assert roles_add_user_to_role.get("role").get("_id") == "auditor-log"
+    assert roles_remove_user_from_role.get("role").get("name") == role_name
 
 
 def test_roles_get_users_in_role(logged_rocket):
