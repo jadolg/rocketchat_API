@@ -3,7 +3,6 @@ import os
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketMissingParamException,
-    RocketException,
 )
 from rocketchat_API.APISections.base import RocketChatBase, paginated
 
