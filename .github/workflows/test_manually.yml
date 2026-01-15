@@ -21,6 +21,9 @@ jobs:
       - name: Test
         uses: ./.github/actions/test_rocketchat
         with:
-          python-version: ${{ github.event.inputs.python-version }}
-          rocket-chat-version: ${{ github.event.inputs.rocket-chat-version }}
+          python-version: ${PYTHON_VERSION}
+          rocket-chat-version: ${ROCKETCHAT_VERSION}
           rocket-chat-license: ${{ secrets.ROCKETCHAT_LICENSE }}
+        env:
+          PYTHON_VERSION: ${{ github.event.inputs.python-version }}
+          ROCKETCHAT_VERSION: ${{ github.event.inputs.rocket-chat-version }}
