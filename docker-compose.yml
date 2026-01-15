@@ -12,6 +12,7 @@ services:
       - CREATE_TOKENS_FOR_USERS=true
       - ROCKETCHAT_LICENSE=${ROCKETCHAT_LICENSE}
       - LICENSE_DEBUG=true
+      - CREATE_TOKENS_FOR_USERS_SECRET=1234567890abcdef
     depends_on:
       - mongo
     ports:

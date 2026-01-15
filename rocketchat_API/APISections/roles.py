@@ -10,17 +10,17 @@ class RocketChatRoles(RocketChatBase):
         """Create a new role in the system."""
         return self.call_api_post("roles.create", name=name, kwargs=kwargs)
 
-    def roles_add_user_to_role(self, role_name, username, **kwargs):
+    def roles_add_user_to_role(self, role_id, username, **kwargs):
         """Assign a role to a user. Optionally, you can set this role to a room."""
         return self.call_api_post(
-            "roles.addUserToRole", roleName=role_name, username=username, kwargs=kwargs
+            "roles.addUserToRole", roleId=role_id, username=username, kwargs=kwargs
         )
 
-    def roles_remove_user_from_role(self, role_name, username, **kwargs):
+    def roles_remove_user_from_role(self, role_id, username, **kwargs):
         """Remove a role from a user. Optionally, you can unset this role for a specified scope."""
         return self.call_api_post(
             "roles.removeUserFromRole",
-            roleName=role_name,
+            roleId=role_id,
             username=username,
             kwargs=kwargs,
         )

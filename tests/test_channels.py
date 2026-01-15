@@ -378,10 +378,10 @@ def test_channels_members(logged_rocket):
 
 
 def test_channels_files(logged_rocket):
-    rooms_upload = logged_rocket.rooms_upload(
-        "GENERAL", file="tests/assets/avatar.png", description="a test file"
+    rooms_upload = logged_rocket.rooms_media(
+        "GENERAL", file="tests/assets/avatar.png", msg="a test file"
     )
-    assert "message" in rooms_upload
+    assert "file" in rooms_upload
 
     iterated_files = list(logged_rocket.channels_files(room_id="GENERAL"))
     for file in iterated_files:
