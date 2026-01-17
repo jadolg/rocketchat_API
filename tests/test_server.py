@@ -31,6 +31,12 @@ def test_directory(logged_rocket):
     assert all(key in directory for key in ["result", "count", "offset", "total"])
 
 
+def test_directory_with_string_query(logged_rocket):
+    """Test directory method when query is passed as a string"""
+    directory = logged_rocket.directory(query='{"text": "rocket", "type": "users"}')
+    assert all(key in directory for key in ["result", "count", "offset", "total"])
+
+
 def test_spotlight(logged_rocket):
     spotlight = logged_rocket.spotlight(query="user1")
     assert spotlight.get("users") is not None, "No users list found"
