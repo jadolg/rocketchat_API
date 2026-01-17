@@ -12,6 +12,7 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketAuthenticationException,
     RocketConnectionException,
     RocketBadStatusCodeException,
+    RocketApiException,
 )
 
 
@@ -70,6 +71,15 @@ def paginated(data_key):
 
 def json_or_error(r: requests.Response) -> Any:
     if r.status_code > 399 or r.status_code < 200:
+        try:
+            response_json = r.json()
+            if (
+                isinstance(response_json, dict)
+                and response_json.get("success") is False
+            ):
+                raise RocketApiException(r.status_code, r.text, response_json)
+        except JSONDecodeError:
+            pass
         raise RocketBadStatusCodeException(r.status_code, r.text)
 
     try:

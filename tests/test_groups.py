@@ -4,7 +4,7 @@ import pytest
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketMissingParamException,
-    RocketBadStatusCodeException,
+    RocketApiException,
 )
 
 
@@ -12,10 +12,13 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
 def testuser_id(logged_rocket):
     try:
         testuser = logged_rocket.users_info(username="testuser1")
-    except RocketBadStatusCodeException:
-        testuser = logged_rocket.users_create(
-            "testuser1@domain.com", "testuser1", "password", "testuser1"
-        )
+    except RocketApiException as e:
+        if e.error == "User not found":
+            testuser = logged_rocket.users_create(
+                "testuser1@domain.com", "testuser1", "password", "testuser1"
+            )
+        else:
+            raise e
 
     _testuser_id = testuser.get("user").get("_id")
 
@@ -23,7 +26,7 @@ def testuser_id(logged_rocket):
 
     try:
         logged_rocket.users_delete(_testuser_id)
-    except RocketBadStatusCodeException:
+    except RocketApiException:
         pass
 
 
@@ -125,9 +128,9 @@ def test_groups_add_and_remove_owner(logged_rocket, testuser_id, test_group_id):
     logged_rocket.groups_invite(test_group_id, testuser_id)
     logged_rocket.groups_add_owner(test_group_id, user_id=testuser_id)
     another_owner_id = logged_rocket.users_info(username="user1").get("user").get("_id")
-    try:
+    try:  # When running several times we don't clean this up so it's fine if it fails after
         logged_rocket.groups_add_owner(test_group_id, user_id=another_owner_id)
-    except RocketBadStatusCodeException:
+    except RocketApiException:
         pass
     logged_rocket.groups_remove_owner(test_group_id, user_id=testuser_id)
 
@@ -179,10 +182,10 @@ def test_groups_kick(logged_rocket, testuser_id):
 
 
 def test_groups_leave(logged_rocket, test_group_id, testuser_id):
-    with pytest.raises(RocketBadStatusCodeException) as exc_info:
+    with pytest.raises(RocketApiException) as exc_info:
         logged_rocket.groups_leave(test_group_id)
 
-    assert "error-you-are-last-owner" in str(exc_info.value)
+    assert "error-you-are-last-owner" == str(exc_info.value.error_type)
     name = str(uuid.uuid1())
     groups_create = logged_rocket.groups_create(name)
     logged_rocket.groups_invite(
@@ -244,9 +247,9 @@ def test_groups_set_type(logged_rocket):
     )
     assert groups_set_type.get("group").get("t"), "p"
 
-    with pytest.raises(RocketBadStatusCodeException) as exc_info:
+    with pytest.raises(RocketApiException) as exc_info:
         logged_rocket.groups_set_type(groups_create.get("group").get("_id"), "p")
-    assert "error-room-not-found" in str(exc_info.value)
+    assert exc_info.value.error_type == "error-room-not-found"
 
 
 def test_groups_set_custom_fields(

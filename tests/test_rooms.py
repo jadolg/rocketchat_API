@@ -4,7 +4,7 @@ import pytest
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketMissingParamException,
-    RocketBadStatusCodeException,
+    RocketApiException,
 )
 
 
@@ -35,7 +35,7 @@ def test_rooms_favorite(logged_rocket):
     logged_rocket.rooms_favorite(room_id="GENERAL", favorite=True)
     logged_rocket.rooms_favorite(room_name="general", favorite=True)
 
-    with pytest.raises(RocketBadStatusCodeException) as exc_info:
+    with pytest.raises(RocketApiException) as exc_info:
         logged_rocket.rooms_favorite(room_id="unexisting_channel", favorite=True)
     assert "error-room-not-found" in str(exc_info.value)
 
@@ -79,9 +79,9 @@ def test_rooms_admin_rooms(logged_rocket):
 
 
 def test_rooms_leave(logged_rocket, secondary_user):
-    with pytest.raises(RocketBadStatusCodeException) as exc_info:
+    with pytest.raises(RocketApiException) as exc_info:
         logged_rocket.rooms_leave("GENERAL")
-    assert "error-you-are-last-owner" in str(exc_info.value)
+    assert exc_info.value.error_type == "error-you-are-last-owner"
 
     name = str(uuid.uuid1())
     channels_create = logged_rocket.channels_create(name)

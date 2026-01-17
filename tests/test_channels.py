@@ -4,7 +4,7 @@ import pytest
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketMissingParamException,
-    RocketBadStatusCodeException,
+    RocketApiException,
 )
 
 
@@ -13,18 +13,22 @@ def add_owner(logged_rocket, user):
     """Add test user as owner in GENERAL channel in every test in this module"""
     try:
         logged_rocket.channels_add_owner("GENERAL", username=user.name)
-    except RocketBadStatusCodeException:
-        pass
+    except RocketApiException as e:
+        if e.error_type != "error-user-already-owner":
+            raise e
 
 
 @pytest.fixture
 def testuser_id(logged_rocket):
     try:
         testuser = logged_rocket.users_info(username="testuser1")
-    except RocketBadStatusCodeException:
-        testuser = logged_rocket.users_create(
-            "testuser1@domain.com", "testuser1", "password", "testuser1"
-        )
+    except RocketApiException as e:
+        if e.error == "User not found.":
+            testuser = logged_rocket.users_create(
+                "testuser1@domain.com", "testuser1", "password", "testuser1"
+            )
+        else:
+            raise e
 
     _testuser_id = testuser.get("user").get("_id")
 
@@ -32,7 +36,7 @@ def testuser_id(logged_rocket):
 
     try:
         logged_rocket.users_delete(_testuser_id)
-    except RocketBadStatusCodeException:
+    except RocketApiException:
         pass
 
 
@@ -216,9 +220,9 @@ def test_channels_kick(logged_rocket, testuser_id):
 
 
 def test_channels_leave(logged_rocket, testuser_id):
-    with pytest.raises(RocketBadStatusCodeException) as exc_info:
+    with pytest.raises(RocketApiException) as exc_info:
         logged_rocket.channels_leave("GENERAL")
-    assert "error-you-are-last-owner" in str(exc_info.value)
+    assert "error-you-are-last-owner" == exc_info.value.error_type
 
     name = str(uuid.uuid1())
     channels_create = logged_rocket.channels_create(name)
@@ -281,7 +285,7 @@ def test_channels_set_type(logged_rocket):
     channels_set_type = logged_rocket.channels_set_type(channel_id, "p")
     assert channels_set_type.get("channel").get("t"), "p"
 
-    with pytest.raises(RocketBadStatusCodeException):
+    with pytest.raises(RocketApiException):
         logged_rocket.channels_set_type(channel_id, "c")
 
 
