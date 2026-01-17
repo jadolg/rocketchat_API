@@ -8,10 +8,8 @@ class RocketChatAssets(RocketChatBase):
         """Set an asset image by name."""
         content_type = mimetypes.MimeTypes().guess_type(file)
 
-        file_name = asset_name
-
         files = {
-            file_name: (file, open(file, "rb"), content_type[0], {"Expires": "0"}),
+            "asset": (file, open(file, "rb"), content_type[0], {"Expires": "0"}),
         }
 
         return self.call_api_post(
