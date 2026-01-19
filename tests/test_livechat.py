@@ -2,7 +2,7 @@ import uuid
 
 import pytest
 
-from rocketchat_API.APIExceptions.RocketExceptions import RocketBadStatusCodeException
+from rocketchat_API.APIExceptions.RocketExceptions import RocketApiException
 
 
 def test_livechat_rooms(logged_rocket):
@@ -15,9 +15,10 @@ def test_livechat_inquiries_list(logged_rocket):
 
 def test_livechat_inquiries_take(logged_rocket):
     # TODO: Find a way of creating an inquiry to be able to properly test this method
-    with pytest.raises(RocketBadStatusCodeException) as exc_info:
+    with pytest.raises(RocketApiException) as exc_info:
         logged_rocket.livechat_inquiries_take(inquiry_id="NotARealThing")
-    assert "Inquiry not found [error-not-found]" in str(exc_info.value)
+    assert "error-not-found" == exc_info.value.error_type
+    assert "Inquiry not found" in exc_info.value.error
 
 
 def test_livechat_users(logged_rocket):
