@@ -6,7 +6,6 @@ from rocketchat_API.APISections.channels import RocketChatChannels
 from rocketchat_API.APISections.chat import RocketChatChat
 from rocketchat_API.APISections.dm import RocketChatDM
 from rocketchat_API.APISections.groups import RocketChatGroups
-from rocketchat_API.APISections.im import RocketChatIM
 from rocketchat_API.APISections.integrations import RocketChatIntegrations
 from rocketchat_API.APISections.invites import RocketChatInvites
 from rocketchat_API.APISections.licenses import RocketChatLicenses
@@ -29,7 +28,6 @@ class RocketChat(
     RocketChatChat,
     RocketChatDM,
     RocketChatGroups,
-    RocketChatIM,
     RocketChatIntegrations,
     RocketChatInvites,
     RocketChatLicenses,
