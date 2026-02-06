@@ -155,21 +155,7 @@ The CI pipeline will automatically reject pull requests that are not properly fo
 
 ## Contributing
 
-Contributions are welcome. Please follow these guidelines:
-
-1. **Tests are required.** All new code must include corresponding tests. Pull requests without adequate test coverage will not be merged.
-
-2. **Code style.** All code must be formatted using [black](https://github.com/psf/black). Run `black .` before committing.
-
-3. **Maintain coverage.** Ensure that your changes do not decrease the overall test coverage.
-
-4. **Pull requests.** It may take some time to review and merge your code, but quality contributions will be merged.
-
-5. **Issues.** Reporting bugs and requesting features is also a valuable contribution. Feel free to open issues.
-
-For more details, see [CONTRIBUTING.md](CONTRIBUTING.md).
-
-Join the discussion at [#python_rocketchat_api](https://open.rocket.chat/channel/python_rocketchat_api) on the Rocket.Chat community server.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
 
 
 ## License
