@@ -30,13 +30,11 @@ pip install .
 
 ## Compatibility
 
-This library is tested against the following versions:
+This library is tested against all supported versions of Python and Rocket.Chat. It is also continuously tested against the latest Rocket.Chat release to ensure compatibility with new versions.
 
-**Python:** 3.10, 3.11, 3.12, 3.13, 3.14
+We do not guarantee any compatibility outside of the tested versions.
 
-**Rocket.Chat:** 7.10.x, 7.11.x, 7.12.x, 7.13.x, 8.0.x
-
-The library is also continuously tested against the latest Rocket.Chat release to ensure compatibility with new versions.
+See the [Test GitHub Action](https://github.com/jadolg/rocketchat_API/blob/master/.github/workflows/test.yml) to get the list of tested versions.
 
 
 ## Usage
