@@ -6,6 +6,7 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketMissingParamException,
     RocketApiException,
 )
+from tests.conftest import get_tests_passowrd
 
 
 @pytest.fixture(autouse=True)
@@ -25,7 +26,10 @@ def testuser_id(logged_rocket):
     except RocketApiException as e:
         if e.error == "User not found.":
             testuser = logged_rocket.users_create(
-                "testuser1@domain.com", "testuser1", "password", "testuser1"
+                "testuser1@domain.com",
+                "testuser1",
+                get_tests_passowrd(),
+                "testuser1",
             )
         else:
             raise e
