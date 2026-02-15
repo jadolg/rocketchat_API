@@ -10,6 +10,31 @@ def test_chat_post_notext_message(logged_rocket):
     assert chat_post_message.get("message").get("msg") == ""
 
 
+def test_chat_post_multiline_message(logged_rocket):
+    multiline_text = "Hello\nThis is line 2\nThis is line 3"
+    chat_post_message = logged_rocket.chat_post_message(
+        multiline_text, channel="GENERAL"
+    )
+    assert chat_post_message.get("channel") == "GENERAL"
+    assert chat_post_message.get("message").get("msg") == multiline_text
+
+
+def test_chat_post_multiline_attachment(logged_rocket):
+    # Use two spaces before newline for Markdown line breaks in Rocket.Chat
+    multiline_attachment_text = "more  \nmultiline  \ntext"
+    chat_post_message = logged_rocket.chat_post_message(
+        "hello",
+        channel="GENERAL",
+        attachments=[{"color": "#00ff00", "text": multiline_attachment_text}],
+    )
+    assert chat_post_message.get("channel") == "GENERAL"
+    assert chat_post_message.get("message").get("msg") == "hello"
+    assert (
+        chat_post_message.get("message").get("attachments")[0].get("text")
+        == multiline_attachment_text
+    )
+
+
 def test_chat_post_update_delete_message(logged_rocket):
     chat_post_message = logged_rocket.chat_post_message(
         "hello",
