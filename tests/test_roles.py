@@ -16,7 +16,7 @@ def test_roles_create(logged_rocket, skip_if_no_license):
     assert roles_create.get("role").get("description") == "a test role"
 
 
-def test_roles_add_remove_user_to_from_role(logged_rocket):
+def test_roles_add_remove_user_to_from_role(logged_rocket, skip_if_no_license):
     me = logged_rocket.me()
     role_name = str(uuid.uuid1())
     role_id = logged_rocket.roles_create(name=role_name).get("role").get("_id")
