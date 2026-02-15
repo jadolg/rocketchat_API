@@ -63,3 +63,9 @@ class RocketChatLivechat(RocketChatBase):
         return self.call_api_get(
             "livechat/messages.history/{}".format(rid), token=token, kwargs=kwargs
         )
+
+    def livechat_inquiries_get_one(self, room_id, **kwargs):
+        """Get Inquiry by Room"""
+        return self.call_api_get(
+            "livechat/inquiries.getOne", roomId=room_id, kwargs=kwargs
+        )
