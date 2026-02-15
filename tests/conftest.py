@@ -14,9 +14,13 @@ def rocket():
     return _rocket
 
 
+def get_tests_passowrd():
+    return "yoZy4mN3B83SoKOD2PP1U8PoTUnBlukQ7ac6RlsgR$A"
+
+
 @pytest.fixture(scope="session")
 def create_user(rocket, name="user1", email="email@domain.com"):
-    def _create_user(name=name, password="password", email=email):
+    def _create_user(name=name, password=get_tests_passowrd(), email=email):
         # create empty object, because Mock not included to python2
         user = type("test", (object,), {})()
 
@@ -60,7 +64,7 @@ def secondary_user(logged_rocket):
     except (RocketApiException, RocketBadStatusCodeException) as exc_info:
         if "User not found." in str(exc_info):
             testuser = logged_rocket.users_create(
-                "secondary@domain.com", "secondary", "password", "secondary"
+                "secondary@domain.com", "secondary", get_tests_passowrd(), "secondary"
             )
         else:
             raise
