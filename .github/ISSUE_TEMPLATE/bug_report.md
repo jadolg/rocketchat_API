@@ -12,9 +12,9 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
+1. Login as user '...'
+2. Use method '....'
+3. Then method '....'
 4. See error
 
 **Expected behavior**
