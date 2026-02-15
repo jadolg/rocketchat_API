@@ -13,12 +13,18 @@ def test_livechat_inquiries_list(logged_rocket):
     logged_rocket.livechat_inquiries_list()
 
 
-def test_livechat_inquiries_take(logged_rocket):
-    # TODO: Find a way of creating an inquiry to be able to properly test this method
+def test_livechat_inquiries_take_non_existent(logged_rocket):
     with pytest.raises(RocketApiException) as exc_info:
         logged_rocket.livechat_inquiries_take(inquiry_id="NotARealThing")
     assert "error-not-found" == exc_info.value.error_type
     assert "Inquiry not found" in exc_info.value.error
+
+
+def test_livechat_inquiries_take(logged_rocket, livechat_inquiry):
+    inquiry_id = livechat_inquiry["inquiry_id"]
+    assert inquiry_id is not None, "Inquiry should exist"
+    take_result = logged_rocket.livechat_inquiries_take(inquiry_id=inquiry_id)
+    assert take_result.get("success") is True
 
 
 def test_livechat_users(logged_rocket):
@@ -105,3 +111,15 @@ def test_livechat_get_users(logged_rocket):
     logged_rocket.livechat_delete_user(
         user_type="agent", user_id=new_user.get("user").get("_id")
     )
+
+
+def test_livechat_get_inquiries(logged_rocket, livechat_inquiry):
+    room_id = livechat_inquiry["room_id"]
+
+    inquiry = logged_rocket.livechat_inquiries_get_one(room_id=room_id)
+    assert "inquiry" in inquiry or "success" in inquiry
+
+
+def test_livechat_get_inquiries_non_existent_room(logged_rocket):
+    inquiry_not_found = logged_rocket.livechat_inquiries_get_one(room_id="nonexistent")
+    assert inquiry_not_found.get("inquiry") is None or "success" in inquiry_not_found
