@@ -1,10 +1,7 @@
 import re
-
 from functools import wraps
-
 from json import JSONDecodeError
-from typing import Any
-
+from typing import Any, Callable, Generator
 
 import requests
 
@@ -16,7 +13,11 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
 )
 
 
-def paginated(data_key):
+def paginated(
+    data_key: str,
+) -> Callable[
+    [Callable[..., dict[str, Any]]], Callable[..., Generator[Any, None, None]]
+]:
     """
     Decorator that converts a paginated API method into an iterator.
 
@@ -28,23 +29,42 @@ def paginated(data_key):
         A decorator that wraps the original method to yield items one by one,
         automatically handling pagination with offset and count parameters.
 
+    Kwargs (handled by the wrapper):
+        offset: Starting offset for pagination (default: 0)
+        count: Number of items per page (default: 50)
+        max_count: Maximum total number of items to return (default: None, returns all)
+
     Example:
         @paginated('groups')
         def groups_list_all(self, **kwargs):
             return self.call_api_get("groups.listAll", kwargs=kwargs)
+
+        # Get all groups
+        list(rocket.groups_list_all())
+
+        # Get at most 100 groups
+        list(rocket.groups_list_all(max_count=100))
     """
 
     def decorator(func):
-        def _generator(self, first_data, offset, count, args, kwargs):
+        def _generator(self, first_data, offset, count, max_count, args, kwargs):
             """Inner generator that yields items from paginated API responses."""
             data = first_data
+            yielded_count = 0
             while True:
                 items = data.get(data_key, [])
                 if not items:
                     break
 
                 for item in items:
+                    if max_count is not None and yielded_count >= max_count:
+                        return
                     yield item
+                    yielded_count += 1
+
+                # If max_count reached, stop pagination
+                if max_count is not None and yielded_count >= max_count:
+                    break
 
                 # If we got fewer items than requested, we've reached the end
                 if len(items) < count:
@@ -58,11 +78,12 @@ def paginated(data_key):
         def wrapper(self, *args, **kwargs):
             offset = kwargs.pop("offset", 0)
             count = kwargs.pop("count", 50)
+            max_count = kwargs.pop("max_count", None)
 
             # Call the original function eagerly to propagate any exceptions
             first_data = func(self, *args, offset=offset, count=count, **kwargs)
 
-            return _generator(self, first_data, offset, count, args, kwargs)
+            return _generator(self, first_data, offset, count, max_count, args, kwargs)
 
         return wrapper
 
