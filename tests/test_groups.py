@@ -242,6 +242,26 @@ def test_groups_set_topic(logged_rocket, test_group_id):
     assert groups_set_topic.get("topic") == topic, "Topic does not match"
 
 
+def test_groups_set_encrypted(logged_rocket):
+    # Ensure E2E is enabled
+    logged_rocket.settings_update("E2E_Enable", True)
+
+    name = str(uuid.uuid1())
+    groups_create = logged_rocket.groups_create(name)
+    room_id = groups_create.get("group").get("_id")
+
+    try:
+        logged_rocket.groups_set_encrypted(room_id, True)
+        group_info = logged_rocket.groups_info(room_id=room_id).get("group")
+        assert group_info.get("encrypted") is True
+
+        logged_rocket.groups_set_encrypted(room_id, False)
+        group_info = logged_rocket.groups_info(room_id=room_id).get("group")
+        assert group_info.get("encrypted") is False
+    finally:
+        logged_rocket.groups_delete(room_id=room_id)
+
+
 def test_groups_set_type(logged_rocket):
     name = str(uuid.uuid1())
     groups_create = logged_rocket.groups_create(name)
