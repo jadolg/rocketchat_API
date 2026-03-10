@@ -1,3 +1,4 @@
+import itertools
 import re
 from functools import wraps
 from json import JSONDecodeError
@@ -11,6 +12,34 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketBadStatusCodeException,
     RocketApiException,
 )
+
+
+def _paginated_generator(
+    self,
+    func: Callable[..., dict[str, Any]],
+    data_key: str,
+    first_data: dict[str, Any],
+    offset: int,
+    count: int,
+    args: tuple[Any, ...],
+    kwargs: dict[str, Any],
+) -> Generator[dict[str, Any], None, None]:
+    """Inner generator that yields items from paginated API responses."""
+    data = first_data
+    while True:
+        items = data.get(data_key, [])
+        if not items:
+            break
+
+        yield from items
+
+        # If we got fewer items than requested, we've reached the end
+        if len(items) < count:
+            break
+
+        offset += count
+        # Call the original function with pagination parameters
+        data = func(self, *args, offset=offset, count=count, **kwargs)
 
 
 def paginated(
@@ -48,33 +77,6 @@ def paginated(
     """
 
     def decorator(func):
-        def _generator(self, first_data, offset, count, max_count, args, kwargs):
-            """Inner generator that yields items from paginated API responses."""
-            data = first_data
-            yielded_count = 0
-            while True:
-                items = data.get(data_key, [])
-                if not items:
-                    break
-
-                for item in items:
-                    if max_count is not None and yielded_count >= max_count:
-                        return
-                    yield item
-                    yielded_count += 1
-
-                # If max_count reached, stop pagination
-                if max_count is not None and yielded_count >= max_count:
-                    break
-
-                # If we got fewer items than requested, we've reached the end
-                if len(items) < count:
-                    break
-
-                offset += count
-                # Call the original function with pagination parameters
-                data = func(self, *args, offset=offset, count=count, **kwargs)
-
         @wraps(func)
         def wrapper(self, *args, **kwargs):
             offset = kwargs.pop("offset", 0)
@@ -84,7 +86,14 @@ def paginated(
             # Call the original function eagerly to propagate any exceptions
             first_data = func(self, *args, offset=offset, count=count, **kwargs)
 
-            return _generator(self, first_data, offset, count, max_count, args, kwargs)
+            items_gen = _paginated_generator(
+                self, func, data_key, first_data, offset, count, args, kwargs
+            )
+
+            if max_count is not None:
+                return itertools.islice(items_gen, max_count)
+
+            return items_gen
 
         return wrapper
 
