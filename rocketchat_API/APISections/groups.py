@@ -142,6 +142,15 @@ class RocketChatGroups(RocketChatBase):
             "groups.setTopic", roomId=room_id, topic=topic, kwargs=kwargs
         )
 
+    def groups_set_encrypted(self, room_id, encrypted, **kwargs):
+        """Sets whether the group is encrypted or not."""
+        return self.call_api_post(
+            "groups.setEncrypted",
+            roomId=room_id,
+            encrypted=bool(encrypted),
+            kwargs=kwargs,
+        )
+
     def groups_set_type(self, room_id, a_type, **kwargs):
         """Sets the type of room this group should be. The type of room this channel should be, either c or p."""
         return self.call_api_post(
