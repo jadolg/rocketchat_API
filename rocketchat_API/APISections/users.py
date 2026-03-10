@@ -87,7 +87,11 @@ class RocketChatUsers(RocketChatBase):
         return self.call_api_post("users.setAvatar", files=avatar_file, kwargs=kwargs)
 
     def users_reset_avatar(self, user_id=None, username=None, **kwargs):
-        """Reset a user's avatar"""
+        """
+        Reset a user's avatar to the default icon. By default, icons contain the user's initials. Permissions required, if the setting AllowUserAvatarChange is enabled:
+        - edit-other-user-avatar: Permission to change other user's avatar
+        - manage-moderation-actions: Permission to manage moderation actions, perform actions on reported users
+        """
         if user_id:
             return self.call_api_post(
                 "users.resetAvatar", userId=user_id, kwargs=kwargs
