@@ -96,8 +96,11 @@ def test_channels_history(logged_rocket):
 
     # Test with custom count parameter
     iterated_messages_custom = list(
-        logged_rocket.channels_history(room_id="GENERAL", count=1)
+        logged_rocket.channels_history(room_id="GENERAL", max_count=1)
     )
+
+    assert len(iterated_messages_custom) == 1
+
     for message in iterated_messages_custom:
         assert "_id" in message
 
