@@ -9,7 +9,7 @@ class MockAPI:
         self.call_count = 0
 
     @paginated("items")
-    def get_items(self, **kwargs: Any) -> dict[str, Any]:
+    def get_items(self, **kwargs: Any) -> Any:
         self.call_count += 1
         offset = kwargs.get("offset", 0)
         count = kwargs.get("count", 50)
@@ -29,13 +29,13 @@ def test_basic_pagination():
 
 def test_max_count_less_than_total():
     api = MockAPI(total_items=150)
-    result: list[Any] = list(api.get_items(max_count=100))
+    result: list[dict[str, Any]] = list(api.get_items(max_count=100))
 
     assert len(result) == 100
     first_item: dict[str, Any] = result[0]
     last_item: dict[str, Any] = result[99]
-    assert first_item["id"] == 0
-    assert last_item["id"] == 99
+    assert first_item.get("id") == 0
+    assert last_item.get("id") == 99
 
 
 def test_max_count_greater_than_total():
@@ -63,11 +63,11 @@ def test_max_count_mid_page():
 
 def test_max_count_one():
     api = MockAPI(total_items=150)
-    result: list[Any] = list(api.get_items(max_count=1))
+    result: list[dict[str, Any]] = list(api.get_items(max_count=1))
 
     assert len(result) == 1
     first_item: dict[str, Any] = result[0]
-    assert first_item["id"] == 0
+    assert first_item.get("id") == 0
     assert api.call_count == 1
 
 
@@ -88,13 +88,13 @@ def test_max_count_none_returns_all():
 
 def test_offset_with_max_count():
     api = MockAPI(total_items=150)
-    result: list[Any] = list(api.get_items(offset=50, max_count=50))
+    result: list[dict[str, Any]] = list(api.get_items(offset=50, max_count=50))
 
     assert len(result) == 50
     first_item: dict[str, Any] = result[0]
     last_item: dict[str, Any] = result[49]
-    assert first_item["id"] == 50
-    assert last_item["id"] == 99
+    assert first_item.get("id") == 50
+    assert last_item.get("id") == 99
 
 
 def test_custom_count_with_max_count():

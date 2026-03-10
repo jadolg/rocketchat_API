@@ -16,7 +16,8 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
 def paginated(
     data_key: str,
 ) -> Callable[
-    [Callable[..., dict[str, Any]]], Callable[..., Generator[Any, None, None]]
+    [Callable[..., dict[str, Any]]],
+    Callable[..., Generator[dict[str, Any], None, None]],
 ]:
     """
     Decorator that converts a paginated API method into an iterator.
