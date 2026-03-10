@@ -143,7 +143,7 @@ class RocketChatGroups(RocketChatBase):
         )
 
     def groups_set_encrypted(self, room_id, encrypted, **kwargs):
-        """Sets whether the group is encrypted or not."""
+        """Set a private channel as encrypted. Learn about end-to-end encryption here. Permission required: edit-room"""
         return self.call_api_post(
             "groups.setEncrypted",
             roomId=room_id,
