@@ -1,5 +1,13 @@
-from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase, paginated
+from rocketchat_API.APIExceptions.RocketExceptions import (
+    ROOM_ID_OR_CHANNEL_REQUIRED,
+    ROOM_ID_OR_NAME_REQUIRED,
+    USER_ID_OR_USERNAME_REQUIRED,
+    RocketMissingParamException,
+)
+from rocketchat_API.APISections.base import (
+    RocketChatBase,
+    paginated,
+)
 
 
 class RocketChatChannels(RocketChatBase):
@@ -19,7 +27,7 @@ class RocketChatChannels(RocketChatBase):
             return self.call_api_get("channels.info", roomId=room_id, kwargs=kwargs)
         if channel:
             return self.call_api_get("channels.info", roomName=channel, kwargs=kwargs)
-        raise RocketMissingParamException("room_id or channel required")
+        raise RocketMissingParamException(ROOM_ID_OR_CHANNEL_REQUIRED)
 
     @paginated("messages")
     def channels_history(self, room_id, **kwargs):
@@ -52,7 +60,7 @@ class RocketChatChannels(RocketChatBase):
             return self.call_api_get(
                 "channels.moderators", roomName=channel, kwargs=kwargs
             )
-        raise RocketMissingParamException("room_id or channel required")
+        raise RocketMissingParamException(ROOM_ID_OR_CHANNEL_REQUIRED)
 
     def channels_add_owner(self, room_id, user_id=None, username=None, **kwargs):
         """Gives the role of owner for a user in the current channel."""
@@ -64,7 +72,7 @@ class RocketChatChannels(RocketChatBase):
             return self.call_api_post(
                 "channels.addOwner", roomId=room_id, username=username, kwargs=kwargs
             )
-        raise RocketMissingParamException("userID or username required")
+        raise RocketMissingParamException(USER_ID_OR_USERNAME_REQUIRED)
 
     def channels_remove_owner(self, room_id, user_id, **kwargs):
         """Removes the role of owner from a user in the current channel."""
@@ -206,7 +214,7 @@ class RocketChatChannels(RocketChatBase):
             return self.call_api_post(
                 "channels.delete", roomName=channel, kwargs=kwargs
             )
-        raise RocketMissingParamException("room_id or channel required")
+        raise RocketMissingParamException(ROOM_ID_OR_CHANNEL_REQUIRED)
 
     @paginated("members")
     def channels_members(self, room_id=None, channel=None, **kwargs):
@@ -217,7 +225,7 @@ class RocketChatChannels(RocketChatBase):
             return self.call_api_get(
                 "channels.members", roomName=channel, kwargs=kwargs
             )
-        raise RocketMissingParamException("room_id or channel required")
+        raise RocketMissingParamException(ROOM_ID_OR_CHANNEL_REQUIRED)
 
     def channels_roles(self, room_id=None, room_name=None, **kwargs):
         """Lists all user's roles in the channel."""
@@ -227,7 +235,7 @@ class RocketChatChannels(RocketChatBase):
             return self.call_api_get(
                 "channels.roles", roomName=room_name, kwargs=kwargs
             )
-        raise RocketMissingParamException("room_id or room_name required")
+        raise RocketMissingParamException(ROOM_ID_OR_NAME_REQUIRED)
 
     @paginated("files")
     def channels_files(self, room_id=None, room_name=None, **kwargs):
@@ -238,7 +246,7 @@ class RocketChatChannels(RocketChatBase):
             return self.call_api_get(
                 "channels.files", roomName=room_name, kwargs=kwargs
             )
-        raise RocketMissingParamException("room_id or room_name required")
+        raise RocketMissingParamException(ROOM_ID_OR_NAME_REQUIRED)
 
     @paginated("mentions")
     def channels_get_all_user_mentions_by_channel(self, room_id, **kwargs):
@@ -255,7 +263,7 @@ class RocketChatChannels(RocketChatBase):
             return self.call_api_get(
                 "channels.counters", roomName=room_name, kwargs=kwargs
             )
-        raise RocketMissingParamException("room_id or room_name required")
+        raise RocketMissingParamException(ROOM_ID_OR_NAME_REQUIRED)
 
     def channels_online(self, _id):
         """Lists all online users of a channel if the channel's id is provided, otherwise it gets all online users of
