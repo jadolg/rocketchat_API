@@ -166,3 +166,7 @@ class RocketChatTeams(RocketChatBase):
             isDefault=is_default,
             kwargs=kwargs,
         )
+
+    def teams_autocomplete(self, name, **kwargs):
+        """List the teams whose names match a given pattern."""
+        return self.call_api_get("teams.autocomplete", name=name, kwargs=kwargs)
