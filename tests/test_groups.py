@@ -356,3 +356,38 @@ def test_groups_members(logged_rocket, test_group_name, test_group_id):
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.groups_members()
+
+
+def test_groups_online(logged_rocket, test_group_id):
+    logged_rocket.users_set_status(message="", status="online")
+    groups_online = logged_rocket.groups_online(room_id=test_group_id)
+    assert "online" in groups_online
+
+    assert len(groups_online.get("online")) > 0, "No online users found in the group"
+    for user in groups_online.get("online"):
+        assert "_id" in user
+        assert "username" in user
+
+
+def test_groups_convert_to_team(logged_rocket):
+    name = str(uuid.uuid1())
+    groups_create = logged_rocket.groups_create(name)
+    room_id = groups_create.get("group").get("_id")
+
+    groups_convert_to_team = logged_rocket.groups_convert_to_team(room_id=room_id)
+    assert groups_convert_to_team.get("success")
+
+    # Cleanup: delete the team
+    logged_rocket.teams_delete(team_name=name)
+
+    # Test with room_name
+    name = str(uuid.uuid1())
+    logged_rocket.groups_create(name)
+    groups_convert_to_team = logged_rocket.groups_convert_to_team(room_name=name)
+    assert groups_convert_to_team.get("success")
+
+    # Cleanup: delete the team
+    logged_rocket.teams_delete(team_name=name)
+
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.groups_convert_to_team()

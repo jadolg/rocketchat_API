@@ -20,6 +20,8 @@ jobs:
         with:
           python-version: "3.14"
       - name: Install black
-        run: pip install black
+        run: |
+          pip install black
+          black --version
       - name: Lint with black
         run: black --check --diff .

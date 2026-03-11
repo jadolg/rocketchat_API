@@ -1,5 +1,14 @@
 import json
 
+# Constants for commonly used error messages
+ROOM_ID_OR_NAME_REQUIRED = "room_id or room_name required"
+ROOM_ID_OR_GROUP_REQUIRED = "room_id or group required"
+ROOM_ID_OR_CHANNEL_REQUIRED = "room_id or channel required"
+USER_ID_OR_USERNAME_REQUIRED = "user_id or username required"
+ROOM_ID_OR_USERNAME_REQUIRED = "room_id or username required"
+MESSAGE_RID_REQUIRED = "message.rid required"
+TEAM_ID_OR_TEAM_NAME_REQUIRED = "team_id or team_name required"
+
 
 class RocketConnectionException(Exception):
     """Exception raised when a connection to the Rocket.Chat server fails.
