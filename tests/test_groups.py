@@ -359,9 +359,11 @@ def test_groups_members(logged_rocket, test_group_name, test_group_id):
 
 
 def test_groups_online(logged_rocket, test_group_id):
+    logged_rocket.users_set_status(message="", status="online")
     groups_online = logged_rocket.groups_online(room_id=test_group_id)
     assert "online" in groups_online
 
+    assert len(groups_online.get("online")) > 0, "No online users found in the group"
     for user in groups_online.get("online"):
         assert "_id" in user
         assert "username" in user
