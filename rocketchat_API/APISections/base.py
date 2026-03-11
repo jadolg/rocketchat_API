@@ -1,10 +1,8 @@
+import itertools
 import re
-
 from functools import wraps
-
 from json import JSONDecodeError
-from typing import Any
-
+from typing import Any, Callable, Generator
 
 import requests
 
@@ -16,7 +14,40 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
 )
 
 
-def paginated(data_key):
+def _paginated_generator(
+    self,
+    func: Callable[..., dict[str, Any]],
+    data_key: str,
+    first_data: dict[str, Any],
+    offset: int,
+    count: int,
+    args: tuple[Any, ...],
+    kwargs: dict[str, Any],
+) -> Generator[dict[str, Any], None, None]:
+    """Inner generator that yields items from paginated API responses."""
+    data = first_data
+    while True:
+        items = data.get(data_key, [])
+        if not items:
+            break
+
+        yield from items
+
+        # If we got fewer items than requested, we've reached the end
+        if len(items) < count:
+            break
+
+        offset += count
+        # Call the original function with pagination parameters
+        data = func(self, *args, offset=offset, count=count, **kwargs)
+
+
+def paginated(
+    data_key: str,
+) -> Callable[
+    [Callable[..., dict[str, Any]]],
+    Callable[..., Generator[dict[str, Any], None, None]],
+]:
     """
     Decorator that converts a paginated API method into an iterator.
 
@@ -28,41 +59,41 @@ def paginated(data_key):
         A decorator that wraps the original method to yield items one by one,
         automatically handling pagination with offset and count parameters.
 
+    Kwargs (handled by the wrapper):
+        offset: Starting offset for pagination (default: 0)
+        count: Number of items per page (default: 50)
+        max_count: Maximum total number of items to return (default: None, returns all)
+
     Example:
         @paginated('groups')
         def groups_list_all(self, **kwargs):
             return self.call_api_get("groups.listAll", kwargs=kwargs)
+
+        # Get all groups
+        list(rocket.groups_list_all())
+
+        # Get at most 100 groups
+        list(rocket.groups_list_all(max_count=100))
     """
 
     def decorator(func):
-        def _generator(self, first_data, offset, count, args, kwargs):
-            """Inner generator that yields items from paginated API responses."""
-            data = first_data
-            while True:
-                items = data.get(data_key, [])
-                if not items:
-                    break
-
-                for item in items:
-                    yield item
-
-                # If we got fewer items than requested, we've reached the end
-                if len(items) < count:
-                    break
-
-                offset += count
-                # Call the original function with pagination parameters
-                data = func(self, *args, offset=offset, count=count, **kwargs)
-
         @wraps(func)
         def wrapper(self, *args, **kwargs):
             offset = kwargs.pop("offset", 0)
             count = kwargs.pop("count", 50)
+            max_count = kwargs.pop("max_count", None)
 
             # Call the original function eagerly to propagate any exceptions
             first_data = func(self, *args, offset=offset, count=count, **kwargs)
 
-            return _generator(self, first_data, offset, count, args, kwargs)
+            items_gen = _paginated_generator(
+                self, func, data_key, first_data, offset, count, args, kwargs
+            )
+
+            if max_count is not None:
+                return itertools.islice(items_gen, max_count)
+
+            return items_gen
 
         return wrapper
 

@@ -57,7 +57,7 @@ for channel in rocket.channels_list():
 rocket.chat_post_message('good news everyone!', channel='GENERAL', alias='Farnsworth')
 
 # Get channel history
-rocket.channels_history('GENERAL', count=5)
+rocket.channels_history('GENERAL', max_count=5)
 ```
 
 ### Token-Based Authentication

@@ -56,8 +56,8 @@ def test_groups_list_all(logged_rocket):
         assert "_id" in group
         assert "name" in group
 
-    iterated_groups_custom = list(logged_rocket.groups_list_all(count=1))
-    assert len(iterated_groups_custom) > 0
+    iterated_groups_custom = list(logged_rocket.groups_list_all(max_count=1))
+    assert len(iterated_groups_custom) == 1
 
     for group in logged_rocket.groups_list_all():
         assert "_id" in group
@@ -350,9 +350,9 @@ def test_groups_members(logged_rocket, test_group_name, test_group_id):
 
     # Test with custom count parameter
     iterated_members_custom = list(
-        logged_rocket.groups_members(room_id=test_group_id, count=1)
+        logged_rocket.groups_members(room_id=test_group_id, max_count=1)
     )
-    assert len(iterated_members_custom) > 0
+    assert len(iterated_members_custom) == 1
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.groups_members()
