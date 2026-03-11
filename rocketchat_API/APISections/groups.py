@@ -176,6 +176,18 @@ class RocketChatGroups(RocketChatBase):
             )
         raise RocketMissingParamException("room_id or room_name required")
 
+    def groups_convert_to_team(self, room_id=None, room_name=None, **kwargs):
+        """Convert a private channel to a team. Permissions required: create-team, edit-room"""
+        if room_id:
+            return self.call_api_post(
+                "groups.convertToTeam", roomId=room_id, kwargs=kwargs
+            )
+        if room_name:
+            return self.call_api_post(
+                "groups.convertToTeam", roomName=room_name, kwargs=kwargs
+            )
+        raise RocketMissingParamException("room_id or room_name required")
+
     def groups_delete(self, room_id=None, group=None, **kwargs):
         """Delete a private group."""
         if room_id:
