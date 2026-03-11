@@ -233,3 +233,7 @@ class RocketChatGroups(RocketChatBase):
         return self.call_api_post(
             "groups.removeLeader", roomId=room_id, userId=user_id, kwargs=kwargs
         )
+
+    def groups_online(self, room_id, **kwargs):
+        """Lists all online users of a particular group (private channel). You will not be able to view the users if you are not a member of this private channel, unless you have admin permissions."""
+        return self.call_api_get("groups.online", _id=room_id, kwargs=kwargs)
