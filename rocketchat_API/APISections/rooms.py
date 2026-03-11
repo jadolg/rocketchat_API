@@ -2,9 +2,13 @@ import mimetypes
 import os
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
+    ROOM_ID_OR_NAME_REQUIRED,
     RocketMissingParamException,
 )
-from rocketchat_API.APISections.base import RocketChatBase, paginated
+from rocketchat_API.APISections.base import (
+    RocketChatBase,
+    paginated,
+)
 
 
 class RocketChatRooms(RocketChatBase):
@@ -32,7 +36,7 @@ class RocketChatRooms(RocketChatBase):
             return self.call_api_post(
                 "rooms.favorite", roomName=room_name, favorite=favorite
             )
-        raise RocketMissingParamException("room_id or roomName required")
+        raise RocketMissingParamException(ROOM_ID_OR_NAME_REQUIRED)
 
     def rooms_info(self, room_id=None, room_name=None):
         """Retrieves the information about the room."""
@@ -40,7 +44,7 @@ class RocketChatRooms(RocketChatBase):
             return self.call_api_get("rooms.info", roomId=room_id)
         if room_name is not None:
             return self.call_api_get("rooms.info", roomName=room_name)
-        raise RocketMissingParamException("room_id or roomName required")
+        raise RocketMissingParamException(ROOM_ID_OR_NAME_REQUIRED)
 
     @paginated("rooms")
     def rooms_admin_rooms(self, **kwargs):

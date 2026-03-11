@@ -1,30 +1,36 @@
-from rocketchat_API.APIExceptions.RocketExceptions import RocketMissingParamException
-from rocketchat_API.APISections.base import RocketChatBase, paginated
+from rocketchat_API.APIExceptions.RocketExceptions import (
+    MESSAGE_RID_REQUIRED,
+    RocketMissingParamException,
+    ROOM_ID_OR_CHANNEL_REQUIRED,
+)
+from rocketchat_API.APISections.base import (
+    RocketChatBase,
+    paginated,
+)
 
 
 class RocketChatChat(RocketChatBase):
     def chat_post_message(self, text, room_id=None, channel=None, **kwargs):
         """Posts a new chat message."""
+        method = "chat.postMessage"
         if room_id:
             if text:
                 return self.call_api_post(
-                    "chat.postMessage", roomId=room_id, text=text, kwargs=kwargs
+                    method, roomId=room_id, text=text, kwargs=kwargs
                 )
-            return self.call_api_post("chat.postMessage", roomId=room_id, kwargs=kwargs)
+            return self.call_api_post(method, roomId=room_id, kwargs=kwargs)
         if channel:
             if text:
                 return self.call_api_post(
-                    "chat.postMessage", channel=channel, text=text, kwargs=kwargs
+                    method, channel=channel, text=text, kwargs=kwargs
                 )
-            return self.call_api_post(
-                "chat.postMessage", channel=channel, kwargs=kwargs
-            )
-        raise RocketMissingParamException("roomId or channel required")
+            return self.call_api_post(method, channel=channel, kwargs=kwargs)
+        raise RocketMissingParamException(ROOM_ID_OR_CHANNEL_REQUIRED)
 
     def chat_send_message(self, message):
         if "rid" in message:
             return self.call_api_post("chat.sendMessage", message=message)
-        raise RocketMissingParamException("message.rid required")
+        raise RocketMissingParamException(MESSAGE_RID_REQUIRED)
 
     def chat_get_message(self, msg_id, **kwargs):
         return self.call_api_get("chat.getMessage", msgId=msg_id, kwargs=kwargs)
