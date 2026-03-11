@@ -256,3 +256,9 @@ def test_teams_add_update_remove_rooms_name(
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.teams_remove_room()
+
+
+def test_teams_autocomplete(logged_rocket, test_team_id, test_team_name):
+    teams_autocomplete = logged_rocket.teams_autocomplete(name=test_team_name)
+    assert "teams" in teams_autocomplete
+    assert isinstance(teams_autocomplete.get("teams"), list)
