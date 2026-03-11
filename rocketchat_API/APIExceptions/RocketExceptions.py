@@ -1,6 +1,5 @@
 import json
 
-
 # Constants for commonly used error messages
 ROOM_ID_OR_NAME_REQUIRED = "room_id or room_name required"
 ROOM_ID_OR_GROUP_REQUIRED = "room_id or group required"
