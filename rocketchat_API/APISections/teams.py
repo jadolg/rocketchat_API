@@ -170,3 +170,29 @@ class RocketChatTeams(RocketChatBase):
     def teams_autocomplete(self, name, **kwargs):
         """List the teams whose names match a given pattern."""
         return self.call_api_get("teams.autocomplete", name=name, kwargs=kwargs)
+
+    @paginated("rooms")
+    def teams_list_rooms_of_user(
+        self, team_id=None, team_name=None, user_id=None, can_add=False, **kwargs
+    ):
+        """
+        Lists only the team's rooms that a particular user has joined.
+        Permissions required: view-all-teams, view-all-team-channels
+        """
+        if team_id:
+            return self.call_api_get(
+                "teams.listRoomsOfUser",
+                teamId=team_id,
+                userId=user_id,
+                canAdd=can_add,
+                kwargs=kwargs,
+            )
+        if team_name:
+            return self.call_api_get(
+                "teams.listRoomsOfUser",
+                teamName=team_name,
+                userId=user_id,
+                canAdd=can_add,
+                kwargs=kwargs,
+            )
+        raise RocketMissingParamException(TEAM_ID_OR_TEAM_NAME_REQUIRED)
