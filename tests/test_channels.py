@@ -173,13 +173,23 @@ def test_channels_create_delete(logged_rocket):
 
 
 def test_channels_get_integrations(logged_rocket):
-    channels_get_integrations = logged_rocket.channels_get_integrations(
-        room_id="GENERAL"
+    created = logged_rocket.integrations_create(
+        integrations_type="webhook-incoming",
+        name="test_channels_integration",
+        enabled=True,
+        username=logged_rocket.me().get("username"),
+        channel="#general",
+        script_enabled=False,
     )
-    assert all(
-        key in channels_get_integrations
-        for key in ["integrations", "count", "offset", "total"]
-    )
+    integration_id = created.get("integration").get("_id")
+
+    integrations = list(logged_rocket.channels_get_integrations(room_id="GENERAL"))
+    assert len(integrations) > 0
+    for integration in integrations:
+        assert "_id" in integration
+        assert "type" in integration
+
+    logged_rocket.integrations_remove("webhook-incoming", integration_id)
 
 
 def test_channels_invite(logged_rocket, testuser_id):

@@ -162,11 +162,24 @@ def test_groups_create_delete(logged_rocket):
         logged_rocket.groups_delete()
 
 
-def test_groups_get_integrations(logged_rocket, test_group_id):
-    groups_get_integrations = logged_rocket.groups_get_integrations(
-        room_id=test_group_id
+def test_groups_get_integrations(logged_rocket, test_group_name, test_group_id):
+    created = logged_rocket.integrations_create(
+        integrations_type="webhook-incoming",
+        name="test_groups_integration",
+        enabled=True,
+        username=logged_rocket.me().get("username"),
+        channel="#" + test_group_name,
+        script_enabled=False,
     )
-    assert "integrations" in groups_get_integrations
+    integration_id = created.get("integration").get("_id")
+
+    integrations = list(logged_rocket.groups_get_integrations(room_id=test_group_id))
+    assert len(integrations) > 0
+    for integration in integrations:
+        assert "_id" in integration
+        assert "type" in integration
+
+    logged_rocket.integrations_remove("webhook-incoming", integration_id)
 
 
 def test_groups_invite(logged_rocket, testuser_id, test_group_id):

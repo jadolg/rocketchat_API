@@ -76,6 +76,7 @@ class RocketChatGroups(RocketChatBase):
         """Creates a new private group, optionally including users, only if you're part of the group."""
         return self.call_api_post("groups.create", name=name, kwargs=kwargs)
 
+    @paginated("integrations")
     def groups_get_integrations(self, room_id, **kwargs):
         """Retrieves the integrations which the group has"""
         return self.call_api_get(

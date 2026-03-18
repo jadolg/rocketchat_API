@@ -84,8 +84,12 @@ def test_dm_history(logged_rocket, recipient_user):
 def test_dm_members(logged_rocket, recipient_user):
     dm_create = logged_rocket.dm_create(recipient_user)
     room_id = dm_create.get("room").get("_id")
-    dm_members = logged_rocket.dm_members(room_id=room_id)
-    assert dm_members.get("members")[0].get("name") == "user1"
+    members = list(logged_rocket.dm_members(room_id=room_id))
+    assert len(members) > 0
+    for member in members:
+        assert "_id" in member
+        assert "username" in member
+    assert any(m.get("name") == "user1" for m in members)
 
 
 def test_dm_messages(logged_rocket, recipient_user):

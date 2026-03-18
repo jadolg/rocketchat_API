@@ -58,6 +58,7 @@ class RocketChatLivechat(RocketChatBase):
             "livechat/message", token=token, rid=rid, msg=msg, kwargs=kwargs
         )
 
+    @paginated("messages")
     def livechat_messages_history(self, rid, token, **kwargs):
         """Load Livechat messages history."""
         return self.call_api_get(
