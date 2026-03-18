@@ -1,11 +1,11 @@
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
 
 @pytest.fixture()
 def date_range():
-    end = datetime.now(UTC)
+    end = datetime.now(timezone.utc)
     start = end - timedelta(days=7)
     return {
         "start": start.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
