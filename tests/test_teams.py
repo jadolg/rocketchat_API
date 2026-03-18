@@ -256,3 +256,53 @@ def test_teams_add_update_remove_rooms_name(
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.teams_remove_room()
+
+
+def test_teams_autocomplete(logged_rocket, test_team_id, test_team_name):
+    teams_autocomplete = logged_rocket.teams_autocomplete(name=test_team_name)
+    assert "teams" in teams_autocomplete
+    assert isinstance(teams_autocomplete.get("teams"), list)
+
+
+def test_teams_list_rooms_of_user(
+    logged_rocket, test_team_id, test_team_name, testuser_id, test_group_id
+):
+    with pytest.raises(RocketMissingParamException):
+        logged_rocket.teams_list_rooms_of_user()
+
+    # Add user to team
+    logged_rocket.teams_add_members(
+        team_id=test_team_id,
+        members=[
+            {
+                "userId": testuser_id,
+                "roles": ["member"],
+            }
+        ],
+    )
+
+    # Add room to team
+    logged_rocket.teams_add_rooms(team_id=test_team_id, rooms=[test_group_id])
+
+    # Add user to room
+    logged_rocket.groups_invite(room_id=test_group_id, user_id=testuser_id)
+
+    # Test by team id
+    rooms = list(
+        logged_rocket.teams_list_rooms_of_user(
+            team_id=test_team_id, user_id=testuser_id
+        )
+    )
+    assert isinstance(rooms, list)
+    assert len(rooms) > 0
+    assert any(room["_id"] == test_group_id for room in rooms)
+
+    # Test by team name
+    rooms = list(
+        logged_rocket.teams_list_rooms_of_user(
+            team_name=test_team_name, user_id=testuser_id
+        )
+    )
+    assert isinstance(rooms, list)
+    assert len(rooms) > 0
+    assert any(room["_id"] == test_group_id for room in rooms)

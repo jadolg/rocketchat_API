@@ -112,6 +112,7 @@ class RocketChatChannels(RocketChatBase):
         """Creates a new public channel, optionally including users."""
         return self.call_api_post("channels.create", name=name, kwargs=kwargs)
 
+    @paginated("integrations")
     def channels_get_integrations(self, room_id, **kwargs):
         """Retrieves the integrations which the channel has"""
         return self.call_api_get(

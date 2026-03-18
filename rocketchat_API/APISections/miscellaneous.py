@@ -1,8 +1,9 @@
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatMiscellaneous(RocketChatBase):
     # Miscellaneous information
+    @paginated("result")
     def directory(self, query, **kwargs):
         """Search by users or channels on all server."""
         if isinstance(query, dict):

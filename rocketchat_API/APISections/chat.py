@@ -72,6 +72,7 @@ class RocketChatChat(RocketChatBase):
             "chat.search", roomId=room_id, searchText=search_text, kwargs=kwargs
         )
 
+    @paginated("receipts")
     def chat_get_message_read_receipts(self, message_id, **kwargs):
         """Get Message Read Receipts"""
         return self.call_api_get(

@@ -22,19 +22,21 @@ def test_statistics(logged_rocket):
 
 
 def test_statistics_list(logged_rocket):
-    statistics_list = logged_rocket.statistics_list()
-    assert "statistics" in statistics_list
+    statistics_list = list(logged_rocket.statistics_list())
+    assert len(statistics_list) > 0
 
 
 def test_directory(logged_rocket):
-    directory = logged_rocket.directory(query={"text": "rocket", "type": "users"})
-    assert all(key in directory for key in ["result", "count", "offset", "total"])
+    results = list(logged_rocket.directory(query={"text": "rocket", "type": "users"}))
+    for result in results:
+        assert "_id" in result
 
 
 def test_directory_with_string_query(logged_rocket):
     """Test directory method when query is passed as a string"""
-    directory = logged_rocket.directory(query='{"text": "rocket", "type": "users"}')
-    assert all(key in directory for key in ["result", "count", "offset", "total"])
+    results = list(logged_rocket.directory(query='{"text": "rocket", "type": "users"}'))
+    for result in results:
+        assert "_id" in result
 
 
 def test_spotlight(logged_rocket):
