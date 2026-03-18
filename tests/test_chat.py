@@ -137,9 +137,7 @@ def test_chat_get_message_read_receipts(logged_rocket, skip_if_no_license):
         .get("message")
         .get("_id")
     )
-    receipts = list(
-        logged_rocket.chat_get_message_read_receipts(message_id=message_id)
-    )
+    receipts = list(logged_rocket.chat_get_message_read_receipts(message_id=message_id))
     for receipt in receipts:
         assert "userId" in receipt
         assert "messageId" in receipt
