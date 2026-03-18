@@ -1,4 +1,4 @@
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatSettings(RocketChatBase):
@@ -10,10 +10,12 @@ class RocketChatSettings(RocketChatBase):
         """Updates the setting for the provided _id."""
         return self.call_api_post("settings/" + _id, value=value, kwargs=kwargs)
 
+    @paginated("settings")
     def settings(self, **kwargs):
         """List all private settings."""
         return self.call_api_get("settings", kwargs=kwargs)
 
+    @paginated("settings")
     def settings_public(self, **kwargs):
         """List all private settings."""
         return self.call_api_get("settings.public", kwargs=kwargs)

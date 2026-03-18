@@ -163,10 +163,10 @@ def test_groups_create_delete(logged_rocket):
 
 
 def test_groups_get_integrations(logged_rocket, test_group_id):
-    groups_get_integrations = logged_rocket.groups_get_integrations(
-        room_id=test_group_id
-    )
-    assert "integrations" in groups_get_integrations
+    integrations = list(logged_rocket.groups_get_integrations(room_id=test_group_id))
+    for integration in integrations:
+        assert "_id" in integration
+        assert "type" in integration
 
 
 def test_groups_invite(logged_rocket, testuser_id, test_group_id):

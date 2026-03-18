@@ -173,13 +173,10 @@ def test_channels_create_delete(logged_rocket):
 
 
 def test_channels_get_integrations(logged_rocket):
-    channels_get_integrations = logged_rocket.channels_get_integrations(
-        room_id="GENERAL"
-    )
-    assert all(
-        key in channels_get_integrations
-        for key in ["integrations", "count", "offset", "total"]
-    )
+    integrations = list(logged_rocket.channels_get_integrations(room_id="GENERAL"))
+    for integration in integrations:
+        assert "_id" in integration
+        assert "type" in integration
 
 
 def test_channels_invite(logged_rocket, testuser_id):
