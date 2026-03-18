@@ -132,7 +132,9 @@ def test_post_star_unstar_get_starred_messages(logged_rocket):
     logged_rocket.chat_unstar_message(message_id)
 
 
-def test_chat_get_message_read_receipts(logged_rocket, secondary_user, skip_if_no_license):
+def test_chat_get_message_read_receipts(
+    logged_rocket, secondary_user, skip_if_no_license
+):
     logged_rocket.settings_update("Message_Read_Receipt_Enabled", True)
     logged_rocket.settings_update("Message_Read_Receipt_Store_Users", True)
 
