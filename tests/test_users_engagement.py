@@ -13,7 +13,6 @@ def date_range():
     }
 
 
-
 def test_engagement_dashboard_new_users(logged_rocket, skip_if_no_license, date_range):
     result = logged_rocket.engagement_dashboard_new_users(
         start=date_range["start"], end=date_range["end"]
