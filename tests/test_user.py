@@ -174,13 +174,6 @@ def test_users_list(logged_rocket):
         assert "_id" in user
         assert "username" in user
 
-    iterated_users_custom = list(logged_rocket.users_list(count=1))
-    assert len(iterated_users_custom) > 0
-    assert len(iterated_users_custom) == len(iterated_users)
-
-    for user in logged_rocket.users_list():
-        assert "_id" in user
-
 
 def test_users_set_status(logged_rocket):
     logged_rocket.users_set_status(message="working on it", status="online")

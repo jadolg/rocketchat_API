@@ -71,8 +71,8 @@ def test_rooms_admin_rooms(logged_rocket):
         assert "t" in room
 
     # Test with custom count parameter
-    iterated_rooms_custom = list(logged_rocket.rooms_admin_rooms(count=1))
-    assert len(iterated_rooms_custom) > 0
+    iterated_rooms_custom = list(logged_rocket.rooms_admin_rooms(max_count=1))
+    assert len(iterated_rooms_custom) == 1
 
     rooms_with_filter = list(logged_rocket.rooms_admin_rooms(filter="general"))
     assert len(rooms_with_filter) == 1

@@ -52,8 +52,8 @@ def test_channels_list(logged_rocket):
         assert "_id" in channel
         assert "name" in channel
 
-    iterated_channels_custom = list(logged_rocket.channels_list(count=1))
-    assert len(iterated_channels_custom) > 0
+    iterated_channels_custom = list(logged_rocket.channels_list(max_count=1))
+    assert len(iterated_channels_custom) == 1
 
     for channel in logged_rocket.channels_list():
         assert "_id" in channel
@@ -67,8 +67,8 @@ def test_channels_list_joined(logged_rocket):
         assert "_id" in channel
         assert "name" in channel
 
-    iterated_channels_custom = list(logged_rocket.channels_list_joined(count=1))
-    assert len(iterated_channels_custom) > 0
+    iterated_channels_custom = list(logged_rocket.channels_list_joined(max_count=1))
+    assert len(iterated_channels_custom) == 1
 
     for channel in logged_rocket.channels_list_joined():
         assert "_id" in channel
@@ -96,8 +96,11 @@ def test_channels_history(logged_rocket):
 
     # Test with custom count parameter
     iterated_messages_custom = list(
-        logged_rocket.channels_history(room_id="GENERAL", count=1)
+        logged_rocket.channels_history(room_id="GENERAL", max_count=1)
     )
+
+    assert len(iterated_messages_custom) == 1
+
     for message in iterated_messages_custom:
         assert "_id" in message
 
@@ -384,9 +387,9 @@ def test_channels_members(logged_rocket):
 
     # Test with custom count parameter
     iterated_members_custom = list(
-        logged_rocket.channels_members(room_id="GENERAL", count=1)
+        logged_rocket.channels_members(room_id="GENERAL", max_count=1)
     )
-    assert len(iterated_members_custom) > 0
+    assert len(iterated_members_custom) == 1
 
     for member in logged_rocket.channels_members(room_id="GENERAL"):
         assert "_id" in member
