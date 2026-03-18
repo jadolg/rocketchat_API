@@ -24,10 +24,7 @@ def created_emoji(logged_rocket, emoji_name):
 
     yield {"_id": emoji["_id"], "name": emoji_name}
 
-    try:
-        logged_rocket.custom_emoji_delete(emoji_id=emoji["_id"])
-    except Exception:
-        pass
+    logged_rocket.custom_emoji_delete(emoji_id=emoji["_id"])
 
 
 def test_custom_emoji_create_delete(logged_rocket):
