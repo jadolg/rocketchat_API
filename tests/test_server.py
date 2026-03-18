@@ -22,8 +22,8 @@ def test_statistics(logged_rocket):
 
 
 def test_statistics_list(logged_rocket):
-    statistics_list = logged_rocket.statistics_list()
-    assert "statistics" in statistics_list
+    statistics_list = list(logged_rocket.statistics_list())
+    assert len(statistics_list) > 0
 
 
 def test_directory(logged_rocket):
