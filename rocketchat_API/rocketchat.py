@@ -12,6 +12,7 @@ from rocketchat_API.APISections.invites import RocketChatInvites
 from rocketchat_API.APISections.licenses import RocketChatLicenses
 from rocketchat_API.APISections.livechat import RocketChatLivechat
 from rocketchat_API.APISections.miscellaneous import RocketChatMiscellaneous
+from rocketchat_API.APISections.moderation import RocketChatModeration
 from rocketchat_API.APISections.permissions import RocketChatPermissions
 from rocketchat_API.APISections.roles import RocketChatRoles
 from rocketchat_API.APISections.rooms import RocketChatRooms
@@ -36,6 +37,7 @@ class RocketChat(
     RocketChatLicenses,
     RocketChatLivechat,
     RocketChatMiscellaneous,
+    RocketChatModeration,
     RocketChatPermissions,
     RocketChatRoles,
     RocketChatRooms,
