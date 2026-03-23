@@ -29,10 +29,10 @@ jobs:
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
       - name: Announce release
-        uses: jadolg/rocketchat-notification-action@v2.0.0
+        uses: jadolg/rocketchat-notification-action@v3.0.0
         with:
           server: https://open.rocket.chat
           message: A new version (${{ github.event.release.tag_name }}) has been released! ${{ github.event.release.html_url }}
-          user: ${{ secrets.ROCKETCHAT_USER }}
-          password: ${{ secrets.ROCKETCHAT_PASSWORD }}
+          user-id: ${{ secrets.ROCKETCHAT_USER_ID }}
+          auth-token: ${{ secrets.ROCKETCHAT_AUTH_TOKEN }}
           channel: "#python_rocketchat_api"
