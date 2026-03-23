@@ -33,3 +33,11 @@ class RocketChatRoles(RocketChatBase):
     def roles_sync(self, updated_since):
         """Gets all the roles in the system which are updated after a given date."""
         return self.call_api_get("roles.sync", updatedSince=updated_since)
+
+    def roles_delete(self, role_id, **kwargs):
+        """Deletes a role. Permission required: access-permissions"""
+        return self.call_api_post("roles.delete", roleId=role_id, kwargs=kwargs)
+
+    def roles_get_users_in_public_roles(self, **kwargs):
+        """Gets the users that belong to any public role."""
+        return self.call_api_get("roles.getUsersInPublicRoles", kwargs=kwargs)
