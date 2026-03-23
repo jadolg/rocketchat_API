@@ -314,7 +314,7 @@ def test_chat_get_discussions(logged_rocket):
 
 def test_chat_get_url_preview(logged_rocket):
     result = logged_rocket.chat_get_url_preview(
-        room_id="GENERAL", url="http://www.w3schools.com/tags/movie.mp4"
+        room_id="GENERAL", url="https://www.w3schools.com/tags/movie.mp4"
     )
     assert "urlPreview" in result
 
