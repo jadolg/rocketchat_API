@@ -307,9 +307,17 @@ def test_chat_sync_thread_messages(logged_rocket):
 
 
 def test_chat_get_discussions(logged_rocket):
-    discussions = list(logged_rocket.chat_get_discussions(room_id="GENERAL"))
-    for discussion in discussions:
-        assert "_id" in discussion
+    discussion = logged_rocket.rooms_create_discussion(
+        prid="GENERAL", t_name="test discussion"
+    )
+    discussion_id = discussion.get("discussion").get("_id")
+
+    try:
+        discussions = list(logged_rocket.chat_get_discussions(room_id="GENERAL"))
+        assert len(discussions) > 0
+        assert any(d.get("drid") == discussion_id for d in discussions)
+    finally:
+        logged_rocket.channels_delete(room_id=discussion_id)
 
 
 def test_chat_get_url_preview(logged_rocket):
