@@ -224,6 +224,109 @@ def test_chat_get_mentioned_messages(logged_rocket):
     assert mentioned_messages[0].get("msg") == "hello @user1"
 
 
+def test_chat_unfollow_message(logged_rocket):
+    message_id = (
+        logged_rocket.chat_post_message("hello", channel="GENERAL")
+        .get("message")
+        .get("_id")
+    )
+    logged_rocket.chat_follow_message(mid=message_id)
+    logged_rocket.chat_unfollow_message(mid=message_id)
+    followed_ids = [
+        m.get("_id")
+        for m in logged_rocket.chat_get_thread_messages(thread_msg_id=message_id)
+    ]
+    assert message_id not in followed_ids
+
+
+def test_chat_get_deleted_messages(logged_rocket):
+    message_id = (
+        logged_rocket.chat_post_message("to be deleted", channel="GENERAL")
+        .get("message")
+        .get("_id")
+    )
+    logged_rocket.chat_delete(room_id="GENERAL", msg_id=message_id)
+    deleted = list(
+        logged_rocket.chat_get_deleted_messages(
+            room_id="GENERAL", since="2000-01-01T00:00:00.000Z"
+        )
+    )
+    assert any(m.get("_id") == message_id for m in deleted)
+
+
+def test_chat_get_pinned_messages(logged_rocket):
+    message_id = (
+        logged_rocket.chat_post_message("pin me", channel="GENERAL")
+        .get("message")
+        .get("_id")
+    )
+    logged_rocket.chat_pin_message(message_id)
+    pinned = list(logged_rocket.chat_get_pinned_messages(room_id="GENERAL"))
+    assert len(pinned) > 0
+    for msg in pinned:
+        assert "_id" in msg
+
+
+def test_chat_ignore_user(logged_rocket):
+    logged_rocket.chat_ignore_user(rid="GENERAL", user_id="rocket.cat")
+    logged_rocket.chat_ignore_user(rid="GENERAL", user_id="rocket.cat", ignore=False)
+
+
+def test_chat_sync_messages(logged_rocket):
+    logged_rocket.chat_post_message("sync test", channel="GENERAL")
+    result = logged_rocket.chat_sync_messages(
+        room_id="GENERAL", last_update="2000-01-01T00:00:00.000Z"
+    )
+    assert "result" in result
+
+
+def test_chat_get_threads_list(logged_rocket):
+    threads = list(logged_rocket.chat_get_threads_list(rid="GENERAL"))
+    for thread in threads:
+        assert "_id" in thread
+
+
+def test_chat_sync_thread_list(logged_rocket):
+    result = logged_rocket.chat_sync_thread_list(
+        rid="GENERAL", updated_since="2000-01-01T00:00:00.000Z"
+    )
+    assert "threads" in result
+
+
+def test_chat_sync_thread_messages(logged_rocket):
+    parent_id = (
+        logged_rocket.chat_post_message("thread parent", channel="GENERAL")
+        .get("message")
+        .get("_id")
+    )
+    logged_rocket.chat_post_message("reply", room_id="GENERAL", tmid=parent_id)
+    result = logged_rocket.chat_sync_thread_messages(
+        tmid=parent_id, updated_since="2000-01-01T00:00:00.000Z"
+    )
+    assert "messages" in result
+
+
+def test_chat_get_discussions(logged_rocket):
+    discussion = logged_rocket.rooms_create_discussion(
+        prid="GENERAL", t_name="test discussion"
+    )
+    discussion_id = discussion.get("discussion").get("_id")
+
+    try:
+        discussions = list(logged_rocket.chat_get_discussions(room_id="GENERAL"))
+        assert len(discussions) > 0
+        assert any(d.get("drid") == discussion_id for d in discussions)
+    finally:
+        logged_rocket.channels_delete(room_id=discussion_id)
+
+
+def test_chat_get_url_preview(logged_rocket):
+    result = logged_rocket.chat_get_url_preview(
+        room_id="GENERAL", url="https://www.w3schools.com/tags/movie.mp4"
+    )
+    assert "urlPreview" in result
+
+
 def test_chat_search(logged_rocket):
     logged_rocket.chat_post_message("unique_search_term_test", channel="GENERAL")
 
