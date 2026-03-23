@@ -125,3 +125,18 @@ def test_livechat_get_inquiries(logged_rocket, livechat_inquiry):
 def test_livechat_get_inquiries_non_existent_room(logged_rocket):
     inquiry_not_found = logged_rocket.livechat_inquiries_get_one(room_id="nonexistent")
     assert inquiry_not_found.get("inquiry") is None or "success" in inquiry_not_found
+
+
+def test_livechat_get_appearance(logged_rocket):
+    result = logged_rocket.livechat_get_appearance()
+    assert "appearance" in result
+
+
+def test_livechat_set_appearance(logged_rocket):
+    appearance = logged_rocket.livechat_get_appearance().get("appearance", [])
+    assert len(appearance) > 0, "Expected at least one appearance setting"
+
+    setting = appearance[0]
+    logged_rocket.livechat_set_appearance(
+        [{"_id": setting["_id"], "value": setting["value"]}]
+    )

@@ -200,24 +200,37 @@ class RocketChatBase:
             )
         )
 
-    def call_api_post(self, method, files=None, use_json=None, **kwargs):
-        reduced_args = self.__reduce_kwargs(kwargs)
-        # Since pass is a reserved word in Python it has to be injected on the request dict
-        # Some methods use pass (users.register) and others password (users.create)
-        if "password" in reduced_args and method != "users.create":
-            reduced_args["pass"] = reduced_args["password"]
-            del reduced_args["password"]
-        if use_json is None:
-            # see https://requests.readthedocs.io/en/master/user/quickstart/#more-complicated-post-requests
-            # > The json parameter is ignored if either data or files is passed.
-            # If files are sent, json should not be used
-            use_json = files is None
-        if use_json:
+    def call_api_post(self, method, body=None, files=None, use_json=None, **kwargs):
+        """Send a POST request to the API.
+
+        There are two modes of operation:
+
+        1. **Raw body** — pass ``body`` directly. The value is serialized as-is
+           via ``json=body``, which supports any JSON-serializable structure
+           (lists, dicts, etc.). ``kwargs`` are ignored in this mode.
+
+        2. **Keyword arguments** (default) — individual kwargs are collected
+           into a dict and sent as the request payload.  By default the payload
+           is sent as JSON (``json=``), but when ``files`` are provided it
+           falls back to form-encoded ``data=`` because requests ignores the
+           ``json`` parameter when ``files`` is set.  You can override this
+           with ``use_json=True/False``.
+
+        :param method:   API method path, appended to ``self.api_path``.
+        :param body:     A raw JSON-serializable payload (e.g. a list).
+                         When provided, ``kwargs``, ``files``, and ``use_json``
+                         are ignored.
+        :param files:    Files to upload (passed to ``requests``).
+        :param use_json: Force JSON (True) or form-encoded (False) encoding.
+                         Defaults to JSON when no files are attached.
+        """
+        url = self.server_url + self.api_path + method
+
+        if body is not None:
             return json_or_error(
                 self.session.post(
-                    self.server_url + self.api_path + method,
-                    json=reduced_args,
-                    files=files,
+                    url,
+                    json=body,
                     headers=self.headers,
                     verify=self.ssl_verify,
                     cert=self.cert,
@@ -226,10 +239,21 @@ class RocketChatBase:
                 )
             )
 
+        reduced_args = self.__reduce_kwargs(kwargs)
+
+        # "pass" is a Python reserved word, but some endpoints (e.g.
+        # users.register) expect it instead of "password".
+        if "password" in reduced_args and method != "users.create":
+            reduced_args["pass"] = reduced_args.pop("password")
+
+        if use_json is None:
+            use_json = files is None
+
         return json_or_error(
             self.session.post(
-                self.server_url + self.api_path + method,
-                data=reduced_args,
+                url,
+                json=reduced_args if use_json else None,
+                data=None if use_json else reduced_args,
                 files=files,
                 headers=self.headers,
                 verify=self.ssl_verify,
