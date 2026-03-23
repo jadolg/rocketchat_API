@@ -83,3 +83,7 @@ class RocketChatDM(RocketChatBase):
         if user_name:
             return self.call_api_get("dm.counters", roomId=room_id, username=user_name)
         return self.call_api_get("dm.counters", roomId=room_id)
+
+    def dm_delete(self, room_id, **kwargs):
+        """Delete a direct message room. Requires view-room-administration permission."""
+        return self.call_api_post("dm.delete", roomId=room_id, kwargs=kwargs)
