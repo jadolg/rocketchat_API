@@ -49,6 +49,7 @@ test = [
     "black",
     "pytest",
     "pytest-cov",
+    "pymongo",
     "requests",
     "semver",
 ]
