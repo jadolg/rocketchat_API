@@ -70,3 +70,15 @@ class RocketChatLivechat(RocketChatBase):
         return self.call_api_get(
             "livechat/inquiries.getOne", roomId=room_id, kwargs=kwargs
         )
+
+    def livechat_get_appearance(self, **kwargs):
+        """Get the settings about the widget appearance. Permission required: view-livechat-manager"""
+        return self.call_api_get("livechat/appearance", kwargs=kwargs)
+
+    def livechat_set_appearance(self, settings):
+        """Update the livechat widget appearance settings. Permission required: view-livechat-manager
+
+        :param settings: list of dicts with '_id' and 'value' keys,
+                         e.g. [{"_id": "Livechat_title", "value": "Support"}]
+        """
+        return self.call_api_post("livechat/appearance", body=settings)
