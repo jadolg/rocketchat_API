@@ -158,3 +158,11 @@ def test_dm_list_everyone(logged_rocket):
     iterated_dms = list(logged_rocket.dm_list_everyone())
     for dm in iterated_dms:
         assert "_id" in dm
+
+
+def test_dm_delete(logged_rocket, recipient_user):
+    dm_create = logged_rocket.dm_create(recipient_user)
+    room_id = dm_create.get("room").get("_id")
+    logged_rocket.dm_delete(room_id)
+    room_ids = [dm.get("_id") for dm in logged_rocket.dm_list()]
+    assert room_id not in room_ids
