@@ -36,7 +36,10 @@ def test_banner():
 def test_banners(logged_rocket, test_banner):
     result = logged_rocket.banners(platform="web")
     assert "banners" in result
-    banner = next(b for b in result["banners"] if b["_id"] == "test-banner-api")
+    try:
+        banner = next(b for b in result["banners"] if b["_id"] == "test-banner-api")
+    except StopIteration:
+        pytest.fail("Test banner not found in banners list")
     assert banner["platform"] == test_banner["platform"]
     assert banner["surface"] == test_banner["surface"]
 
