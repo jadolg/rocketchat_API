@@ -50,3 +50,21 @@ def test_roles_get_users_in_role(logged_rocket):
 def test_roles_sync(logged_rocket):
     roles_sync = logged_rocket.roles_sync(updated_since="2017-11-25T15:08:17.248Z")
     assert len(roles_sync.get("roles")) > 0
+
+
+def test_roles_delete(logged_rocket, skip_if_no_license):
+    name = str(uuid.uuid1())
+    role_id = logged_rocket.roles_create(name=name).get("role").get("_id")
+    logged_rocket.roles_delete(role_id=role_id)
+    roles = logged_rocket.roles_list().get("roles", [])
+    assert not any(r["_id"] == role_id for r in roles)
+
+
+def test_roles_get_users_in_public_roles(logged_rocket):
+    result = logged_rocket.roles_get_users_in_public_roles()
+    assert "users" in result
+    assert len(result["users"]) > 0
+    user = result["users"][0]
+    assert "_id" in user
+    assert "username" in user
+    assert "roles" in user
