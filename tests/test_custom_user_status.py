@@ -22,10 +22,8 @@ def created_status(logged_rocket, status_name):
 
 
 def test_custom_user_status_list(logged_rocket, created_status):
-    result = logged_rocket.custom_user_status_list()
-    assert "statuses" in result
-    found = any(s["_id"] == created_status["_id"] for s in result["statuses"])
-    assert found
+    statuses = list(logged_rocket.custom_user_status_list())
+    assert any(s["_id"] == created_status["_id"] for s in statuses)
 
 
 def test_custom_user_status_create_delete(logged_rocket):
@@ -38,7 +36,7 @@ def test_custom_user_status_create_delete(logged_rocket):
 
     logged_rocket.custom_user_status_delete(custom_user_status_id=status["_id"])
 
-    statuses = logged_rocket.custom_user_status_list().get("statuses", [])
+    statuses = list(logged_rocket.custom_user_status_list())
     assert not any(s["_id"] == status["_id"] for s in statuses)
 
 
