@@ -6,6 +6,7 @@ from rocketchat_API.APISections.channels import RocketChatChannels
 from rocketchat_API.APISections.chat import RocketChatChat
 from rocketchat_API.APISections.dm import RocketChatDM
 from rocketchat_API.APISections.custom_emoji import RocketChatCustomEmoji
+from rocketchat_API.APISections.custom_user_status import RocketChatCustomUserStatus
 from rocketchat_API.APISections.groups import RocketChatGroups
 from rocketchat_API.APISections.integrations import RocketChatIntegrations
 from rocketchat_API.APISections.invites import RocketChatInvites
@@ -31,6 +32,7 @@ class RocketChat(
     RocketChatChat,
     RocketChatDM,
     RocketChatCustomEmoji,
+    RocketChatCustomUserStatus,
     RocketChatGroups,
     RocketChatIntegrations,
     RocketChatInvites,
