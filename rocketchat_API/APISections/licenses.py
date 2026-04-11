@@ -6,3 +6,7 @@ class RocketChatLicenses(RocketChatBase):
     def licenses_info(self, **kwargs):
         """Retrieves a list of all registered licenses in the workspace."""
         return self.call_api_get("licenses.info", kwargs=kwargs)
+
+    def licenses_max_active_users(self, **kwargs):
+        """Retrieves a list of the maximum active users."""
+        return self.call_api_get("licenses.maxActiveUsers", kwargs=kwargs)
