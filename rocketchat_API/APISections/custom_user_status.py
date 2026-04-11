@@ -1,7 +1,8 @@
-from rocketchat_API.APISections.base import RocketChatBase
+from rocketchat_API.APISections.base import RocketChatBase, paginated
 
 
 class RocketChatCustomUserStatus(RocketChatBase):
+    @paginated("statuses")
     def custom_user_status_list(self, **kwargs):
         """Lists all available custom user's status."""
         return self.call_api_get("custom-user-status.list", kwargs=kwargs)
