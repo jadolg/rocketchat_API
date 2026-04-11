@@ -3,7 +3,8 @@ def test_licenses_info_works_without_license(logged_rocket):
     assert "license" in licenses_info
 
 
-def test_licenses_info(logged_rocket, skip_if_no_license):
+def test_licenses_info(logged_rocket, skip_if_no_license, skip_if_version_under):
+    skip_if_version_under("8.1.0")
     licenses_info = logged_rocket.licenses_info()
     assert "license" in licenses_info
     license_data = licenses_info["license"]
