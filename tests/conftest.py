@@ -79,6 +79,18 @@ def secondary_user(logged_rocket):
 
 
 @pytest.fixture
+def skip_if_version_under(rocket):
+    import semver
+
+    def _skip_if_version_under(minimum_version):
+        parse = lambda v: semver.Version.parse(v, optional_minor_and_patch=True)
+        if parse(rocket.info()["version"]) < parse(minimum_version):
+            pytest.skip(f"Requires Rocket.Chat >= {minimum_version}")
+
+    return _skip_if_version_under
+
+
+@pytest.fixture
 def skip_if_no_license(logged_rocket):
     try:
         licenses_info = logged_rocket.licenses_info()
