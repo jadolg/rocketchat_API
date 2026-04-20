@@ -68,7 +68,8 @@ class RocketChatRooms(RocketChatBase):
     def rooms_media(self, room_id, file, **kwargs):
         """Upload media files to a room."""
         files = {
-            "file": (
+            "file": file if isinstance(file, (list, tuple))
+            else (
                 os.path.basename(file),
                 open(file, "rb"),
                 mimetypes.guess_type(file)[0],
