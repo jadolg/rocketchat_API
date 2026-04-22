@@ -15,6 +15,47 @@ def test_rooms_media(logged_rocket):
     assert str(rooms_media.get("file").get("url")).endswith("avatar.png")
 
 
+def test_rooms_media_array_file(logged_rocket):
+    with open("tests/assets/avatar.png", "rb") as avatar_file:
+        avatar_bytes = avatar_file.read()
+
+    rooms_media = logged_rocket.rooms_media(
+        "GENERAL",
+        file=("avatar.png", avatar_bytes, "image/png"),
+        description="hey there",
+    )
+    assert str(rooms_media.get("file").get("url")).endswith("avatar.png")
+
+
+def test_rooms_media_array_file_with_list(logged_rocket):
+    with open("tests/assets/avatar.png", "rb") as avatar_file:
+        avatar_bytes = avatar_file.read()
+
+    rooms_media = logged_rocket.rooms_media(
+        "GENERAL",
+        file=["avatar.png", avatar_bytes, "image/png"],  # list instead of tuple
+        description="hey there",
+    )
+
+    assert str(rooms_media.get("file").get("url")).endswith("avatar.png")
+
+
+def test_rooms_media_confirm(logged_rocket):
+    uploaded_media = logged_rocket.rooms_media(
+        "GENERAL", file="tests/assets/avatar.png"
+    )
+    file_id = str(uploaded_media.get("file").get("_id"))
+    assert file_id
+
+    confirmed_media = logged_rocket.rooms_media_confirm(
+        room_id="GENERAL",
+        file_id=file_id,
+        msg="confirmed upload",
+    )
+
+    assert confirmed_media.get("message").get("_id")
+
+
 def test_rooms_get(logged_rocket):
     rooms_get = logged_rocket.rooms_get()
     assert "update" in rooms_get

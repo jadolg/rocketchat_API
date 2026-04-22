@@ -69,11 +69,22 @@ class RocketChatRooms(RocketChatBase):
         """Upload media files to a room."""
         files = {
             "file": (
-                os.path.basename(file),
-                open(file, "rb"),
-                mimetypes.guess_type(file)[0],
+                file
+                if isinstance(file, (list, tuple))
+                else (
+                    os.path.basename(file),
+                    open(file, "rb"),
+                    mimetypes.guess_type(file)[0],
+                )
             ),
         }
         return self.call_api_post(
             "rooms.media/" + room_id, kwargs=kwargs, use_json=False, files=files
+        )
+
+    def rooms_media_confirm(self, room_id, file_id, **kwargs):
+        """Confirm a previously uploaded media file in a room."""
+        return self.call_api_post(
+            "rooms.mediaConfirm/" + room_id + "/" + file_id,
+            kwargs=kwargs,
         )
