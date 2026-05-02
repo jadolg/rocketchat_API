@@ -129,7 +129,7 @@ class RocketChatUsers(RocketChatBase):
 
     def users_forgot_password(self, email, **kwargs):
         """Send email to reset your password."""
-        return self.call_api_post("users.forgotPassword", email=email, data=kwargs)
+        return self.call_api_post("users.forgotPassword", email=email, kwargs=kwargs)
 
     def users_get_preferences(self, **kwargs):
         """Gets all preferences of user."""

@@ -78,10 +78,10 @@ class RocketChatDM(RocketChatBase):
             return self.call_api_get("dm.files", username=user_name, kwargs=kwargs)
         raise RocketMissingParamException(ROOM_ID_OR_USERNAME_REQUIRED)
 
-    def dm_counters(self, room_id, user_name=None):
+    def dm_counters(self, room_id, user_id=None):
         """Gets counters of direct messages."""
-        if user_name:
-            return self.call_api_get("dm.counters", roomId=room_id, username=user_name)
+        if user_id:
+            return self.call_api_get("dm.counters", roomId=room_id, userId=user_id)
         return self.call_api_get("dm.counters", roomId=room_id)
 
     def dm_delete(self, room_id, **kwargs):

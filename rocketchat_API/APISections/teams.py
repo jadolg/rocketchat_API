@@ -173,7 +173,7 @@ class RocketChatTeams(RocketChatBase):
 
     @paginated("rooms")
     def teams_list_rooms_of_user(
-        self, team_id=None, team_name=None, user_id=None, can_add=False, **kwargs
+        self, team_id=None, team_name=None, user_id=None, **kwargs
     ):
         """
         Lists only the team's rooms that a particular user has joined.
@@ -184,7 +184,6 @@ class RocketChatTeams(RocketChatBase):
                 "teams.listRoomsOfUser",
                 teamId=team_id,
                 userId=user_id,
-                canAdd=can_add,
                 kwargs=kwargs,
             )
         if team_name:
@@ -192,7 +191,6 @@ class RocketChatTeams(RocketChatBase):
                 "teams.listRoomsOfUser",
                 teamName=team_name,
                 userId=user_id,
-                canAdd=can_add,
                 kwargs=kwargs,
             )
         raise RocketMissingParamException(TEAM_ID_OR_TEAM_NAME_REQUIRED)
