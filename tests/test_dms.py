@@ -146,7 +146,7 @@ def test_dm_counters(logged_rocket, recipient_user):
 
     dm_counters = logged_rocket.dm_counters(
         room_id=dm_create.get("room").get("_id"),
-        user_name=logged_rocket.me().get("_id"),
+        user_id=logged_rocket.me().get("_id"),
     )
     assert all(
         key in dm_counters
