@@ -18,7 +18,7 @@ jobs:
         rocket-chat-version: [ '8.0.5', '8.1.5', '8.2.5', '8.3.5', '8.4.3', '8.5.0']
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v6.0.3
       - name: Test
         uses: ./.github/actions/test_rocketchat
         with:
