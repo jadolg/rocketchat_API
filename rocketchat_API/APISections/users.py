@@ -11,6 +11,8 @@ from rocketchat_API.APISections.base import (
     paginated,
 )
 
+USERS_INFO = "users.info"
+
 
 class RocketChatUsers(RocketChatBase):
     def me(self, **kwargs):
@@ -32,16 +34,16 @@ class RocketChatUsers(RocketChatBase):
         Rocket.Chat >= 8.4.0 and ``free_switch_extension`` requires >= 8.5.0.
         """
         if user_id:
-            return self.call_api_get("users.info", userId=user_id, kwargs=kwargs)
+            return self.call_api_get(USERS_INFO, userId=user_id, kwargs=kwargs)
         if username:
-            return self.call_api_get("users.info", username=username, kwargs=kwargs)
+            return self.call_api_get(USERS_INFO, username=username, kwargs=kwargs)
         if import_id:
-            return self.call_api_get("users.info", importId=import_id, kwargs=kwargs)
+            return self.call_api_get(USERS_INFO, importId=import_id, kwargs=kwargs)
         if email:
-            return self.call_api_get("users.info", email=email, kwargs=kwargs)
+            return self.call_api_get(USERS_INFO, email=email, kwargs=kwargs)
         if free_switch_extension:
             return self.call_api_get(
-                "users.info",
+                USERS_INFO,
                 freeSwitchExtension=free_switch_extension,
                 kwargs=kwargs,
             )
