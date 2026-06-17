@@ -7,6 +7,7 @@ from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketMissingParamException,
     RocketApiException,
 )
+from tests.conftest import get_tests_passowrd
 
 
 def test_login(logged_rocket, user):
@@ -53,6 +54,48 @@ def test_users_info(logged_rocket, user):
 
     with pytest.raises(RocketMissingParamException):
         logged_rocket.users_info()
+
+
+def test_users_info_by_email(logged_rocket, skip_if_version_under):
+    skip_if_version_under("8.4.0")
+    email = f"{uuid.uuid4().hex}@domain.com"
+    username = f"info_email_{uuid.uuid4().hex[:8]}"
+
+    # No user has this email yet, so the lookup must fail.
+    with pytest.raises(RocketApiException):
+        logged_rocket.users_info(email=email)
+
+    created = logged_rocket.users_create(
+        email, username, get_tests_passowrd(), username
+    )
+    user_id = created.get("user").get("_id")
+    try:
+        users_info_by_email = logged_rocket.users_info(email=email)
+        assert users_info_by_email.get("user").get("_id") == user_id
+    finally:
+        logged_rocket.users_delete(user_id)
+
+
+def test_users_info_by_import_id(logged_rocket):
+    # An importId can only be set while importing users (CSV, Slack, ...), which
+    # is not exposed through the API, so the success path cannot be set up from
+    # code. We only assert the parameter reaches the server: the API answering
+    # with a "user not found" error (rather than the wrapper raising a
+    # missing-param error) proves importId was sent as a query parameter.
+    with pytest.raises(RocketApiException):
+        logged_rocket.users_info(import_id="nonexistent")
+
+
+def test_users_info_by_free_switch_extension(logged_rocket, skip_if_version_under):
+    skip_if_version_under("8.5.0")
+    # Assigning a freeSwitchExtension requires a configured FreeSwitch server
+    # (VoIP_TeamCollab), which is part of the deployment rather than something we
+    # can set up from code, so the success path cannot be exercised here. We only
+    # assert the parameter reaches the server: the API answering with a "user not
+    # found" error (rather than the wrapper raising a missing-param error) proves
+    # freeSwitchExtension was sent as a query parameter.
+    with pytest.raises(RocketApiException):
+        logged_rocket.users_info(free_switch_extension="0000")
 
 
 def test_users_get_presence(logged_rocket, user):
