@@ -5,6 +5,9 @@ ROOM_ID_OR_NAME_REQUIRED = "room_id or room_name required"
 ROOM_ID_OR_GROUP_REQUIRED = "room_id or group required"
 ROOM_ID_OR_CHANNEL_REQUIRED = "room_id or channel required"
 USER_ID_OR_USERNAME_REQUIRED = "user_id or username required"
+USER_INFO_LOOKUP_REQUIRED = (
+    "user_id, username, import_id, email or free_switch_extension required"
+)
 ROOM_ID_OR_USERNAME_REQUIRED = "room_id or username required"
 MESSAGE_RID_REQUIRED = "message.rid required"
 TEAM_ID_OR_TEAM_NAME_REQUIRED = "team_id or team_name required"

@@ -3,6 +3,7 @@ import os
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
     USER_ID_OR_USERNAME_REQUIRED,
+    USER_INFO_LOOKUP_REQUIRED,
     RocketMissingParamException,
 )
 from rocketchat_API.APISections.base import (
@@ -16,13 +17,35 @@ class RocketChatUsers(RocketChatBase):
         """Displays information about the authenticated user."""
         return self.call_api_get("me", kwargs=kwargs)
 
-    def users_info(self, user_id=None, username=None, **kwargs):
-        """Gets a user's information, limited to the caller's permissions."""
+    def users_info(
+        self,
+        user_id=None,
+        username=None,
+        import_id=None,
+        email=None,
+        free_switch_extension=None,
+        **kwargs,
+    ):
+        """Gets a user's information, limited to the caller's permissions.
+
+        Exactly one lookup parameter must be provided. ``email`` requires
+        Rocket.Chat >= 8.4.0 and ``free_switch_extension`` requires >= 8.5.0.
+        """
         if user_id:
             return self.call_api_get("users.info", userId=user_id, kwargs=kwargs)
         if username:
             return self.call_api_get("users.info", username=username, kwargs=kwargs)
-        raise RocketMissingParamException(USER_ID_OR_USERNAME_REQUIRED)
+        if import_id:
+            return self.call_api_get("users.info", importId=import_id, kwargs=kwargs)
+        if email:
+            return self.call_api_get("users.info", email=email, kwargs=kwargs)
+        if free_switch_extension:
+            return self.call_api_get(
+                "users.info",
+                freeSwitchExtension=free_switch_extension,
+                kwargs=kwargs,
+            )
+        raise RocketMissingParamException(USER_INFO_LOOKUP_REQUIRED)
 
     @paginated("users")
     def users_list(self, **kwargs):
