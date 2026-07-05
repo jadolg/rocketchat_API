@@ -92,17 +92,49 @@ def skip_if_version_under(rocket):
 
 @pytest.fixture
 def skip_if_no_license(logged_rocket):
-    try:
-        licenses_info = logged_rocket.licenses_info()
-        if "license" in licenses_info and "license" in licenses_info.get("license"):
-            return
-    except (RocketApiException, RocketBadStatusCodeException):
-        pytest.fail("License endpoint not available")
-    pytest.skip("No license available")
+    licenses_info = logged_rocket.licenses_info()
+    if "license" in licenses_info and "license" in licenses_info.get("license"):
+        return
+    pytest.skip("No license available")  # pragma: no cover
+
+
+@pytest.fixture(scope="session", autouse=True)
+def grant_message_impersonate(logged_rocket):
+    """Grant the 'message-impersonate' permission to the admin role.
+
+    Incoming integrations that post as a user require that user to hold the
+    'message-impersonate' permission. It is granted to the 'bot' and 'app' roles
+    by default but not to 'admin', so the integration tests would otherwise fail
+    with 'error-user-lacks-message-impersonate-permission'.
+    """
+    logged_rocket.permissions_update(
+        permissions=[{"_id": "message-impersonate", "roles": ["admin", "bot", "app"]}]
+    )
 
 
 @pytest.fixture
-def livechat_inquiry(logged_rocket):
+def accept_chats_with_no_agents(logged_rocket):
+    """Allow opening livechat rooms while no agent is online.
+
+    In a headless test environment there is no persistent connection keeping an
+    agent's presence 'online', so Rocket.Chat would otherwise refuse to open a
+    room with 'no-agent-online'. Accepting chats with no agents online lets the
+    room be created and the inquiry queued regardless.
+    """
+    original_accept = logged_rocket.settings_get(
+        "Livechat_accept_chats_with_no_agents"
+    ).get("value")
+    logged_rocket.settings_update("Livechat_accept_chats_with_no_agents", True)
+
+    yield
+
+    logged_rocket.settings_update(
+        "Livechat_accept_chats_with_no_agents", original_accept
+    )
+
+
+@pytest.fixture
+def livechat_inquiry(logged_rocket, accept_chats_with_no_agents):
     """Create a livechat agent, visitor, and room to generate an inquiry."""
     # Save original routing method and set to Manual_Selection to prevent auto-assignment
     original_routing = logged_rocket.settings_get("Livechat_Routing_Method")

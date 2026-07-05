@@ -58,7 +58,7 @@ def test_livechat_visitor_minimal(logged_rocket):
     assert "visitor" in new_visitor
 
 
-def test_livechat_visitor_room_and_message(logged_rocket):
+def test_livechat_visitor_room_and_message(logged_rocket, accept_chats_with_no_agents):
     token = str(uuid.uuid1())
     name = str(uuid.uuid1())
     new_visitor = logged_rocket.livechat_register_visitor(
@@ -69,7 +69,9 @@ def test_livechat_visitor_room_and_message(logged_rocket):
     get_visitor = logged_rocket.livechat_get_visitor(token=token)
     assert name == get_visitor.get("visitor").get("username")
 
-    # We need to create a livechat agent and set the user online in order to be able to get a room
+    # We need to create a livechat agent and set the user online in order to be able to get a room.
+    # The accept_chats_with_no_agents fixture allows the room to open despite the agent's presence
+    # not staying online in a headless test environment.
     username = logged_rocket.me().get("username")
     new_user = logged_rocket.livechat_create_user(user_type="agent", username=username)
     logged_rocket.users_set_status(message="working on it", status="online")
