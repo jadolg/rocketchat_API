@@ -147,7 +147,9 @@ def test_chat_get_message_read_receipts(
     second_rocket = RocketChat("secondary", get_tests_passowrd())
     second_rocket.subscriptions_read(rid="GENERAL")
 
-    receipts = list(logged_rocket.chat_get_message_read_receipts(message_id=message_id))
+    receipts = logged_rocket.chat_get_message_read_receipts(message_id=message_id).get(
+        "receipts"
+    )
     assert len(receipts) > 0
     for receipt in receipts:
         assert "userId" in receipt
