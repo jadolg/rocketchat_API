@@ -16,7 +16,7 @@ class RocketChatIntegrations(RocketChatBase):
         script_enabled,
         event=None,
         urls=None,
-        **kwargs
+        **kwargs,
     ):
         """Creates an integration."""
         if integrations_type == "webhook-outgoing":
@@ -82,7 +82,7 @@ class RocketChatIntegrations(RocketChatBase):
         channel,
         script_enabled,
         integration_id,
-        **kwargs
+        **kwargs,
     ):
         """Updates an existing integration."""
         return self.call_api_put(

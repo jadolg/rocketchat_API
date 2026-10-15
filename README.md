@@ -24,7 +24,7 @@ pip install .
 
 ## Requirements
 
-- Python 3.10 or higher
+- Python 3.11 or higher
 - [requests](https://github.com/kennethreitz/requests)
 
 
