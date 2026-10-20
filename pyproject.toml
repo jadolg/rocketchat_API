@@ -1,6 +1,6 @@
 [build-system]
 requires = [
-    "setuptools",
+    "setuptools>=61",
     "setuptools_scm",
 ]
 build-backend = "setuptools.build_meta"
