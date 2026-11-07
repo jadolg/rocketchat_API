@@ -340,8 +340,10 @@ def test_users_deactivate_idle(logged_rocket):
     assert logged_rocket.users_deactivate_idle(days_idle=36500).get("count") == 0
 
 
-def test_users_send_confirmation_email(rocket, user):
-    rocket.users_send_confirmation_email(user.email)
+def test_users_send_confirmation_email(rocket, logged_rocket, user):
+    # TODO: remove the 8.5 branch once Rocket.Chat 8.5 reaches EOL
+    client = logged_rocket if rocket.info()["version"].startswith("8.5.") else rocket
+    client.users_send_confirmation_email(user.email)
 
 
 def test_users_update_own_basic_info(temp_user):
