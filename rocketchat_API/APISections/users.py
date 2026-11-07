@@ -12,6 +12,8 @@ from rocketchat_API.APISections.base import (
     paginated,
 )
 
+USERS_GET_STATUS = "users.getStatus"
+
 USERS_INFO = "users.info"
 
 
@@ -213,12 +215,10 @@ class RocketChatUsers(RocketChatBase):
         Returns the authenticated user's status if neither is given.
         """
         if user_id:
-            return self.call_api_get("users.getStatus", userId=user_id, kwargs=kwargs)
+            return self.call_api_get(USERS_GET_STATUS, userId=user_id, kwargs=kwargs)
         if username:
-            return self.call_api_get(
-                "users.getStatus", username=username, kwargs=kwargs
-            )
-        return self.call_api_get("users.getStatus", kwargs=kwargs)
+            return self.call_api_get(USERS_GET_STATUS, username=username, kwargs=kwargs)
+        return self.call_api_get(USERS_GET_STATUS, kwargs=kwargs)
 
     def users_list_teams(self, user_id, **kwargs):
         """Lists the teams a user belongs to. Seeing all of them needs view-all-teams."""
@@ -363,6 +363,8 @@ class RocketChatUsers(RocketChatBase):
         return self.call_api_post(
             "users.deleteOwnAccount",
             body={
+                # Rocket.Chat expects the password as a SHA-256 hex digest
+                # codeql[py/weak-sensitive-data-hashing]
                 "password": hashlib.sha256(password.encode()).hexdigest(),
                 **kwargs,
             },
