@@ -8,6 +8,7 @@ import uuid
 from types import SimpleNamespace
 
 import pytest
+import semver
 
 from rocketchat_API.APIExceptions.RocketExceptions import (
     RocketApiException,
@@ -342,7 +343,10 @@ def test_users_deactivate_idle(logged_rocket):
 
 def test_users_send_confirmation_email(rocket, logged_rocket, user):
     # TODO: remove the 8.5 branch once Rocket.Chat 8.5 reaches EOL
-    client = logged_rocket if rocket.info()["version"].startswith("8.5.") else rocket
+    version = semver.Version.parse(
+        rocket.info()["version"], optional_minor_and_patch=True
+    )
+    client = logged_rocket if version < semver.Version(8, 6, 0) else rocket
     client.users_send_confirmation_email(user.email)
 
 
