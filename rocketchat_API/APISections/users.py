@@ -364,7 +364,6 @@ class RocketChatUsers(RocketChatBase):
             "users.deleteOwnAccount",
             body={
                 # Rocket.Chat expects the password as a SHA-256 hex digest
-                # codeql[py/weak-sensitive-data-hashing]
                 "password": hashlib.sha256(password.encode()).hexdigest(),
                 **kwargs,
             },
