@@ -368,7 +368,8 @@ def test_users_2fa_send_email_code_and_disable(logged_rocket, temp_user):
     temp_user.rocket.users_2fa_send_email_code(temp_user.name)
 
 
-def test_users_totp(temp_user):
+def test_users_totp(temp_user, skip_if_version_under):
+    skip_if_version_under("8.8.0")
     enabled = temp_user.rocket.users_enable_totp()
     secret = enabled.get("secret")
     assert secret
