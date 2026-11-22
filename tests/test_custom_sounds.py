@@ -1,40 +1,35 @@
 import json
 import uuid
 
+from rocketchat_API.APIExceptions.RocketExceptions import RocketBadStatusCodeException
+
+SOUND_FILE = "tests/assets/sound.mp3"
+
 
 def _sound_name():
     return "test_sound_" + str(uuid.uuid1()).replace("-", "")[:12]
 
 
 def _create_sound(logged_rocket, name):
-    """Create a custom sound entry via method.call and return its _id."""
-    result = logged_rocket.call_api_post(
-        "method.call/insertOrUpdateSound",
-        message=json.dumps(
-            {
-                "msg": "method",
-                "id": "1",
-                "method": "insertOrUpdateSound",
-                "params": [{"name": name, "extension": "mp3", "newFile": True}],
-            }
-        ),
-    )
-    return json.loads(result["message"])["result"]
+    return logged_rocket.custom_sounds_create(name, SOUND_FILE)["sound"]["_id"]
 
 
 def _delete_sound(logged_rocket, sound_id):
-    """Delete a custom sound entry via method.call."""
-    logged_rocket.call_api_post(
-        "method.call/deleteCustomSound",
-        message=json.dumps(
-            {
-                "msg": "method",
-                "id": "1",
-                "method": "deleteCustomSound",
-                "params": [sound_id],
-            }
-        ),
-    )
+    try:
+        logged_rocket.custom_sounds_delete(sound_id)
+    except RocketBadStatusCodeException:
+        # custom-sounds.delete only exists since 8.6
+        logged_rocket.call_api_post(
+            "method.call/deleteCustomSound",
+            message=json.dumps(
+                {
+                    "msg": "method",
+                    "id": "1",
+                    "method": "deleteCustomSound",
+                    "params": [sound_id],
+                }
+            ),
+        )
 
 
 def test_custom_sounds_list(logged_rocket):
@@ -77,3 +72,10 @@ def test_custom_sounds_get_one(logged_rocket, skip_if_version_under):
         assert result["sound"]["name"] == name
     finally:
         _delete_sound(logged_rocket, sound_id)
+
+
+def test_custom_sounds_delete(logged_rocket, skip_if_version_under):
+    skip_if_version_under("8.6.0")
+    sound_id = _create_sound(logged_rocket, _sound_name())
+    assert logged_rocket.custom_sounds_delete(sound_id).get("success")
+    assert not any(s["_id"] == sound_id for s in logged_rocket.custom_sounds_list())
