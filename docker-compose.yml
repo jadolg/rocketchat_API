@@ -9,6 +9,7 @@ services:
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local?replicaSet=rs0
       - OVERWRITE_SETTING_API_Enable_Rate_Limiter=false
       - OVERWRITE_SETTING_Accounts_TwoFactorAuthentication_Enforce_Password_Fallback=false
+      - OVERWRITE_SETTING_Livechat_enabled=true
       - CREATE_TOKENS_FOR_USERS=true
       - ROCKETCHAT_LICENSE=${ROCKETCHAT_LICENSE}
       - LICENSE_DEBUG=true
