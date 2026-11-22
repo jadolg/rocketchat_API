@@ -28,15 +28,13 @@ def test_statistics_list(logged_rocket):
 
 def test_directory(logged_rocket):
     results = list(logged_rocket.directory(query={"text": "rocket", "type": "users"}))
-    for result in results:
-        assert "_id" in result
+    assert any(r["username"] == "rocket.cat" for r in results)
 
 
 def test_directory_with_string_query(logged_rocket):
     """Test directory method when query is passed as a string"""
     results = list(logged_rocket.directory(query='{"text": "rocket", "type": "users"}'))
-    for result in results:
-        assert "_id" in result
+    assert any(r["username"] == "rocket.cat" for r in results)
 
 
 def test_spotlight(logged_rocket):
